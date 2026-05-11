@@ -105,6 +105,7 @@
                 <div><p style="font-size:9px; color:#666;">FAIL RISK</p><h2 id="res-fail" style="color:var(--red);">0%</h2></div>
             </div>
             <button class="btn btn-gen" style="margin-top:20px; background:var(--accent); color:#000;" onclick="toStep3()">Don't Have You a Timetable?</button>
+            <button class="btn btn-back" onclick="goBack('step1')">Back to Grades</button>
         </div>
     </div>
 
@@ -137,6 +138,7 @@
             <button class="btn" style="background:#1a1a1a; color:#fff;" onclick="addClass()">+ Add Class</button>
             <div id="cls-list" style="margin-top:15px;"></div>
             <button class="btn btn-gen" style="margin-top:20px;" onclick="showFinal()">Generate Report 🔥</button>
+            <button class="btn btn-back" onclick="goBack('step2')">Back</button>
         </div>
     </div>
 
@@ -232,18 +234,22 @@
         }
 
         function showResults() {
-            grades = []; let total = 0;
-            document.querySelectorAll('.nr').forEach(s => { let v = parseInt(s.value); total += v; grades.push({name: s.dataset.sub, val: v}); });
-            document.querySelectorAll('.basket-name').forEach((s, i) => { let v = parseInt(document.querySelectorAll('.basket-val')[i].value); total += v; grades.push({name: s.value, val: v}); });
+            let totalMarks = 0;
+            const weightMap = { "4": 90, "3": 70, "2": 55, "1": 45, "0": 25 };
+            document.querySelectorAll('.nr').forEach(s => { totalMarks += weightMap[s.value]; });
+            document.querySelectorAll('.basket-val').forEach(s => { totalMarks += weightMap[s.value]; });
             
-            let pass = Math.min((total/36)*100 + 15, 98.2).toFixed(1);
-            let nine = Math.min((total/36)*100, 98.2).toFixed(1);
-            let fail = Math.max(100 - parseFloat(pass), 1.8).toFixed(1);
+            const avg = totalMarks / 9;
+            let pass = (avg * 1.1).toFixed(1);
+            let nine = avg >= 70 ? (Math.pow(avg/100, 1.1) * 100).toFixed(1) : (Math.pow(avg/100, 2.5) * 100).toFixed(1);
+            
+            pass = Math.min(Math.max(pass, nine), 99.9);
+            nine = Math.min(nine, pass);
+            let fail = (100 - pass).toFixed(1);
 
             document.getElementById('res-pass').innerText = pass + "%";
             document.getElementById('res-nine').innerText = nine + "%";
             document.getElementById('res-fail').innerText = fail + "%";
-
             document.getElementById('cap-pass').innerText = pass + "%";
             document.getElementById('cap-nine').innerText = nine + "%";
             document.getElementById('cap-fail').innerText = fail + "%";
@@ -255,32 +261,49 @@
         function toStep3() { document.getElementById('step2').style.display = 'none'; document.getElementById('step3').style.display = 'block'; }
         function goBack(id) { document.querySelectorAll('.container').forEach(c => c.style.display = 'none'); document.getElementById(id).style.display = 'block'; }
 
+        function formatTime(h) {
+            let period = h >= 12 ? "PM" : "AM";
+            let displayH = h > 12 ? h - 12 : (h === 0 ? 12 : h);
+            return (displayH < 10 ? "0"+displayH : displayH) + ":00 " + period;
+        }
+
         function showFinal() {
             const tt = document.getElementById('tt-final'); tt.innerHTML = '';
             const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-            let allSubs = [...grades].sort((a, b) => a.val - b.val);
             let subIdx = 0;
+            const currentGrades = [];
+            document.querySelectorAll('.nr').forEach(s => currentGrades.push({name: s.dataset.sub, val: parseInt(s.value)}));
+            document.querySelectorAll('.basket-name').forEach((s, i) => currentGrades.push({name: s.value, val: parseInt(document.querySelectorAll('.basket-val')[i].value)}));
 
             days.forEach((day) => {
                 let h = `<div class="pro-card"><div class="pro-day">${day.toUpperCase()}</div>`;
-                let count = 0;
-                classes.filter(c => c.d === day).forEach(c => {
-                    h += `<div class="pro-slot"><span style="color:var(--accent)">[CLASS] ${c.n}</span><span>${c.t1}</span></div>`;
-                    count++;
+                let dayClasses = classes.filter(c => c.d === day);
+                let occupiedHours = [];
+
+                dayClasses.forEach(c => {
+                    let startH = parseInt(c.t1.split(':')[0]);
+                    let endH = parseInt(c.t2.split(':')[0]);
+                    for(let i=startH; i<=endH; i++) occupiedHours.push(i);
+                    h += `<div class="pro-slot"><span style="color:var(--accent)">[CLASS] ${c.n}</span><span>${c.t1} - ${c.t2}</span></div>`;
                 });
+
                 let isScl = schoolDays.includes(day);
-                let slots = isScl ? 2 : 5;
-                for(let j=0; j < slots; j++) {
-                    if(count < 7) {
-                        let s = allSubs[subIdx % allSubs.length];
-                        let hr = isScl ? (16+j) : (9+j);
-                        let period = hr >= 12 ? "PM" : "AM";
-                        let displayHr = hr > 12 ? hr - 12 : hr;
-                        let finalTime = (displayHr < 10 ? "0" + displayHr : displayHr) + ":00 " + period;
-                        h += `<div class="pro-slot"><span class="${s.val < 3 ? 'weak-sub' : ''}">${s.name}</span><span>${finalTime}</span></div>`;
-                        subIdx++; count++;
+                if(isScl) for(let i=7; i<=14; i++) occupiedHours.push(i);
+
+                let slotsNeeded = isScl ? 3 : 6;
+                let slotsFound = 0;
+                
+                // Study times mapping
+                let potentialStudyTimes = isScl ? [16, 17, 18, 19, 20, 21] : [8, 9, 10, 11, 15, 16, 17, 18, 19, 20];
+
+                potentialStudyTimes.forEach(hr => {
+                    if(!occupiedHours.includes(hr) && slotsFound < slotsNeeded) {
+                        let s = currentGrades[subIdx % currentGrades.length];
+                        h += `<div class="pro-slot"><span class="${s.val < 3 ? 'weak-sub' : ''}">${s.name}</span><span>${formatTime(hr)}</span></div>`;
+                        subIdx++; slotsFound++;
                     }
-                }
+                });
+
                 tt.innerHTML += h + `</div>`;
             });
             document.getElementById('step3').style.display = 'none';
@@ -289,9 +312,8 @@
 
         function download() {
             const area = document.getElementById('capture-area'); area.style.left = "0";
-            html2canvas(area, { scale: 3 }).then(canvas => 
-            {
-                const link = document.createElement('a'); link.download = 'Senuz_Study_Plan.jpg';
+            html2canvas(area, { scale: 3 }).then(canvas => {
+                const link = document.createElement('a'); link.download = 'Senuz_Plan.jpg';
                 link.href = canvas.toDataURL("image/jpeg", 0.95); link.click();
                 area.style.left = "-9999px";
             });
@@ -299,11 +321,11 @@
 
         function updateTimer() {
             const diff = new Date("Dec 8, 2026").getTime() - new Date().getTime();
-            document.getElementById("mon").innerText = Math.floor(diff / (2629746000));
-            document.getElementById("days").innerText = Math.floor((diff % 2629746000) / 86400000);
-            document.getElementById("hrs").innerText = Math.floor((diff % 86400000) / 3600000);
-            document.getElementById("min").innerText = Math.floor((diff % 3600000) / 60000);
-            document.getElementById("sec").innerText = Math.floor((diff % 60000) / 1000);
+            document.getElementById("mon").innerText = Math.max(0, Math.floor(diff / 2629746000));
+            document.getElementById("days").innerText = Math.max(0, Math.floor((diff % 2629746000) / 86400000));
+            document.getElementById("hrs").innerText = Math.max(0, Math.floor((diff % 86400000) / 3600000));
+            document.getElementById("min").innerText = Math.max(0, Math.floor((diff % 3600000) / 60000));
+            document.getElementById("sec").innerText = Math.max(0, Math.floor((diff % 60000) / 1000));
             setTimeout(updateTimer, 1000);
         }
     </script>
