@@ -1,0 +1,21 @@
+{
+  "name": "ol-smart-engine-v16",
+  "version": "1.0.0",
+  "description": "AI Powered O/L Study Plan Generator by Senuz Pro",
+  "main": "index.html",
+  "scripts": {
+    "start": "browser-sync start --server --files '*.html, *.css, *.js'",
+    "dev": "browser-sync start --server --files '*.html, *.css, *.js'"
+  },
+  "keywords": [
+    "education",
+    "study-planner",
+    "sri-lanka",
+    "ol-2026"
+  ],
+  "author": "Senuz Pro",
+  "license": "ISC",
+  "devDependencies": {
+    "browser-sync": "^3.0.0"
+  }
+}
