@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O/L Smart Engine v16 | Senuz 🫂</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap');
+        :root { --bg: #000; --card: #0a0a0a; --border: #1a1a1a; --blue: #007AFF; --accent: #00ff88; --red: #ff3b30; --wa: #25D366; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: #fff; padding-bottom: 100px; }
+
+        header { text-align: center; padding: 15px; border-bottom: 1px solid var(--border); background: #000; position: sticky; top: 0; z-index: 1000; }
+        
+        .wa-float { 
+            position: fixed; width: 60px; height: 60px; bottom: 20px; right: 20px; 
+            background-color: var(--wa); color: #FFF; border-radius: 50px; 
+            text-align: center; font-size: 30px; box-shadow: 0px 4px 15px rgba(0,0,0,0.3); 
+            z-index: 2000; display: flex; align-items: center; justify-content: center;
+            text-decoration: none; transition: 0.3s;
+        }
+
+        footer { text-align: center; padding: 20px; font-size: 10px; color: #444; border-top: 1px solid var(--border); margin-top: 40px; letter-spacing: 1px; }
+
+        .countdown { display: flex; justify-content: center; gap: 5px; margin-top: 10px; }
+        .cd-box { background: #111; padding: 10px 5px; border-radius: 12px; min-width: 55px; border: 1px solid #222; }
+        .cd-val { font-size: 14px; font-weight: 900; display: block; }
+        .cd-lab { font-size: 7px; color: #666; text-transform: uppercase; }
+
+        .container { width: 92%; max-width: 500px; margin: auto; padding-top: 20px; }
+        .row { background: var(--card); border: 1px solid var(--border); border-radius: 25px; padding: 20px; margin-bottom: 20px; }
+        
+        h3 { font-size: 11px; font-weight: 900; color: var(--blue); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+        input, select { background: #111; color: #fff; border: 1px solid #222; padding: 14px; border-radius: 15px; outline: none; width: 100%; margin-bottom: 10px; }
+
+        #loader-screen { display: none; text-align: center; }
+        .ring { width: 80px; height: 80px; border: 5px solid #111; border-top: 5px solid var(--blue); border-radius: 50%; animation: spin 1s linear infinite; margin: 30px auto; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        .day-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin-bottom: 15px; }
+        .day-chip { background: #111; border: 1px solid #222; padding: 10px; border-radius: 10px; color: #666; font-size: 10px; font-weight: 800; text-align: center; cursor: pointer; }
+        .day-chip.selected { background: var(--blue); color: #fff; border-color: var(--blue); }
+        .scl-chip { background: #111; border: 1px solid #333; padding: 8px; border-radius: 8px; font-size: 9px; cursor: pointer; text-align: center; flex: 1; }
+        .scl-chip.active { background: #1a1a1a; border-color: var(--accent); color: var(--accent); }
+
+        .btn { width: 100%; padding: 16px; border-radius: 15px; border: none; font-weight: 900; cursor: pointer; text-transform: uppercase; margin-top: 10px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+        .btn-gen { background: var(--blue); color: #fff; }
+        .btn-gen:active { transform: scale(0.98); }
+        .btn-back { background: transparent; color: #555; border: 1px solid #222; font-size: 10px; margin-top: 15px; }
+        
+        .cls-item { background: #000; padding: 12px; border: 1px solid #222; border-radius: 15px; margin-bottom: 8px; font-size: 11px; display: flex; justify-content: space-between; align-items: center; }
+        .del-btn { color: var(--red); cursor: pointer; padding: 5px; }
+
+        #capture-area { background: #000; width: 900px; padding: 50px; position: fixed; left: -9999px; color: white; }
+        .cap-header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid var(--blue); padding-bottom: 20px; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; text-align: center; }
+        .stat-box { background: #0a0a0a; border: 1px solid #1a1a1a; padding: 20px; border-radius: 20px; }
+        .report-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .pro-card { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 20px; padding: 20px; }
+        .pro-day { font-size: 16px; font-weight: 900; color: var(--blue); border-bottom: 1px solid #222; padding-bottom: 10px; margin-bottom: 15px; }
+        .pro-slot { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px dashed #111; font-size: 13px; }
+        .weak-sub { color: var(--red); font-weight: 800; }
+        .cap-footer { margin-top: 40px; text-align: center; font-size: 12px; color: #444; border-top: 1px solid #1a1a1a; padding-top: 20px; }
+    </style>
+</head>
+<body>
+
+    <a href="https://wa.me/94782932976" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+    <header>
+        <div style="font-size: 10px; font-weight: 900; color: var(--blue); letter-spacing: 2px;">O/L 2026 CALC</div>
+        <div class="countdown" id="timer">
+            <div class="cd-box"><span class="cd-val" id="mon">0</span><span class="cd-lab">Mon</span></div>
+            <div class="cd-box"><span class="cd-val" id="days">0</span><span class="cd-lab">Day</span></div>
+            <div class="cd-box"><span class="cd-val" id="hrs">0</span><span class="cd-lab">Hrs</span></div>
+            <div class="cd-box"><span class="cd-val" id="min">0</span><span class="cd-lab">Min</span></div>
+            <div class="cd-box"><span class="cd-val" id="sec">0</span><span class="cd-lab">Sec</span></div>
+        </div>
+    </header>
+
+    <div class="container" id="step1">
+        <div class="row">
+            <h3>1. Set Your Grades</h3>
+            <div id="grade-inputs"></div>
+            <button class="btn btn-gen" onclick="startLoading()">Start Analysis ✨</button>
+        </div>
+    </div>
+
+    <div class="container" id="loader-screen">
+        <div class="row">
+            <div class="ring"></div>
+            <h2 id="l-pct">0%</h2>
+            <p style="font-size:10px; color:#555; margin-top:10px;">YOUR DATA ANALYZING...</p>
+        </div>
+    </div>
+
+    <div class="container" id="step2" style="display:none;">
+        <div class="row" style="text-align:center;">
+            <p style="font-size:10px; color:#666;">PASS PROBABILITY</p>
+            <h1 id="res-pass" style="font-size: 3.5rem; color: var(--accent); font-weight: 900;">0%</h1>
+            <div style="display:flex; justify-content: space-around; margin-top:20px;">
+                <div><p style="font-size:9px; color:#666;">9A TARGET</p><h2 id="res-nine" style="color:var(--blue);">0%</h2></div>
+                <div><p style="font-size:9px; color:#666;">FAIL RISK</p><h2 id="res-fail" style="color:var(--red);">0%</h2></div>
+            </div>
+            <button class="btn btn-gen" style="margin-top:20px; background:var(--accent); color:#000;" onclick="toStep3()">Don't Have You a Timetable?</button>
+        </div>
+    </div>
+
+    <div class="container" id="step3" style="display:none;">
+        <div class="row">
+            <h3>2. Select School Days</h3>
+            <div style="display:flex; gap:5px; margin-bottom:20px;">
+                <div class="scl-chip active" onclick="toggleScl(this, 'Monday')">Mon</div>
+                <div class="scl-chip active" onclick="toggleScl(this, 'Tuesday')">Tue</div>
+                <div class="scl-chip active" onclick="toggleScl(this, 'Wednesday')">Wed</div>
+                <div class="scl-chip active" onclick="toggleScl(this, 'Thursday')">Thu</div>
+                <div class="scl-chip active" onclick="toggleScl(this, 'Friday')">Fri</div>
+            </div>
+            <hr style="border:0; border-top:1px solid #1a1a1a; margin-bottom:20px;">
+            <h3>3. Add Tuition Classes</h3>
+            <input type="text" id="cn" placeholder="Subject Name">
+            <div class="day-grid">
+                <div class="day-chip" onclick="setDay(this, 'Monday')">MON</div>
+                <div class="day-chip" onclick="setDay(this, 'Tuesday')">TUE</div>
+                <div class="day-chip" onclick="setDay(this, 'Wednesday')">WED</div>
+                <div class="day-chip" onclick="setDay(this, 'Thursday')">THU</div>
+                <div class="day-chip" onclick="setDay(this, 'Friday')">FRI</div>
+                <div class="day-chip" onclick="setDay(this, 'Saturday')">SAT</div>
+                <div class="day-chip" onclick="setDay(this, 'Sunday')">SUN</div>
+            </div>
+            <div style="display:flex; gap:10px;">
+                <div style="flex:1"><label style="font-size:9px; color:#666;">START</label><input type="time" id="ct1"></div>
+                <div style="flex:1"><label style="font-size:9px; color:#666;">END</label><input type="time" id="ct2"></div>
+            </div>
+            <button class="btn" style="background:#1a1a1a; color:#fff;" onclick="addClass()">+ Add Class</button>
+            <div id="cls-list" style="margin-top:15px;"></div>
+            <button class="btn btn-gen" style="margin-top:20px;" onclick="showFinal()">Generate Report 🔥</button>
+        </div>
+    </div>
+
+    <div class="container" id="step4" style="display:none; text-align:center;">
+        <div class="row">
+            <h2 style="color:var(--accent);">✅ PLAN READY!</h2>
+            <button class="btn btn-gen" onclick="download()">Download HD JPG 📥</button>
+            <button class="btn btn-back" onclick="goBack('step3')">⬅️ Edit Classes</button>
+        </div>
+    </div>
+
+    <footer>
+        © 2026 SENUZ INNOVATION SYSTEM • ALL RIGHTS RESERVED
+    </footer>
+
+    <div id="capture-area">
+        <div class="cap-header">
+            <h1 style="color:var(--blue); font-size:42px; font-weight:900;">O/L SMART REPORT 2026</h1>
+            <p style="letter-spacing:3px; color:#666;">AI POWERED DYNAMIC STUDY ARCHITECTURE</p>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-box"><p style="font-size:10px; color:#666;">PASS PROBABILITY</p><h2 id="cap-pass" style="color:var(--accent); font-size:32px;">0%</h2></div>
+            <div class="stat-box"><p style="font-size:10px; color:#666;">9A TARGET RATE</p><h2 id="cap-nine" style="color:var(--blue); font-size:32px;">0%</h2></div>
+            <div class="stat-box"><p style="font-size:10px; color:#666;">FAIL RISK</p><h2 id="cap-fail" style="color:var(--red); font-size:32px;">0%</h2></div>
+        </div>
+        <div id="tt-final" class="report-grid"></div>
+        <div class="cap-footer">© 2026 SENUZ INNOVATION SYSTEM • SUCCESS IS A CHOICE</div>
+    </div>
+
+    <script>
+        const core = ["Sinhala", "Maths", "Science", "English", "History", "Religion"];
+        const b1 = ["Tamil", "Geography", "Civics", "Commerce"];
+        const b2 = ["Music", "Art", "Dancing", "Sinhala Lit", "English Lit"];
+        const b3 = ["ICT", "Agri", "Health", "Media"];
+        
+        let grades = []; let classes = []; let selD = "";
+        let schoolDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+        window.onload = () => {
+            const container = document.getElementById('grade-inputs');
+            core.forEach(s => container.innerHTML += gradeRow(s));
+            container.innerHTML += `<div class="row" style="background:#111; padding:10px; margin:10px 0;"><h3>Basket Subjects</h3></div>`;
+            container.innerHTML += basketRow("G1", b1) + basketRow("G2", b2) + basketRow("G3", b3);
+            updateTimer();
+        };
+
+        function gradeRow(s) { 
+            return `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;"><span>${s}</span><select class="nr" data-sub="${s}" style="width:80px;"><option value="4">A</option><option value="3">B</option><option value="2">C</option><option value="1">S</option><option value="0">W</option></select></div>`; 
+        }
+        
+        function basketRow(l, list) {
+            let opts = list.map(s => `<option>${s}</option>`).join('');
+            return `<div style="display:flex; justify-content:space-between; gap:10px; margin-bottom:8px;"><select class="basket-name" style="flex:1;">${opts}</select><select class="basket-val" style="width:80px;"><option value="4">A</option><option value="3">B</option><option value="2">C</option><option value="1">S</option><option value="0">W</option></select></div>`;
+        }
+
+        function toggleScl(el, day) {
+            el.classList.toggle('active');
+            if(el.classList.contains('active')) { if(!schoolDays.includes(day)) schoolDays.push(day); }
+            else { schoolDays = schoolDays.filter(d => d !== day); }
+        }
+
+        function setDay(el, d) { document.querySelectorAll('.day-chip').forEach(c => c.classList.remove('selected')); el.classList.add('selected'); selD = d; }
+
+        function addClass() {
+            const n = document.getElementById('cn').value, t1 = document.getElementById('ct1').value, t2 = document.getElementById('ct2').value;
+            if(n && selD && t1 && t2) {
+                const id = Date.now();
+                classes.push({id, n, d: selD, t1, t2});
+                renderClasses();
+                document.getElementById('cn').value = "";
+            }
+        }
+
+        function removeClass(id) { classes = classes.filter(c => c.id !== id); renderClasses(); }
+
+        function renderClasses() {
+            const list = document.getElementById('cls-list');
+            list.innerHTML = "";
+            classes.forEach(c => {
+                list.innerHTML += `<div class="cls-item"><div><b>${c.n}</b><br><span style="color:#666;">${c.d} | ${c.t1}-${c.t2}</span></div><i class="fas fa-trash del-btn" onclick="removeClass(${c.id})"></i></div>`;
+            });
+        }
+
+        function startLoading() {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('loader-screen').style.display = 'block';
+            let p = 0;
+            let iv = setInterval(() => {
+                p += 0.5;
+                document.getElementById('l-pct').innerText = Math.floor(p) + "%";
+                if(p >= 100) { clearInterval(iv); showResults(); }
+            }, 40);
+        }
+
+        function showResults() {
+            grades = []; let total = 0;
+            document.querySelectorAll('.nr').forEach(s => { let v = parseInt(s.value); total += v; grades.push({name: s.dataset.sub, val: v}); });
+            document.querySelectorAll('.basket-name').forEach((s, i) => { let v = parseInt(document.querySelectorAll('.basket-val')[i].value); total += v; grades.push({name: s.value, val: v}); });
+            
+            let pass = Math.min((total/36)*100 + 15, 98.2).toFixed(1);
+            let nine = Math.min((total/36)*100, 98.2).toFixed(1);
+            let fail = Math.max(100 - parseFloat(pass), 1.8).toFixed(1);
+
+            document.getElementById('res-pass').innerText = pass + "%";
+            document.getElementById('res-nine').innerText = nine + "%";
+            document.getElementById('res-fail').innerText = fail + "%";
+
+            document.getElementById('cap-pass').innerText = pass + "%";
+            document.getElementById('cap-nine').innerText = nine + "%";
+            document.getElementById('cap-fail').innerText = fail + "%";
+
+            document.getElementById('loader-screen').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+        }
+
+        function toStep3() { document.getElementById('step2').style.display = 'none'; document.getElementById('step3').style.display = 'block'; }
+        function goBack(id) { document.querySelectorAll('.container').forEach(c => c.style.display = 'none'); document.getElementById(id).style.display = 'block'; }
+
+        function showFinal() {
+            const tt = document.getElementById('tt-final'); tt.innerHTML = '';
+            const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+            let allSubs = [...grades].sort((a, b) => a.val - b.val);
+            let subIdx = 0;
+
+            days.forEach((day) => {
+                let h = `<div class="pro-card"><div class="pro-day">${day.toUpperCase()}</div>`;
+                let count = 0;
+                classes.filter(c => c.d === day).forEach(c => {
+                    h += `<div class="pro-slot"><span style="color:var(--accent)">[CLASS] ${c.n}</span><span>${c.t1}</span></div>`;
+                    count++;
+                });
+                let isScl = schoolDays.includes(day);
+                let slots = isScl ? 2 : 5;
+                for(let j=0; j < slots; j++) {
+                    if(count < 7) {
+                        let s = allSubs[subIdx % allSubs.length];
+                        let hr = isScl ? (16+j) : (9+j);
+                        let period = hr >= 12 ? "PM" : "AM";
+                        let displayHr = hr > 12 ? hr - 12 : hr;
+                        let finalTime = (displayHr < 10 ? "0" + displayHr : displayHr) + ":00 " + period;
+                        h += `<div class="pro-slot"><span class="${s.val < 3 ? 'weak-sub' : ''}">${s.name}</span><span>${finalTime}</span></div>`;
+                        subIdx++; count++;
+                    }
+                }
+                tt.innerHTML += h + `</div>`;
+            });
+            document.getElementById('step3').style.display = 'none';
+            document.getElementById('step4').style.display = 'block';
+        }
+
+        function download() {
+            const area = document.getElementById('capture-area'); area.style.left = "0";
+            html2canvas(area, { scale: 3 }).then(canvas => 
+            {
+                const link = document.createElement('a'); link.download = 'Senuz_Study_Plan.jpg';
+                link.href = canvas.toDataURL("image/jpeg", 0.95); link.click();
+                area.style.left = "-9999px";
+            });
+        }
+
+        function updateTimer() {
+            const diff = new Date("Dec 8, 2026").getTime() - new Date().getTime();
+            document.getElementById("mon").innerText = Math.floor(diff / (2629746000));
+            document.getElementById("days").innerText = Math.floor((diff % 2629746000) / 86400000);
+            document.getElementById("hrs").innerText = Math.floor((diff % 86400000) / 3600000);
+            document.getElementById("min").innerText = Math.floor((diff % 3600000) / 60000);
+            document.getElementById("sec").innerText = Math.floor((diff % 60000) / 1000);
+            setTimeout(updateTimer, 1000);
+        }
+    </script>
+</body>
+</html>
