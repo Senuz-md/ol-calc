@@ -229,11 +229,12 @@
         function initApp(olMode) {
             let inputVal = document.getElementById('user-name-input').value.trim();
             if(!inputVal) { alert("Please enter your name."); return; }
-            if(inputVal.length < 4) { alert("Name must be 4+ characters."); return; }
 
+            // Admin Login Logic Fix
             if (inputVal === "Senuz-ofc-admin-dev-powered") {
-                currentUser = "SENUZ-DEV";
+                currentUser = "SENUZ (DEV)"; // Fixed string
             } else {
+                if(inputVal.length < 4) { alert("Name must be 4+ characters."); return; }
                 if(adminForbiddenNames.includes(inputVal.toLowerCase())){
                     alert("Reserved name!"); return;
                 }
@@ -252,21 +253,17 @@
             renderDiscussions();
         }
 
-        // --- Optimized Time Logic ---
         function timeAgo(dateParam) {
             if (!dateParam) return "Just now";
             const date = new Date(dateParam);
             const now = new Date();
             const seconds = Math.floor((now - date) / 1000);
-
             if (seconds < 5) return "Just now";
             if (seconds < 60) return seconds + " seconds ago";
             const minutes = Math.floor(seconds / 60);
             if (minutes < 60) return minutes + (minutes === 1 ? " minute ago" : " minutes ago");
             const hours = Math.floor(minutes / 60);
             if (hours < 24) return hours + (hours === 1 ? " hour ago" : " hours ago");
-            const days = Math.floor(hours / 24);
-            if (days < 7) return days + (days === 1 ? " day ago" : " days ago");
             return date.toLocaleDateString();
         }
 
@@ -398,6 +395,7 @@
         
         function togglePin(id) { 
             if(currentUser === "SENUZ (DEV)") { recursiveAction(discussions, id, 'pin'); saveAndRender(); }
+            else { alert("Admin Only!"); }
         }
         function saveEdit(id) { 
             const val = document.getElementById(`ei-${id}`).value; 
