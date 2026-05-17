@@ -93,7 +93,7 @@
     <a href="https://wa.me/94782932976" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
     <header id="main-header">
-        <div style="font-size: 10px; font-weight: 900; color: var(--blue); letter-spacing: 3px;">TIME UNTIL EXAM</div>
+        <div style="font-size: 10px; font-weight: 900; color: var(--blue); letter-spacing: 3px;">O/L CALCULATOR 📌</div>
         <div class="countdown" id="timer">
             <div class="cd-box"><span class="cd-val" id="mon">0</span><span class="cd-lab">MON</span></div>
             <div class="cd-box"><span class="cd-val" id="days">0</span><span class="cd-lab">DAY</span></div>
@@ -217,8 +217,8 @@
                 document.getElementById('gateway').style.display = 'flex';
             }, 3000);
             updateTimer();
-            // පණිවිඩ වල කාලය අලුත් කිරීමට හැම තත්පර 10කට වරක් රෙන්ඩර් කරනවා.
-            setInterval(renderDiscussions, 10000);
+            // පණිවිඩ වල කාලය auto refresh වෙන්න මෙතන තත්පර 30කට වරක් render කරනවා
+            setInterval(renderDiscussions, 30000);
         };
 
         function renderMembers() {
@@ -253,24 +253,16 @@
             renderDiscussions();
         }
 
-        // නිවැරදි කරන ලද timeAgo function එක (Timestamp numeric value එකෙන් වැඩ කරයි)
         function timeAgo(time) {
             if (!time) return "Just now";
-            const now = Date.now();
-            const diff = Math.floor((now - time) / 1000); // seconds
-
-            if (diff < 10) return "Just now";
-            if (diff < 60) return diff + " seconds ago";
-            
+            const diff = Math.floor((Date.now() - time) / 1000);
+            if (diff < 60) return "Just now";
             const mins = Math.floor(diff / 60);
             if (mins < 60) return mins + (mins === 1 ? " minute ago" : " minutes ago");
-            
             const hrs = Math.floor(mins / 60);
             if (hrs < 24) return hrs + (hrs === 1 ? " hour ago" : " hours ago");
-            
             const days = Math.floor(hrs / 24);
             if (days < 7) return days + (days === 1 ? " day ago" : " days ago");
-            
             return new Date(time).toLocaleDateString();
         }
 
@@ -380,11 +372,7 @@
             let role = "User", user = currentUser;
             if(currentUser === "SENUZ-DEV") { role = "Admin ✔️"; user = "SENUZ-DEV"; }
             
-            const post = { 
-                id: Date.now(), 
-                time: Date.now(), // වෙලාව numeric එකක් විදිහට සේව් කරනවා
-                user, role, msg, replies: [], isPinned: false 
-            };
+            const post = { id: Date.now(), time: Date.now(), user, role, msg, replies: [], isPinned: false };
             if(!parentId) discussions.unshift(post);
             else recursivePush(discussions, parentId, post);
             saveAndRender();
@@ -411,10 +399,7 @@
         function recursiveAction(arr, id, action, payload) { for(let i of arr) { if(i.id === id) { if(action === 'pin') i.isPinned = !i.isPinned; if(action === 'edit') i.msg = payload; return true; } if(i.replies.length > 0) if(recursiveAction(i.replies, id, action, payload)) return true; } }
 
         function saveAndRender() { localStorage.setItem('senuz_v6_db', JSON.stringify(discussions)); renderDiscussions(); renderMembers(); }
-        
-        function renderDiscussions() { 
-            document.getElementById('fb-list').innerHTML = buildTree(discussions); 
-        }
+        function renderDiscussions() { document.getElementById('fb-list').innerHTML = buildTree(discussions); }
 
         function buildTree(arr) {
             let html = "";
