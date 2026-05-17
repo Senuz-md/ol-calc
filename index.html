@@ -201,7 +201,7 @@
         let isOL = true; let classes = []; let selectedDay = "";
         let schoolDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         const forbidden = ["හුත්ත", "පොන්න", "කැරියා", "හුකන", "hukana", "hucn", "cry", "cariya", "kariya", "kryya", "kriya", "pkdya", "කැරිම", "ponna", "හුත්", "Crym", "Tahike", "ponnayo", "Hukapan", "Hakanna", "Hutto", "Utto", "Wesige putha", "Huttige putha", "Huththige pakaya","Wesa balla"];
-        const adminForbiddenNames = ["senuz", "admin", "seneth", "seneth sandeepa", "seneth_sandeepa", "seneth-sandeepa", "o/l calculator admin", "developer"];
+        const adminForbiddenNames = ["senuz", "admin", "seneth", "seneth sandeepa", "seneth_sandeepa","ꜱᴇɴᴜᴢ", "Hukanna", "seneth-sandeepa", "o/l calculator admin", "developer","Ponnaya","pakaya","Huththa","Wesige putha","Huththige putha","ᴘᴏᴡᴇʀᴅ ʙʏ┋© ꜱᴇɴᴜᴢ ⑉〆","Pinnaya", "Gotukola ponnaya","Kari ponnaya","Crya", ""];
 
         let discussions = JSON.parse(localStorage.getItem('senuz_v6_db')) || [];
         let userId = localStorage.getItem('senuz_id') || Math.floor(1000 + Math.random() * 9000);
@@ -229,12 +229,11 @@
         function initApp(olMode) {
             let inputVal = document.getElementById('user-name-input').value.trim();
             if(!inputVal) { alert("Please enter your name."); return; }
+            if(inputVal.length < 4) { alert("Name must be 4+ characters."); return; }
 
-            // Admin Login Logic Fix
             if (inputVal === "Senuz-ofc-admin-dev-powered") {
-                currentUser = "SENUZ (DEV)"; // Fixed string
+                currentUser = "SENUZ-DEV";
             } else {
-                if(inputVal.length < 4) { alert("Name must be 4+ characters."); return; }
                 if(adminForbiddenNames.includes(inputVal.toLowerCase())){
                     alert("Reserved name!"); return;
                 }
@@ -253,17 +252,21 @@
             renderDiscussions();
         }
 
+        // --- Optimized Time Logic ---
         function timeAgo(dateParam) {
             if (!dateParam) return "Just now";
             const date = new Date(dateParam);
             const now = new Date();
             const seconds = Math.floor((now - date) / 1000);
+
             if (seconds < 5) return "Just now";
             if (seconds < 60) return seconds + " seconds ago";
             const minutes = Math.floor(seconds / 60);
             if (minutes < 60) return minutes + (minutes === 1 ? " minute ago" : " minutes ago");
             const hours = Math.floor(minutes / 60);
             if (hours < 24) return hours + (hours === 1 ? " hour ago" : " hours ago");
+            const days = Math.floor(hours / 24);
+            if (days < 7) return days + (days === 1 ? " day ago" : " days ago");
             return date.toLocaleDateString();
         }
 
@@ -371,7 +374,7 @@
             let msg = input.value.trim(); if(!msg) return;
             if(!isClean(msg)) { alert("Bad words detected!"); return; }
             let role = "User", user = currentUser;
-            if(currentUser === "SENUZ (DEV)") { role = "Admin ✔️"; user = "SENUZ (DEV)"; }
+            if(currentUser === "SENUZ-DEV") { role = "Admin ✔️"; user = "SENUZ-DEV"; }
             
             const post = { 
                 id: Date.now(), 
@@ -395,7 +398,6 @@
         
         function togglePin(id) { 
             if(currentUser === "SENUZ (DEV)") { recursiveAction(discussions, id, 'pin'); saveAndRender(); }
-            else { alert("Admin Only!"); }
         }
         function saveEdit(id) { 
             const val = document.getElementById(`ei-${id}`).value; 
