@@ -344,31 +344,30 @@
             
             days.forEach(day => {
                 let html = `<div style="background:#0a0a0a; border:1px solid #111; border-radius:30px; padding:30px;"><div style="font-size:18px; font-weight:900; color:var(--blue); border-bottom:1px solid #111; padding-bottom:15px; margin-bottom:20px;">${day.toUpperCase()}</div>`;
+                let dayHasContent = false;
                 let occ = []; 
                 
                 classes.filter(c => c.d === day).forEach(c => {
                     html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px;"><span style="color:var(--green)">• ${c.n}</span><span>${c.t1} - ${c.t2}</span></div>`;
+                    dayHasContent = true;
                     let h1 = parseInt(c.t1.split(':')[0]);
                     let h2 = parseInt(c.t2.split(':')[0]);
                     for(let i=h1; i<=h2; i++) occ.push(i);
                 });
 
-                if(schoolDays.includes(day)) { for(let i=7; i<=14; i++) occ.push(i); }
+                if(schoolDays.includes(day)) { 
+                    html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px;"><span style="color:#666">School Hours</span><span>07:30 - 01:30</span></div>`;
+                    dayHasContent = true;
+                    for(let i=7; i<=13; i++) occ.push(i); 
+                }
                 
-                // පැය 24 පුරාම චෙක් කරනවා
                 for(let hr = 0; hr < 24; hr++) {
                     let isSleeping = false;
-                    if(sStart > sEnd) { 
-                        if(hr >= sStart || hr < sEnd) isSleeping = true; 
-                    } else { 
-                        if(hr >= sStart && hr < sEnd) isSleeping = true; 
-                    }
+                    if(sStart > sEnd) { if(hr >= sStart || hr < sEnd) isSleeping = true; } 
+                    else { if(hr >= sStart && hr < sEnd) isSleeping = true; }
                     
-                    if(isSleeping) {
-                        html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px; opacity:0.3;"><span style="color:#444">Rest & Recovery</span><span>${hr>12?hr-12:hr==0?12:hr}:00 ${hr>=12?'PM':'AM'}</span></div>`;
-                    } else if(!occ.includes(hr)) {
-                        // වැදගත් පැය වලට විතරක් study ප්ලෑන් එක දානවා
-                        let isStudyHour = (hr >= 4 && hr <= 6) || (hr >= 15 && hr <= 23);
+                    if(!isSleeping && !occ.includes(hr)) {
+                        let isStudyHour = (hr >= 4 && hr <= 6) || (hr >= 14 && hr <= 23);
                         if(!schoolDays.includes(day)) isStudyHour = (hr >= 6 && hr <= 23);
 
                         if(isStudyHour) {
@@ -376,6 +375,7 @@
                             let sub = pool[Math.floor(Math.random() * pool.length)];
                             let color = weakSubs.includes(sub) ? 'var(--red)' : '#fff';
                             html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px;"><span style="color:${color}">${sub} ${weakSubs.includes(sub)?'(Focus)':''}</span><span>${hr>12?hr-12:hr==0?12:hr}:00 ${hr>=12?'PM':'AM'}</span></div>`;
+                            dayHasContent = true;
                         }
                     }
                 }
