@@ -58,8 +58,8 @@
 
         .site-footer { padding: 40px 0; width: 100%; text-align: center; color: whitesmoke; font-size: 9px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
 
-        #capture-area { background: #000; width: 1000px; padding: 80px 60px; position: fixed; left: -9999px; }
-        .img-copyright { margin-top: 60px; text-align: center; border-top: 1px solid whitesmoke; padding-top: 30px; color: white; font-size: 14px; letter-spacing: 8px; font-weight: 300; }
+        #capture-area { background: #000; width: 1000px; padding: 40px 60px; position: fixed; left: -9999px; }
+        .img-copyright { margin-top: 40px; text-align: center; border-top: 1px solid whitesmoke; padding-top: 20px; color: white; font-size: 14px; letter-spacing: 8px; font-weight: 300; }
         
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
@@ -184,16 +184,16 @@
     </div>
 
     <div id="capture-area">
-        <div style="text-align:center; margin-bottom:50px;">
-            <h1 style="color:#fff; font-size:52px; font-weight:900; letter-spacing:-2px;">STUDY PLAN</h1>
-            <p id="cap-header" style="color:#444; letter-spacing:5px; font-size: 14px; margin-top: 10px;"></p>
+        <div style="text-align:center; margin-bottom:30px;">
+            <h1 style="color:#fff; font-size:32px; font-weight:900; letter-spacing:2px;">STUDY PLAN</h1>
+            <p id="cap-header" style="color:#444; letter-spacing:3px; font-size: 11px; margin-top: 5px;"></p>
         </div>
-        <div class="stats-grid" id="cap-stats" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 50px; text-align: center;">
-            <div style="background:#111; padding:35px; border-radius:35px; border:1px solid #1a1a1a;"><p style="font-size:12px; color:#444; letter-spacing:2px;">PROBABILITY</p><h2 id="cap-pass" style="color:var(--green); font-size:55px;">0%</h2></div>
-            <div style="background:#111; padding:35px; border-radius:35px; border:1px solid #1a1a1a;"><p style="font-size:12px; color:#444; letter-spacing:2px;">9A POTENTIAL</p><h2 id="cap-nine" style="color:var(--blue); font-size:55px;">0%</h2></div>
-            <div style="background:#111; padding:35px; border-radius:35px; border:1px solid #1a1a1a;"><p style="font-size:12px; color:#444; letter-spacing:2px;">FAIL RISK</p><h2 id="cap-fail" style="color:var(--red); font-size:55px;">0%</h2></div>
+        <div class="stats-grid" id="cap-stats" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; text-align: center;">
+            <div style="background:#111; padding:20px; border-radius:25px; border:1px solid #1a1a1a;"><p style="font-size:9px; color:#444; letter-spacing:1px;">PROBABILITY</p><h2 id="cap-pass" style="color:var(--green); font-size:35px;">0%</h2></div>
+            <div style="background:#111; padding:20px; border-radius:25px; border:1px solid #1a1a1a;"><p style="font-size:9px; color:#444; letter-spacing:1px;">9A POTENTIAL</p><h2 id="cap-nine" style="color:var(--blue); font-size:35px;">0%</h2></div>
+            <div style="background:#111; padding:20px; border-radius:25px; border:1px solid #1a1a1a;"><p style="font-size:9px; color:#444; letter-spacing:1px;">FAIL RISK</p><h2 id="cap-fail" style="color:var(--red); font-size:35px;">0%</h2></div>
         </div>
-        <div id="final-timetable-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px;"></div>
+        <div id="final-timetable-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;"></div>
         <div class="img-copyright">O/L CALCULATOR | BY SENUZ 🫂</div>
     </div>
 
@@ -201,7 +201,7 @@
         let isOL = true; let classes = []; let selectedDay = "";
         let schoolDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         const forbidden = ["හුත්ත", "පොන්න", "කැරියා", "හුකන", "hukana", "hucn", "cry", "cariya", "kariya", "kryya", "kriya", "pkdya", "කැරිම", "ponna", "හුත්", "Crym", "Tahike", "ponnayo", "Hukapan", "Hakanna", "Hutto", "Utto", "Wesige putha", "Huttige putha", "Huththige pakaya","Wesa balla"];
-        const adminForbiddenNames = ["senuz", "admin", "seneth", "seneth sandeepa", "seneth_sandeepa","ꜱᴇɴᴜᴢ", "Hukanna", "seneth-sandeepa", "o/l calculator admin", "developer","Ponnaya","pakaya","Huththa","Wesige putha","Huththige putha","ᴘᴏᴡᴇʀᴅ ʙʏ┋© ꜱᴇɴᴜᴢ ⑉〆","Pinnaya", "Gotukola ponnaya","Kari ponnaya","Crya", "පොන්නයා", "පකයා", "හුත්තා", "හුකන්නා"];
+        const adminForbiddenNames = ["senuz", "admin", "seneth", "seneth sandeepa", "seneth_sandeepa","ස්ෙනූස්", "Hukanna", "seneth-sandeepa", "o/l calculator admin", "developer","Ponnaya","pakaya","Huththa","Wesige putha","Huththige putha","ᴘᴏᴡᴇʀᴅ ʙʏ┋© ꜱᴇɴᴜᴢ ⑉〆","Pinnaya", "Gotukola ponnaya","Kari ponnaya","Crya", "පොන්නයා", "පකයා", "හුත්තා", "හුකන්නා"];
 
         let discussions = JSON.parse(localStorage.getItem('senuz_v6_db')) || [];
         let userId = localStorage.getItem('senuz_id') || Math.floor(1000 + Math.random() * 9000);
@@ -343,39 +343,49 @@
             const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
             
             days.forEach(day => {
-                let html = `<div style="background:#0a0a0a; border:1px solid #111; border-radius:30px; padding:30px;"><div style="font-size:18px; font-weight:900; color:var(--blue); border-bottom:1px solid #111; padding-bottom:15px; margin-bottom:20px;">${day.toUpperCase()}</div>`;
-                let dayHasContent = false;
-                let occ = []; 
+                let html = `<div style="background:#0a0a0a; border:1px solid #111; border-radius:25px; padding:25px;"><div style="font-size:15px; font-weight:900; color:var(--blue); border-bottom:1px solid #111; padding-bottom:10px; margin-bottom:15px;">${day.toUpperCase()}</div>`;
+                let occ = {}; // හිරවෙච්ච වෙලාවල් - 1: Event, 2: Buffer
                 
+                // School buffers (6am prep, 1pm release)
+                if(schoolDays.includes(day)) {
+                    for(let i=7; i<=13; i++) occ[i] = { type: 'School', label: 'School Hours' };
+                    occ[6] = { type: 'Buffer', label: 'Prep for School' };
+                    occ[14] = { type: 'Buffer', label: 'Relax & Refresh' };
+                }
+
+                // Class buffers
                 classes.filter(c => c.d === day).forEach(c => {
-                    html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px;"><span style="color:var(--green)">• ${c.n}</span><span>${c.t1} - ${c.t2}</span></div>`;
-                    dayHasContent = true;
                     let h1 = parseInt(c.t1.split(':')[0]);
                     let h2 = parseInt(c.t2.split(':')[0]);
-                    for(let i=h1; i<=h2; i++) occ.push(i);
+                    for(let i=h1; i<=h2; i++) occ[i] = { type: 'Class', label: c.n };
+                    // Buffer pre & post
+                    if(!occ[h1-1]) occ[h1-1] = { type: 'Buffer', label: 'Travel & Prep' };
+                    if(!occ[h2+1]) occ[h2+1] = { type: 'Buffer', label: 'Travel & Relax' };
                 });
 
-                if(schoolDays.includes(day)) { 
-                    html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px;"><span style="color:#666">School Hours</span><span>07:30 - 01:30</span></div>`;
-                    dayHasContent = true;
-                    for(let i=7; i<=13; i++) occ.push(i); 
-                }
-                
                 for(let hr = 0; hr < 24; hr++) {
                     let isSleeping = false;
                     if(sStart > sEnd) { if(hr >= sStart || hr < sEnd) isSleeping = true; } 
                     else { if(hr >= sStart && hr < sEnd) isSleeping = true; }
                     
-                    if(!isSleeping && !occ.includes(hr)) {
-                        let isStudyHour = (hr >= 4 && hr <= 6) || (hr >= 14 && hr <= 23);
-                        if(!schoolDays.includes(day)) isStudyHour = (hr >= 6 && hr <= 23);
+                    if(!isSleeping) {
+                        let rowLabel = "";
+                        let rowColor = "#fff";
+                        let rowTime = `${hr>12?hr-12:hr==0?12:hr}:00 ${hr>=12?'PM':'AM'}`;
 
-                        if(isStudyHour) {
-                            let pool = (weakSubs.length > 0 && Math.random() < 0.7) ? weakSubs : (normalSubs.length > 0 ? normalSubs : ["Study Session"]);
-                            let sub = pool[Math.floor(Math.random() * pool.length)];
-                            let color = weakSubs.includes(sub) ? 'var(--red)' : '#fff';
-                            html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px;"><span style="color:${color}">${sub} ${weakSubs.includes(sub)?'(Focus)':''}</span><span>${hr>12?hr-12:hr==0?12:hr}:00 ${hr>=12?'PM':'AM'}</span></div>`;
-                            dayHasContent = true;
+                        if(occ[hr]) {
+                            rowLabel = occ[hr].label;
+                            rowColor = occ[hr].type === 'Buffer' ? '#555' : 'var(--green)';
+                            html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #111; font-size:12px;"><span style="color:${rowColor}">${rowLabel}</span><span>${rowTime}</span></div>`;
+                        } else {
+                            // Study Hours
+                            let isStudyHour = (hr >= 4 && hr <= 23);
+                            if(isStudyHour) {
+                                let pool = (weakSubs.length > 0 && Math.random() < 0.7) ? weakSubs : (normalSubs.length > 0 ? normalSubs : ["Study Session"]);
+                                let sub = pool[Math.floor(Math.random() * pool.length)];
+                                let color = weakSubs.includes(sub) ? 'var(--red)' : '#fff';
+                                html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #111; font-size:12px;"><span style="color:${color}">${sub}</span><span>${rowTime}</span></div>`;
+                            }
                         }
                     }
                 }
