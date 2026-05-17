@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O/L 2026 CALCULATOR | Senuz 🫂</title>
+    <title>O/L 2026 CALCULATOR</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
@@ -59,7 +59,7 @@
         .site-footer { padding: 40px 0; width: 100%; text-align: center; color: whitesmoke; font-size: 9px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
 
         #capture-area { background: #000; width: 1000px; padding: 80px 60px; position: fixed; left: -9999px; }
-        .img-copyright { margin-top: 60px; text-align: center; border-top: 1px solid whitesmoke; padding-top: 30px; color: #444; font-size: 14px; letter-spacing: 8px; font-weight: 300; }
+        .img-copyright { margin-top: 60px; text-align: center; border-top: 1px solid whitesmoke; padding-top: 30px; color: white; font-size: 14px; letter-spacing: 8px; font-weight: 300; }
         
         @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
@@ -194,14 +194,14 @@
             <div style="background:#111; padding:35px; border-radius:35px; border:1px solid #1a1a1a;"><p style="font-size:12px; color:#444; letter-spacing:2px;">FAIL RISK</p><h2 id="cap-fail" style="color:var(--red); font-size:55px;">0%</h2></div>
         </div>
         <div id="final-timetable-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px;"></div>
-        <div class="img-copyright">STUDY ARCHITECTURE | BY SENUZ 🫂</div>
+        <div class="img-copyright">O/L CALCULATOR | BY SENUZ 🫂</div>
     </div>
 
     <script>
         let isOL = true; let classes = []; let selectedDay = "";
         let schoolDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
         const forbidden = ["හුත්ත", "පොන්න", "කැරියා", "හුකන", "hukana", "hucn", "cry", "cariya", "kariya", "kryya", "kriya", "pkdya", "කැරිම", "ponna", "හුත්", "Crym", "Tahike", "ponnayo", "Hukapan", "Hakanna", "Hutto", "Utto", "Wesige putha", "Huttige putha", "Huththige pakaya","Wesa balla"];
-        const adminForbiddenNames = ["senuz", "admin", "seneth", "seneth sandeepa", "seneth_sandeepa","ꜱᴇɴᴜᴢ", "Hukanna", "seneth-sandeepa", "o/l calculator admin", "developer","Ponnaya","pakaya","Huththa","Wesige putha","Huththige putha","ᴘᴏᴡᴇʀᴅ ʙʏ┋© ꜱᴇɴᴜᴢ ⑉〆","Pinnaya", "Gotukola ponnaya","Kari ponnaya","Crya", ""];
+        const adminForbiddenNames = ["senuz", "admin", "seneth", "seneth sandeepa", "seneth_sandeepa","ꜱᴇɴᴜᴢ", "Hukanna", "seneth-sandeepa", "o/l calculator admin", "developer","Ponnaya","pakaya","Huththa","Wesige putha","Huththige putha","ᴘᴏᴡᴇʀᴅ ʙʏ┋© ꜱᴇɴᴜᴢ ⑉〆","Pinnaya", "Gotukola ponnaya","Kari ponnaya","Crya", "පොන්නයා", "පකයා", "හුත්තා", "හුකන්නා"];
 
         let discussions = JSON.parse(localStorage.getItem('senuz_v6_db')) || [];
         let userId = localStorage.getItem('senuz_id') || Math.floor(1000 + Math.random() * 9000);
