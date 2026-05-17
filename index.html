@@ -217,7 +217,8 @@
                 document.getElementById('gateway').style.display = 'flex';
             }, 3000);
             updateTimer();
-            setInterval(renderDiscussions, 30000);
+            // පණිවිඩ වල කාලය අලුත් කිරීමට හැම තත්පර 10කට වරක් රෙන්ඩර් කරනවා.
+            setInterval(renderDiscussions, 10000);
         };
 
         function renderMembers() {
@@ -252,22 +253,25 @@
             renderDiscussions();
         }
 
-        // --- Optimized Time Logic ---
-        function timeAgo(dateParam) {
-            if (!dateParam) return "Just now";
-            const date = new Date(dateParam);
-            const now = new Date();
-            const seconds = Math.floor((now - date) / 1000);
+        // නිවැරදි කරන ලද timeAgo function එක (Timestamp numeric value එකෙන් වැඩ කරයි)
+        function timeAgo(time) {
+            if (!time) return "Just now";
+            const now = Date.now();
+            const diff = Math.floor((now - time) / 1000); // seconds
 
-            if (seconds < 5) return "Just now";
-            if (seconds < 60) return seconds + " seconds ago";
-            const minutes = Math.floor(seconds / 60);
-            if (minutes < 60) return minutes + (minutes === 1 ? " minute ago" : " minutes ago");
-            const hours = Math.floor(minutes / 60);
-            if (hours < 24) return hours + (hours === 1 ? " hour ago" : " hours ago");
-            const days = Math.floor(hours / 24);
+            if (diff < 10) return "Just now";
+            if (diff < 60) return diff + " seconds ago";
+            
+            const mins = Math.floor(diff / 60);
+            if (mins < 60) return mins + (mins === 1 ? " minute ago" : " minutes ago");
+            
+            const hrs = Math.floor(mins / 60);
+            if (hrs < 24) return hrs + (hrs === 1 ? " hour ago" : " hours ago");
+            
+            const days = Math.floor(hrs / 24);
             if (days < 7) return days + (days === 1 ? " day ago" : " days ago");
-            return date.toLocaleDateString();
+            
+            return new Date(time).toLocaleDateString();
         }
 
         function renderGrades() {
@@ -378,7 +382,7 @@
             
             const post = { 
                 id: Date.now(), 
-                time: new Date().toISOString(), 
+                time: Date.now(), // වෙලාව numeric එකක් විදිහට සේව් කරනවා
                 user, role, msg, replies: [], isPinned: false 
             };
             if(!parentId) discussions.unshift(post);
@@ -390,14 +394,14 @@
         function recursivePush(arr, id, obj) { for(let i of arr) { if(i.id === id) { i.replies.push(obj); return true; } if(i.replies.length > 0) if(recursivePush(i.replies, id, obj)) return true; } }
         
         function deleteMsg(id, owner) { 
-            if(currentUser === "SENUZ (DEV)" || currentUser === owner) {
+            if(currentUser === "SENUZ-DEV" || currentUser === owner) {
                 discussions = recursiveDelete(discussions, id); saveAndRender(); 
             } else { alert("Permission denied."); }
         }
         function recursiveDelete(arr, id) { return arr.filter(i => i.id !== id).map(i => ({...i, replies: recursiveDelete(i.replies, id)})); }
         
         function togglePin(id) { 
-            if(currentUser === "SENUZ (DEV)") { recursiveAction(discussions, id, 'pin'); saveAndRender(); }
+            if(currentUser === "SENUZ-DEV") { recursiveAction(discussions, id, 'pin'); saveAndRender(); }
         }
         function saveEdit(id) { 
             const val = document.getElementById(`ei-${id}`).value; 
@@ -407,13 +411,16 @@
         function recursiveAction(arr, id, action, payload) { for(let i of arr) { if(i.id === id) { if(action === 'pin') i.isPinned = !i.isPinned; if(action === 'edit') i.msg = payload; return true; } if(i.replies.length > 0) if(recursiveAction(i.replies, id, action, payload)) return true; } }
 
         function saveAndRender() { localStorage.setItem('senuz_v6_db', JSON.stringify(discussions)); renderDiscussions(); renderMembers(); }
-        function renderDiscussions() { document.getElementById('fb-list').innerHTML = buildTree(discussions); }
+        
+        function renderDiscussions() { 
+            document.getElementById('fb-list').innerHTML = buildTree(discussions); 
+        }
 
         function buildTree(arr) {
             let html = "";
             let sorted = [...arr].sort((a,b) => (b.isPinned?1:0) - (a.isPinned?1:0));
             sorted.forEach(i => {
-                const isAdminDev = (currentUser === "SENUZ (DEV)");
+                const isAdminDev = (currentUser === "SENUZ-DEV");
                 const canDelete = isAdminDev || (i.user === currentUser);
                 const canEdit = (i.user === currentUser) || isAdminDev;
 
