@@ -230,18 +230,13 @@
             let inputVal = document.getElementById('user-name-input').value.trim();
             if(!inputVal) { alert("Please enter your name."); return; }
             if(inputVal.length < 4) { alert("Name must be 4+ characters."); return; }
-
-            if (inputVal === "Senuz-ofc-admin-dev-powered") {
-                currentUser = "SENUZ-DEV";
-            } else {
-                if(adminForbiddenNames.includes(inputVal.toLowerCase())){
-                    alert("Reserved name!"); return;
-                }
+            if (inputVal === "Senuz-ofc-admin-dev-powered") { currentUser = "SENUZ-DEV"; } 
+            else {
+                if(adminForbiddenNames.includes(inputVal.toLowerCase())){ alert("Reserved name!"); return; }
                 const regex = /^[a-zA-Z\s]+$/;
                 if(!regex.test(inputVal)) { alert("English letters only."); return; }
                 currentUser = inputVal + " (" + userId + ")";
             }
-
             localStorage.setItem('senuz_current_user', currentUser);
             isOL = olMode;
             document.getElementById('gateway').style.display = 'none';
@@ -271,7 +266,6 @@
             const cat1 = ["Geography", "Business Studies", "Civic Education", "Entrepreneurship", "2nd Language", "Pali", "Sanskrit", "French", "German", "Hindi", "Japanese", "Arabic", "Korean", "Chinese", "Russian"];
             const cat2 = ["Music (Oriental)", "Music (Western)", "Art", "Dancing (Oriental)", "English Literature", "Sinhala Literature", "Tamil Literature", "Drama"];
             const cat3 = ["ICT", "Agriculture", "Home Economics", "Health & PE", "Communication", "Design Tech"];
-
             if(isOL) {
                 ["Religion", "Language", "English", "Mathematics", "Science", "History"].forEach(s => container.innerHTML += gradeRow(s, "grade-val"));
                 container.innerHTML += `<h3 style="margin:20px 0 10px;">Categories</h3>`;
@@ -330,10 +324,13 @@
             classes.forEach(c => { list.innerHTML += `<div style="background:#000; padding:12px; border:1px solid #222; border-radius:12px; margin-bottom:8px; display:flex; justify-content:space-between; align-items:center; font-size:12px;"><span><b>${c.n}</b> (${c.d})</span><i class="fas fa-times" style="color:var(--red); cursor:pointer;" onclick="classes=classes.filter(i=>i.id!=${c.id});renderClasses()"></i></div>`; });
         }
 
+        function formatTime(hr) { let h = hr > 12 ? hr-12 : hr === 0 ? 12 : hr; let ampm = hr >= 12 ? 'PM' : 'AM'; return `${h}:00 ${ampm}`; }
+
         function generateFinalPlan() {
             const grid = document.getElementById('final-timetable-grid'); grid.innerHTML = "";
             document.getElementById('cap-stats').style.display = isOL ? 'grid' : 'none';
             document.getElementById('cap-header').innerText = isOL ? "O/L WEAK-POINT ARCHITECTURE" : "JUNIOR PRIORITY SCHEDULE";
+            
             let weakSubs = []; let normalSubs = [];
             document.querySelectorAll('.grade-val').forEach(s => { if(parseInt(s.value) <= 2) weakSubs.push(s.dataset.sub); else normalSubs.push(s.dataset.sub); });
             document.querySelectorAll('.grade-val-b').forEach((s, idx) => { let name = document.querySelectorAll('.bucket-name')[idx].value; if(parseInt(s.value) <= 2) weakSubs.push(name); else normalSubs.push(name); });
@@ -344,48 +341,38 @@
             
             days.forEach(day => {
                 let html = `<div style="background:#0a0a0a; border:1px solid #111; border-radius:25px; padding:25px;"><div style="font-size:15px; font-weight:900; color:var(--blue); border-bottom:1px solid #111; padding-bottom:10px; margin-bottom:15px;">${day.toUpperCase()}</div>`;
-                let occ = {}; // හිරවෙච්ච වෙලාවල් - 1: Event, 2: Buffer
+                let occ = {}; // 1: Event, 2: Buffer (Buffer display false)
                 
-                // School buffers (6am prep, 1pm release)
                 if(schoolDays.includes(day)) {
-                    for(let i=7; i<=13; i++) occ[i] = { type: 'School', label: 'School Hours' };
-                    occ[6] = { type: 'Buffer', label: 'Prep for School' };
-                    occ[14] = { type: 'Buffer', label: 'Relax & Refresh' };
+                    for(let i=7; i<=13; i++) occ[i] = { type: 'School', label: 'School Hours', start: '07:30 AM', end: '01:30 PM' };
+                    occ[6] = { type: 'Buffer' }; occ[14] = { type: 'Buffer' };
                 }
 
-                // Class buffers
                 classes.filter(c => c.d === day).forEach(c => {
                     let h1 = parseInt(c.t1.split(':')[0]);
                     let h2 = parseInt(c.t2.split(':')[0]);
-                    for(let i=h1; i<=h2; i++) occ[i] = { type: 'Class', label: c.n };
-                    // Buffer pre & post
-                    if(!occ[h1-1]) occ[h1-1] = { type: 'Buffer', label: 'Travel & Prep' };
-                    if(!occ[h2+1]) occ[h2+1] = { type: 'Buffer', label: 'Travel & Relax' };
+                    for(let i=h1; i<=h2; i++) occ[i] = { type: 'Class', label: c.n, start: c.t1, end: c.t2 };
+                    if(!occ[h1-1]) occ[h1-1] = { type: 'Buffer' };
+                    if(!occ[h2+1]) occ[h2+1] = { type: 'Buffer' };
                 });
 
+                let lastEventLabel = "";
                 for(let hr = 0; hr < 24; hr++) {
-                    let isSleeping = false;
-                    if(sStart > sEnd) { if(hr >= sStart || hr < sEnd) isSleeping = true; } 
-                    else { if(hr >= sStart && hr < sEnd) isSleeping = true; }
-                    
-                    if(!isSleeping) {
-                        let rowLabel = "";
-                        let rowColor = "#fff";
-                        let rowTime = `${hr>12?hr-12:hr==0?12:hr}:00 ${hr>=12?'PM':'AM'}`;
+                    let isSleeping = (sStart > sEnd) ? (hr >= sStart || hr < sEnd) : (hr >= sStart && hr < sEnd);
+                    if(isSleeping) continue;
 
-                        if(occ[hr]) {
-                            rowLabel = occ[hr].label;
-                            rowColor = occ[hr].type === 'Buffer' ? '#555' : 'var(--green)';
-                            html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #111; font-size:12px;"><span style="color:${rowColor}">${rowLabel}</span><span>${rowTime}</span></div>`;
-                        } else {
-                            // Study Hours
-                            let isStudyHour = (hr >= 4 && hr <= 23);
-                            if(isStudyHour) {
-                                let pool = (weakSubs.length > 0 && Math.random() < 0.7) ? weakSubs : (normalSubs.length > 0 ? normalSubs : ["Study Session"]);
-                                let sub = pool[Math.floor(Math.random() * pool.length)];
-                                let color = weakSubs.includes(sub) ? 'var(--red)' : '#fff';
-                                html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #111; font-size:12px;"><span style="color:${color}">${sub}</span><span>${rowTime}</span></div>`;
-                            }
+                    if(occ[hr]) {
+                        if(occ[hr].type !== 'Buffer' && occ[hr].label !== lastEventLabel) {
+                            html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #111; font-size:12px;"><span style="color:var(--green)">${occ[hr].label}</span><span>${occ[hr].start} - ${occ[hr].end}</span></div>`;
+                            lastEventLabel = occ[hr].label;
+                        }
+                    } else {
+                        lastEventLabel = "";
+                        if(hr >= 4 && hr <= 23) {
+                            let pool = (weakSubs.length > 0 && Math.random() < 0.7) ? weakSubs : (normalSubs.length > 0 ? normalSubs : ["Study Session"]);
+                            let sub = pool[Math.floor(Math.random() * pool.length)];
+                            let color = weakSubs.includes(sub) ? 'var(--red)' : '#fff';
+                            html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #111; font-size:12px;"><span style="color:${color}">${sub}</span><span>${formatTime(hr)}</span></div>`;
                         }
                     }
                 }
@@ -395,63 +382,38 @@
         }
 
         function isClean(text) { let low = text.toLowerCase(); return !forbidden.some(word => low.includes(word)); }
-
         function submitMsg(parentId) {
             const input = parentId ? document.getElementById(`ri-${parentId}`) : document.getElementById('fb-input');
             let msg = input.value.trim(); if(!msg) return;
             if(!isClean(msg)) { alert("Bad words detected!"); return; }
             let role = "User", user = currentUser;
             if(currentUser === "SENUZ-DEV") { role = "Admin ✔️"; user = "SENUZ-DEV"; }
-            
             const post = { id: Date.now(), time: Date.now(), user, role, msg, replies: [], isPinned: false };
-            if(!parentId) discussions.unshift(post);
-            else recursivePush(discussions, parentId, post);
-            saveAndRender();
-            input.value = "";
+            if(!parentId) discussions.unshift(post); else recursivePush(discussions, parentId, post);
+            saveAndRender(); input.value = "";
         }
-
         function recursivePush(arr, id, obj) { for(let i of arr) { if(i.id === id) { i.replies.push(obj); return true; } if(i.replies.length > 0) if(recursivePush(i.replies, id, obj)) return true; } }
-        
-        function deleteMsg(id, owner) { 
-            if(currentUser === "SENUZ-DEV" || currentUser === owner) {
-                discussions = recursiveDelete(discussions, id); saveAndRender(); 
-            } else { alert("Permission denied."); }
-        }
+        function deleteMsg(id, owner) { if(currentUser === "SENUZ-DEV" || currentUser === owner) { discussions = recursiveDelete(discussions, id); saveAndRender(); } else { alert("Permission denied."); } }
         function recursiveDelete(arr, id) { return arr.filter(i => i.id !== id).map(i => ({...i, replies: recursiveDelete(i.replies, id)})); }
-        
-        function togglePin(id) { 
-            if(currentUser === "SENUZ-DEV") { recursiveAction(discussions, id, 'pin'); saveAndRender(); }
-        }
-        function saveEdit(id) { 
-            const val = document.getElementById(`ei-${id}`).value; 
-            if(!isClean(val)) return; 
-            recursiveAction(discussions, id, 'edit', val); saveAndRender(); 
-        }
+        function togglePin(id) { if(currentUser === "SENUZ-DEV") { recursiveAction(discussions, id, 'pin'); saveAndRender(); } }
+        function saveEdit(id) { const val = document.getElementById(`ei-${id}`).value; if(!isClean(val)) return; recursiveAction(discussions, id, 'edit', val); saveAndRender(); }
         function recursiveAction(arr, id, action, payload) { for(let i of arr) { if(i.id === id) { if(action === 'pin') i.isPinned = !i.isPinned; if(action === 'edit') i.msg = payload; return true; } if(i.replies.length > 0) if(recursiveAction(i.replies, id, action, payload)) return true; } }
-
         function saveAndRender() { localStorage.setItem('senuz_v6_db', JSON.stringify(discussions)); renderDiscussions(); renderMembers(); }
         function renderDiscussions() { document.getElementById('fb-list').innerHTML = buildTree(discussions); }
-
         function buildTree(arr) {
-            let html = "";
-            let sorted = [...arr].sort((a,b) => (b.isPinned?1:0) - (a.isPinned?1:0));
+            let html = ""; let sorted = [...arr].sort((a,b) => (b.isPinned?1:0) - (a.isPinned?1:0));
             sorted.forEach(i => {
                 const isAdminDev = (currentUser === "SENUZ-DEV");
                 const canDelete = isAdminDev || (i.user === currentUser);
                 const canEdit = (i.user === currentUser) || isAdminDev;
-
                 html += `<div class="fb-card ${i.isPinned?'pinned':''}">
                     <div style="display:flex; justify-content:space-between;">
-                        <div>
-                            <span class="fb-user ${i.role.includes('Admin')?'tag-admin':'tag-user'}">${i.isPinned?'<i class="fas fa-thumbtack"></i> ':''}${i.user} (${i.role})</span>
-                            <span class="fb-time">${timeAgo(i.time)}</span>
-                        </div>
+                        <div><span class="fb-user ${i.role.includes('Admin')?'tag-admin':'tag-user'}">${i.isPinned?'<i class="fas fa-thumbtack"></i> ':''}${i.user}</span><span class="fb-time">${timeAgo(i.time)}</span></div>
                         ${canDelete ? `<i class="fas fa-trash" style="font-size:10px; color:#444; cursor:pointer;" onclick="deleteMsg(${i.id}, '${i.user}')"></i>` : ''}
                     </div>
-                    <div class="fb-msg" id="mt-${i.id}">${i.msg}</div>
+                    <div class="fb-msg">${i.msg}</div>
                     <span class="action-link" onclick="document.getElementById('rb-${i.id}').style.display='block'">Reply</span>
                     ${canEdit ? `<span class="action-link" onclick="document.getElementById('eb-${i.id}').style.display='block'">Edit</span>` : ''}
-                    ${isAdminDev ? `<span class="action-link" onclick="togglePin(${i.id})">${i.isPinned?'Unpin':'Pin'}</span>` : ''}
                     <div class="reply-in-area" id="eb-${i.id}"><input type="text" id="ei-${i.id}" value="${i.msg}"><button class="btn btn-white" style="padding:8px; font-size:9px;" onclick="saveEdit(${i.id})">Save</button></div>
                     <div class="reply-in-area" id="rb-${i.id}"><input type="text" id="ri-${i.id}" placeholder="Reply..."><button class="btn btn-white" style="padding:8px; font-size:9px;" onclick="submitMsg(${i.id})">Send</button></div>
                     <div class="reply-box">${buildTree(i.replies)}</div>
@@ -459,7 +421,6 @@
             });
             return html;
         }
-
         function downloadReport() { const area = document.getElementById('capture-area'); area.style.left = "0"; html2canvas(area, { scale: 2 }).then(canvas => { const link = document.createElement('a'); link.download = 'Study_Plan_Senuz.jpg'; link.href = canvas.toDataURL("image/jpeg", 0.95); link.click(); area.style.left = "-9999px"; }); }
         function updateTimer() { const diff = new Date("Dec 8, 2026").getTime() - new Date().getTime(); document.getElementById("mon").innerText = Math.max(0, Math.floor(diff / 2629746000)); document.getElementById("days").innerText = Math.max(0, Math.floor((diff % 2629746000) / 86400000)); document.getElementById("hrs").innerText = Math.max(0, Math.floor((diff % 86400000) / 3600000)); document.getElementById("min").innerText = Math.max(0, Math.floor((diff % 3600000) / 60000)); document.getElementById("sec").innerText = Math.max(0, Math.floor((diff % 60000) / 1000)); setTimeout(updateTimer, 1000); }
     </script>
