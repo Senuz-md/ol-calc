@@ -217,7 +217,6 @@
                 document.getElementById('gateway').style.display = 'flex';
             }, 3000);
             updateTimer();
-            // පණිවිඩ වල කාලය auto refresh වෙන්න මෙතන තත්පර 30කට වරක් render කරනවා
             setInterval(renderDiscussions, 30000);
         };
 
@@ -344,19 +343,31 @@
             days.forEach(day => {
                 let html = `<div style="background:#0a0a0a; border:1px solid #111; border-radius:30px; padding:30px;"><div style="font-size:18px; font-weight:900; color:var(--blue); border-bottom:1px solid #111; padding-bottom:15px; margin-bottom:20px;">${day.toUpperCase()}</div>`;
                 let occ = []; 
-                classes.filter(c => c.d === day).forEach(c => { html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px;"><span style="color:var(--green)">• ${c.n}</span><span>${c.t1}</span></div>`; occ.push(parseInt(c.t1.split(':')[0])); });
+                
+                // Class වෙලාවල් හරියටම අයින් කරන්න (මුළු duration එකම)
+                classes.filter(c => c.d === day).forEach(c => {
+                    html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px;"><span style="color:var(--green)">• ${c.n}</span><span>${c.t1} - ${c.t2}</span></div>`;
+                    let h1 = parseInt(c.t1.split(':')[0]);
+                    let h2 = parseInt(c.t2.split(':')[0]);
+                    for(let i=h1; i<=h2; i++) occ.push(i);
+                });
+
                 if(schoolDays.includes(day)) { for(let i=7; i<=14; i++) occ.push(i); }
                 let slots = [4, 5, 6, 15, 16, 17, 18, 19, 20, 21, 22, 23];
                 if(!schoolDays.includes(day)) slots = [6, 8, 9, 10, 11, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23];
+                
                 slots.forEach((hr) => {
                     let isSleeping = false;
                     if(sStart > sEnd) { if(hr >= sStart || hr < sEnd) isSleeping = true; } else { if(hr >= sStart && hr < sEnd) isSleeping = true; }
+                    
                     if(!occ.includes(hr) && !isSleeping) {
                         let pool = (weakSubs.length > 0 && Math.random() < 0.7) ? weakSubs : (normalSubs.length > 0 ? normalSubs : ["Study Session"]);
                         let sub = pool[Math.floor(Math.random() * pool.length)];
                         let color = weakSubs.includes(sub) ? 'var(--red)' : '#fff';
                         html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px;"><span style="color:${color}">${sub} ${weakSubs.includes(sub)?'(Focus)':''}</span><span>${hr>12?hr-12:hr}:00 ${hr>=12?'PM':'AM'}</span></div>`;
-                    } else if(isSleeping) { html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px; opacity:0.3;"><span style="color:#444">Rest & Recovery</span><span>${hr>12?hr-12:hr}:00 ${hr>=12?'PM':'AM'}</span></div>`; }
+                    } else if(isSleeping) {
+                        html += `<div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px dashed #111; font-size:14px; opacity:0.3;"><span style="color:#444">Rest & Recovery</span><span>${hr>12?hr-12:hr}:00 ${hr>=12?'PM':'AM'}</span></div>`;
+                    }
                 });
                 grid.innerHTML += html + "</div>";
             });
