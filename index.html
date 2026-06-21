@@ -25,7 +25,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
-        :root { --bg: #000; --card: #111; --border: #1a1a1a; --blue: #007AFF; --green: #00FF88; --red: #ff3b30; --text: #fff; }
+        :root { --bg: #000; --card: #111; --border: #1a1a1a; --blue: #007AFF; --green: #00FF88; --red: #ff2c2c; --text: #fff; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         body { background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
 
@@ -60,7 +60,7 @@
         .countdown { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
         .cd-box { background: #0a0a0a; padding: 10px; border-radius: 15px; min-width: 60px; border: 1px solid #1a1a1a; }
         .cd-val { font-size: 18px; font-weight: 800; color: var(--blue); }
-        .cd-lab { font-size: 8px; color: #444; display: block; }
+        .cd-lab { font-size: 8px; color: whitesmoke; display: block; }
 
         .fb-card { background: var(--card); border: 1px solid var(--border); padding: 18px; border-radius: 25px; margin-bottom: 15px; position: relative; }
         .fb-card.pinned { border: 1px solid var(--green) !important; box-shadow: 0 0 15px rgba(0, 255, 136, 0.1); }
@@ -84,7 +84,7 @@
 <body>
 
     <div id="initial-loader">
-        <h2 style="letter-spacing: 5px; font-weight: 8px;">SENUZ INNOVATION</h2>
+        <h2 style="letter-spacing: 4px; font-weight: 3pxf; font-size: 19px;">SENUZ INNOVATION </h2>
         <div class="progress-line"><div class="progress-line-fill" id="p-fill"></div></div>
     </div>
 
@@ -209,7 +209,7 @@
         </div>
         <div class="stats-grid" id="cap-stats" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 30px; text-align: center;">
             <div style="background:#111; padding:20px; border-radius:25px; border:1px solid #1a1a1a;"><p style="font-size:9px; color:#444; letter-spacing:1px;">PROBABILITY</p><h2 id="cap-pass" style="color:var(--green); font-size:35px;">0%</h2></div>
-            <div style="background:#111; padding:20px; border-radius:25px; border:1px solid #1a1a1a;"><p style="font-size:9px; color:#444; letter-spacing:1px;">9A POTENTIAL</p><h2 id="cap-nine" style="color:var(--blue); font-size:35px;">0%</h2></div>
+            <div style="background:#111; padding:20px; border-radius:25px; border:1px solid #1a1a1a;"><p style="font-size:9px; color:#444; letter-spacing:1px;">9A's PROBABILITY</p><h2 id="cap-nine" style="color:var(--blue); font-size:35px;">0%</h2></div>
             <div style="background:#111; padding:20px; border-radius:25px; border:1px solid #1a1a1a;"><p style="font-size:9px; color:#444; letter-spacing:1px;">FAIL RISK</p><h2 id="cap-fail" style="color:var(--red); font-size:35px;">0%</h2></div>
         </div>
         <div id="final-timetable-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;"></div>
@@ -366,7 +366,7 @@
         function generateFinalPlan() {
             const grid = document.getElementById('final-timetable-grid'); grid.innerHTML = "";
             document.getElementById('cap-stats').style.display = isOL ? 'grid' : 'none';
-            document.getElementById('cap-header').innerText = isOL ? "O/L WEAK-POINT ARCHITECTURE" : "JUNIOR PRIORITY SCHEDULE";
+            document.getElementById('cap-header').innerText = isOL ? "O/L SMART STUDY PLAN (G10/G11)" : "GRADE 6-9 JUNIOR PRIORITY SCHEDULE";
             
             let weakSubs = []; let normalSubs = [];
             document.querySelectorAll('.grade-val').forEach(s => { if(parseInt(s.value) <= 2) weakSubs.push(s.dataset.sub); else normalSubs.push(s.dataset.sub); });
