@@ -14,10 +14,10 @@
   "url": "https://olpoints.netlify.app/"
 }
 </script>
-  <meta name="keywords" content="O/l points, Ol points, Olpoints, O/l points, Ol point, O/l point, O/l maths, O/L calculator, Ol, Ol study, Ol passpaper, Ol Calc, Ol Calculator, Ol study plan , O/L timetable maker, Senuz, Sri Lanka OL, exam target 2026, OL results analyzer">
+    <meta name="keywords" content="O/l points, Ol points, Olpoints, O/l points, Ol point, O/l point, O/l maths, O/L calculator, Ol, Ol study, Ol passpaper, Ol Calc, Ol Calculator, Ol study plan, O/L timetable maker, Senuz, Sri Lanka OL, exam target 2026, OL results analyzer, ol points 2026, o/l points 2026, smart study planner sri lanka, gce ol calculator, ol timetable generator, 9a target plan, ol points v2.6, senuz innovation, ol exam countdown 2026">
 
     <title>O/L Points 2026</title>
-    <link rel="icon" type="image/png" href="https://files.catbox.moe/w1fqny.png">
+    <link class="image/png" href="https://files.catbox.moe/w1fqny.png">
 
     <meta name="description" content="Sri Lanka's First O/L and Grade 6-9 Smart Engine and Timetable Maker. Calculate your pass probability and target 9A easily.It is 100% Free">
 
@@ -79,7 +79,7 @@
 
         .site-footer { padding: 40px 0; width: 100%; text-align: center; color: whitesmoke; font-size: 9px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
 
-        #capture-area { background: #000; width: 1000px; padding: 40px 60px; position: fixed; left: -9999px; }
+        #capture-area { background: #000; width: 1000px; padding: 40px 60px; position: fixed; top: -9999px; left: 0; }
         .img-copyright { margin-top: 40px; text-align: center; border-top: 1px solid whitesmoke; padding-top: 20px; color: white; font-size: 14px; letter-spacing: 8px; font-weight: 300; }
         
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -88,7 +88,7 @@
 <body>
 
     <div id="initial-loader">
-        <h2 style="letter-spacing: 4px; font-weight: 3pxf; font-size: 19px;">SENUZ INNOVATION </h2>
+        <h2 style="letter-spacing: 4px; font-weight: 300; font-size: 19px;">SENUZ INNOVATION </h2>
         <div class="progress-line"><div class="progress-line-fill" id="p-fill"></div></div>
     </div>
 
@@ -98,6 +98,7 @@
             <p style="font-size: 10px; color: #555; margin-bottom: 20px; letter-spacing: 1px;">SET UP YOUR IDENTITY</p>
             
             <input type="text" id="user-name-input" placeholder="What's your name?" style="text-align: center; border-color: #333;">
+            <p style="font-size: 9px; color: #666; margin-top: -8px; margin-bottom: 12px; text-align: center;">Enter your name to display the your feedback</p>
             <div id="display-id" style="font-size: 10px; color: var(--blue); margin-bottom: 15px; font-weight: 800; letter-spacing: 2px;">YOUR ID: #----</div>
 
             <div id="active-members" style="margin-bottom: 25px; padding: 10px; border: 1px solid #1a1a1a; border-radius: 15px; background: #000;">
@@ -108,7 +109,7 @@
             <button class="btn btn-white" style="margin-bottom:12px;" onclick="initApp(true)">G.C.E. O/L Mode</button>
             <button class="btn btn-dark" onclick="initApp(false)">Grade 6 - 9 Mode</button>
         </div>
-        <div style="margin-top: 20px; font-size: 9px; color: whitesmoke; letter-spacing: 2px;">©2026 O/L POINTS (V2.5) | BY SENUZ</div>
+        <div style="margin-top: 20px; font-size: 9px; color: whitesmoke; letter-spacing: 2px;">©2026 O/L POINTS (V2.6) | BY SENUZ</div>
     </div>
 
     <a href="https://wa.me/94782932976" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
@@ -128,6 +129,7 @@
         <div class="row">
             <h3>Now Your Grades</h3>
             <div id="grade-inputs"></div>
+            <p style="font-size: 10px; color: #666; margin-top: 5px; margin-bottom: 15px;">Select your current results for accurate to check pass probability and study plan design</p>
             <button class="btn btn-green" onclick="startLoading()">Analyze & Process</button>
             <button class="btn btn-back" onclick="location.reload()">Back</button>
         </div>
@@ -157,21 +159,25 @@
     <div class="container" id="step3">
         <div class="row">
             <h3>School Days Changing Place</h3>
-            <div style="display:flex; gap:8px; margin-bottom:20px;">
+            <div style="display:flex; gap:8px; margin-bottom:5px;">
                 <div class="scl-chip active" onclick="toggleScl(this, 'Monday')">MON</div>
                 <div class="scl-chip active" onclick="toggleScl(this, 'Tuesday')">TUE</div>
                 <div class="scl-chip active" onclick="toggleScl(this, 'Wednesday')">WED</div>
                 <div class="scl-chip active" onclick="toggleScl(this, 'Thursday')">THU</div>
                 <div class="scl-chip active" onclick="toggleScl(this, 'Friday')">FRI</div>
             </div>
-            <p style="font-size:10px; color:var(--blue); margin-bottom:10px; font-weight:800;">SLEEPING HOURS</p>
-            <div style="display:flex; gap:10px; margin-bottom:20px;">
+            <p style="font-size: 10px; color: #666; margin-bottom:20px;">Select the days you attend school. Unselected days will be treated as holidays.</p>
+            
+            <p style="font-size:10px; color:var(--blue); margin-bottom:5px; font-weight:800;">SLEEPING HOURS</p>
+            <div style="display:flex; gap:10px; margin-bottom:5px;">
                 <input type="time" id="sleep-start" value="00:00">
                 <input type="time" id="sleep-end" value="05:30">
             </div>
-            <p style="font-size:10px; color:var(--blue); margin-bottom:10px; font-weight:800;">ADD CLASSES</p>
+            <p style="font-size: 10px; color: #666; margin-bottom:20px;">Set your sleeping schedule so the engine clears study tasks during rest hours.</p>
+            
+            <p style="font-size:10px; color:var(--blue); margin-bottom:5px; font-weight:800;">ADD CLASSES</p>
             <input type="text" id="cn" placeholder="Private Class Name">
-            <div class="day-grid">
+            <div class="day-grid" style="margin-bottom: 5px;">
                 <div class="day-chip" onclick="setDay(this, 'Monday')">MON</div>
                 <div class="day-chip" onclick="setDay(this, 'Tuesday')">TUE</div>
                 <div class="day-chip" onclick="setDay(this, 'Wednesday')">WED</div>
@@ -181,6 +187,7 @@
                 <div class="day-chip" onclick="setDay(this, 'Sunday')">SUN</div>
             </div>
             <div style="display:flex; gap:10px;"><input type="time" id="ct1"><input type="time" id="ct2"></div>
+            <p style="font-size: 10px; color: #666; margin-bottom:12px;">Add tuition or extra classes to automatically adjust travel and study slots.</p>
             <button class="btn btn-dark" onclick="addClass()">Add Class</button>
             <div id="cls-list" style="margin-top:20px;"></div>
             <button class="btn btn-green" style="margin-top:25px;" onclick="generateFinalPlan()">Generate The Final Report ✔️</button>
@@ -203,7 +210,7 @@
             <button class="btn btn-white" onclick="submitMsg(null)">Post Message</button>
             <div id="fb-list" style="margin-top:25px;"></div>
         </div>
-        <div class="site-footer">©2026 O/L POINTS (V2.5)| BY SENUZ 🤍</div>
+        <div class="site-footer">©2026 O/L POINTS (V2.6)| BY SENUZ 🤍</div>
     </div>
 
     <div id="capture-area">
@@ -217,7 +224,7 @@
             <div style="background:#111; padding:20px; border-radius:25px; border:1px solid #1a1a1a;"><p style="font-size:9px; color:#444; letter-spacing:1px;">FAIL RISK</p><h2 id="cap-fail" style="color:var(--red); font-size:35px;">0%</h2></div>
         </div>
         <div id="final-timetable-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;"></div>
-        <div class="img-copyright"><b>O/L POINTS (V2.5) | BY SENUZ 🤍</b></div>
+        <div class="img-copyright"><b>O/L POINTS (V2.6) | BY SENUZ 🤍</b></div>
     </div>
 
     <script>
@@ -232,7 +239,6 @@
             appId: "1:556594040303:web:7a51bae08d2e85d00cba1a"
         };
 
-        // Firebase සක්‍රීය කිරීම
         firebase.initializeApp(firebaseConfig);
         const database = firebase.database();
 
@@ -250,7 +256,8 @@
             document.getElementById('display-id').innerText = `YOUR ID: #${userId}`;
             
             database.ref('discussions').on('value', (snapshot) => {
-                discussions = snapshot.val() || [];
+                const data = snapshot.val();
+                discussions = data ? (Array.isArray(data) ? data : Object.values(data)) : [];
                 renderDiscussions();
                 renderMembers();
             });
@@ -365,14 +372,24 @@
 
             pass = pass.toFixed(1);
             nine = nine.toFixed(2);
+            let passNum = parseFloat(pass);
 
             ['res-pass', 'cap-pass'].forEach(id => document.getElementById(id).innerText = pass + "%");
             ['res-nine', 'cap-nine'].forEach(id => document.getElementById(id).innerText = nine + "%");
-            ['res-fail', 'cap-fail'].forEach(id => document.getElementById(id).innerText = (100 - pass).toFixed(1) + "%");
+            ['res-fail', 'cap-fail'].forEach(id => document.getElementById(id).innerText = (100 - passNum).toFixed(1) + "%");
             showStep(2);
         }
 
-        function toggleScl(el, d) { el.classList.toggle('active'); schoolDays = schoolDays.includes(d) ? schoolDays.filter(i=>i!==d) : [...schoolDays, d]; }
+        function toggleScl(el, d) { 
+            if(schoolDays.includes(d)) {
+                schoolDays = schoolDays.filter(i => i !== d);
+                el.classList.remove('active');
+            } else {
+                schoolDays.push(d);
+                el.classList.add('active');
+            }
+        }
+        
         function setDay(el, d) { document.querySelectorAll('.day-chip').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); selectedDay = d; }
         function addClass() {
             const n = document.getElementById('cn').value, t1 = document.getElementById('ct1').value, t2 = document.getElementById('ct2').value;
@@ -394,13 +411,18 @@
             document.querySelectorAll('.grade-val').forEach(s => { if(parseInt(s.value) <= 2) weakSubs.push(s.dataset.sub); else normalSubs.push(s.dataset.sub); });
             document.querySelectorAll('.grade-val-b').forEach((s, idx) => { let name = document.querySelectorAll('.bucket-name')[idx].value; if(parseInt(s.value) <= 2) weakSubs.push(name); else normalSubs.push(name); });
             
-            const sStart = parseInt(document.getElementById('sleep-start').value.split(':')[0]);
-            const sEnd = parseInt(document.getElementById('sleep-end').value.split(':')[0]);
+            const sStartParts = document.getElementById('sleep-start').value.split(':');
+            const sEndParts = document.getElementById('sleep-end').value.split(':');
+            const sStartHour = parseInt(sStartParts[0] || 0);
+            const sStartMin = parseInt(sStartParts[1] || 0);
+            const sEndHour = parseInt(sEndParts[0] || 0);
+            const sEndMin = parseInt(sEndParts[1] || 0);
             const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
             
             days.forEach(day => {
                 let html = `<div style="background:#0a0a0a; border:1px solid #111; border-radius:25px; padding:25px;"><div style="font-size:15px; font-weight:900; color:var(--blue); border-bottom:1px solid #111; padding-bottom:10px; margin-bottom:15px;">${day.toUpperCase()}</div>`;
                 let occ = {}; 
+                let lastAssignedSub = ""; // ✅ FIX: පැයෙන් පැයට එකම විෂය පිට පිට වැටීම වැළැක්වීමට ට්‍රැකර් එකක් දැම්මා
                 
                 if(schoolDays.includes(day)) {
                     for(let i=7; i<=13; i++) occ[i] = { type: 'School', label: 'School Hours', start: '07:30 AM', end: '01:30 PM' };
@@ -411,13 +433,21 @@
                     let h1 = parseInt(c.t1.split(':')[0]);
                     let h2 = parseInt(c.t2.split(':')[0]);
                     for(let i=h1; i<=h2; i++) occ[i] = { type: 'Class', label: c.n, start: c.t1, end: c.t2 };
-                    if(!occ[h1-1]) occ[h1-1] = { type: 'Buffer' };
-                    if(!occ[h2+1]) occ[h2+1] = { type: 'Buffer' };
+                    if(!occ[h1-1]) occ[h1-1] = { type: 'Buffer' }; 
                 });
 
                 let lastEventLabel = "";
                 for(let hr = 0; hr < 24; hr++) {
-                    let isSleeping = (sStart > sEnd) ? (hr >= sStart || hr < sEnd) : (hr >= sStart && hr < sEnd);
+                    let slotStart = hr * 60;
+                    let slotEnd = (hr + 1) * 60;
+                    let sleepStart = sStartHour * 60 + sStartMin;
+                    let sleepEnd = sEndHour * 60 + sEndMin;
+                    let isSleeping = false;
+                    if (sleepStart < sleepEnd) {
+                        isSleeping = slotStart < sleepEnd && slotEnd > sleepStart;
+                    } else if (sleepStart > sleepEnd) {
+                        isSleeping = (slotStart < 1440 && slotEnd > sleepStart) || (slotStart < sleepEnd && slotEnd > 0);
+                    }
                     if(isSleeping) continue;
 
                     if(occ[hr]) {
@@ -428,8 +458,15 @@
                     } else {
                         lastEventLabel = "";
                         if(hr >= 4 && hr <= 23) {
-                            let pool = (weakSubs.length > 0 && Math.random() < 0.7) ? weakSubs : (normalSubs.length > 0 ? normalSubs : ["Study Session"]);
-                            let sub = pool[Math.floor(Math.random() * pool.length)];
+                            let pool = (weakSubs.length > 0 && Math.random() < 0.7) ? [...weakSubs] : (normalSubs.length > 0 ? [...normalSubs] : ["Study Session"]);
+                            
+                            // ✅ FIX: වෙනත් විෂයන් තේරීමට තිබේ නම් කලින් පැයේ තිබූ විෂය ඉවත් කර වෙනත් එකක් තෝරයි
+                            let availablePool = pool.filter(sub => sub !== lastAssignedSub);
+                            if (availablePool.length === 0) availablePool = pool; 
+                            
+                            let sub = availablePool[Math.floor(Math.random() * availablePool.length)];
+                            lastAssignedSub = sub; // ට්‍රැකර් එක අප්ඩේට් කිරීම
+                            
                             let color = weakSubs.includes(sub) ? 'var(--red)' : '#fff';
                             html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #111; font-size:12px;"><span style="color:${color}">${sub}</span><span>${formatTime(hr)}</span></div>`;
                         }
@@ -491,7 +528,17 @@
             return html;
         }
 
-        function downloadReport() { const area = document.getElementById('capture-area'); area.style.left = "0"; html2canvas(area, { scale: 2 }).then(canvas => { const link = document.createElement('a'); link.download = 'Study_Plan_Senuz.jpg'; link.href = canvas.toDataURL("image/jpeg", 0.95); link.click(); area.style.left = "-9999px"; }); }
+        function downloadReport() { 
+            const area = document.getElementById('capture-area'); 
+            area.style.top = "0"; 
+            html2canvas(area, { scale: 2 }).then(canvas => { 
+                const link = document.createElement('a'); 
+                link.download = 'Study_Plan_Senuz.jpg'; 
+                link.href = canvas.toDataURL("image/jpeg", 0.95); 
+                link.click(); 
+                area.style.top = "-9999px"; 
+            }); 
+        }
         function updateTimer() { const diff = new Date("Dec 8, 2026").getTime() - new Date().getTime(); document.getElementById("mon").innerText = Math.max(0, Math.floor(diff / 2629746000)); document.getElementById("days").innerText = Math.max(0, Math.floor((diff % 2629746000) / 86400000)); document.getElementById("hrs").innerText = Math.max(0, Math.floor((diff % 86400000) / 3600000)); document.getElementById("min").innerText = Math.max(0, Math.floor((diff % 3600000) / 60000)); document.getElementById("sec").innerText = Math.max(0, Math.floor((diff % 60000) / 1000)); setTimeout(updateTimer, 1000); }
     </script>
 </body>
