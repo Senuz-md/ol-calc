@@ -3,110 +3,936 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O/L Points - System Updating</title>
+    <meta name="google-site-verification" content="L9JZ_BZBFHEkVzMgw6LhnXJyh9Bfa0tORGAK1EbA0FY" />
+    <meta name="google-adsense-account" content="ca-pub-8409918152768591">
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "O/L Points 2026",
+      "alternateName": "Ol Points",
+      "url": "https://olpoints.netlify.app/"
+    }
+    </script>
+    
+    <meta name="keywords" content="O/l points, Ol points, Olpoints, O/l points, Ol point, O/l point, O/l maths, O/L calculator, Ol, Ol study, Ol passpaper, Ol Calc, Ol Calculator, Ol study plan, O/L timetable maker, Senuz, Sri Lanka OL, exam target 2026, OL results analyzer, ol points 2026, o/l points 2026, smart study planner sri lanka, gce ol calculator, ol timetable generator, 9a target plan, ol points v2.6, senuz innovation, ol exam countdown 2026">
+
+    <title>O/L Points 2026</title>
+    <link rel="icon" type="image/png" href="https://files.catbox.moe/w1fqny.png">
+    <meta name="description" content="Sri Lanka's First O/L and Grade 6-9 Smart Engine and Timetable Maker. Calculate your pass probability and target 9A easily. It is 100% Free">
+
+    <!-- External CSS & Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Firebase SDKs (Compat Version) -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
+    <!-- Popunder & Direct Network Scripts -->
+    <script src="https://pl31044121.profitableratecpmnetwork.com/43/ef/21/43ef216dc46c9d03449f0b5d695d2f35.js"></script>
+    <script src="https://pl31044120.profitableratecpmnetwork.com/ae/2d/69/ae2d69e34e0284df14570c9a4baf49aa.js"></script>
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', sans-serif;
+        :root { 
+            --bg: #09090b; 
+            --card: #121215; 
+            --border: #222228; 
+            --blue: #007AFF; 
+            --green: #00FF88; 
+            --red: #ff3b30; 
+            --text: #f4f4f5; 
+            --muted: #71717a;
         }
 
-        body {
-            background-color: #000;
-            color: #fff;
-            height: 100vh;
-            display: flex;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; min-height: 100vh; }
+
+        #initial-loader { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .progress-line { width: 180px; height: 1px; background: #222; position: relative; overflow: hidden; margin-top: 20px; }
+        .progress-line-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--blue); transition: width 3s ease; }
+
+        #gateway { display: none; text-align: center; padding: 20px; height: 100vh; width: 100%; flex-direction: column; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; z-index: 5000;}
+        .q-box { background: var(--card); border: 1px solid var(--border); padding: 40px 30px; border-radius: 28px; max-width: 420px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        
+        header { text-align: center; padding: 20px; border-bottom: 1px solid var(--border); background: rgba(9, 9, 11, 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; display: none; }
+        .container { width: 92%; max-width: 480px; margin: auto; padding-top: 20px; display: none; padding-bottom: 40px; }
+        .row { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 25px; margin-bottom: 20px; }
+        
+        h3 { font-size: 10px; font-weight: 800; color: var(--blue); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
+        input, select, textarea { background: #000; color: #fff; border: 1px solid var(--border); padding: 14px; border-radius: 12px; outline: none; width: 100%; margin-bottom: 12px; font-size: 13px; }
+        
+        .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s ease; font-size: 13px; letter-spacing: 0.5px; }
+        .btn-green { background: var(--green); color: #000; }
+        .btn-white { background: #fff; color: #000; }
+        .btn-dark { background: #1a1a1e; color: #fff; border: 1px solid #2e2e38; }
+        .btn-red { background: var(--red); color: #fff; }
+        .btn-orange { background: #ff9500; color: #000; }
+        .btn-back { background: transparent; color: var(--muted); font-size: 11px; margin-top: 15px; text-decoration: none; }
+
+        .day-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
+        .day-chip { background: #000; border: 1px solid var(--border); padding: 10px; border-radius: 10px; color: var(--muted); font-size: 10px; font-weight: 700; text-align: center; cursor: pointer; }
+        .day-chip.selected { background: var(--blue); color: #fff; border-color: var(--blue); }
+        .scl-chip { background: #000; border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-size: 10px; cursor: pointer; text-align: center; flex: 1; color: var(--muted); font-weight: 700; }
+        .scl-chip.active { border-color: var(--green); color: var(--green); background: rgba(0, 255, 136, 0.05); }
+
+        .wa-float { position: fixed; width: 55px; height: 55px; bottom: 25px; right: 25px; background: #25D366; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 2000; text-decoration: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+
+        .countdown { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
+        .cd-box { background: #000; padding: 8px 12px; border-radius: 12px; min-width: 55px; border: 1px solid var(--border); }
+        .cd-val { font-size: 16px; font-weight: 800; color: var(--blue); display: block; }
+        .cd-lab { font-size: 7px; color: var(--muted); letter-spacing: 1px; display: block; font-weight: 700; }
+
+        .fb-card { background: var(--card); border: 1px solid var(--border); padding: 18px; border-radius: 18px; margin-bottom: 12px; position: relative; }
+        .fb-card.pinned { border: 1px solid var(--green) !important; background: rgba(0, 255, 136, 0.02); }
+        .fb-user { font-size: 11px; font-weight: 800; margin-bottom: 2px; display: block; }
+        .fb-time { font-size: 8px; color: var(--muted); margin-bottom: 8px; display: block; font-weight: 600; }
+        .tag-admin { color: var(--green); }
+        .tag-user { color: var(--blue); }
+        .fb-msg { font-size: 13px; color: #d4d4d8; line-height: 1.5; }
+        .reply-box { margin-left: 15px; border-left: 1px solid var(--border); padding-left: 12px; margin-top: 12px; }
+        .action-link { font-size: 9px; font-weight: 800; color: var(--muted); cursor: pointer; margin-top: 8px; display: inline-block; text-transform: uppercase; margin-right: 12px; letter-spacing: 0.5px; }
+        .reply-in-area { display: none; margin-top: 12px; }
+
+        .admin-banner { background: rgba(0, 255, 136, 0.1); border: 1px solid var(--green); border-radius: 14px; padding: 12px; margin-bottom: 15px; text-align: center; font-size: 11px; font-weight: 700; color: var(--green); display: none; }
+
+        .site-footer { padding: 40px 0; width: 100%; text-align: center; color: var(--muted); font-size: 9px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
+
+        /* Capture Area Modern Minimal Styling */
+        #capture-area { background: #09090b; width: 1000px; padding: 40px; position: fixed; top: -9999px; left: 0; color: #fff; }
+        .img-copyright { margin-top: 30px; text-align: center; border-top: 1px solid var(--border); padding-top: 20px; color: var(--muted); font-size: 11px; letter-spacing: 3px; font-weight: 700; text-transform: uppercase; }
+
+        /* Clean Schedule Tags */
+        .slot-tag { font-size: 8px; font-weight: 800; padding: 3px 8px; border-radius: 5px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-right: 8px; }
+        .tag-priority { background: rgba(255, 59, 48, 0.12); color: #ff5247; border: 1px solid rgba(255, 59, 48, 0.25); }
+        .tag-normal { background: rgba(0, 122, 255, 0.12); color: #3395ff; border: 1px solid rgba(0, 122, 255, 0.25); }
+        .tag-rest { background: rgba(255, 204, 0, 0.12); color: #ffd11a; border: 1px solid rgba(255, 204, 0, 0.25); }
+        .tag-school { background: rgba(0, 255, 136, 0.12); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.25); }
+        .tag-class { background: rgba(175, 82, 222, 0.12); color: #c864ff; border: 1px solid rgba(175, 82, 222, 0.25); }
+
+        /* Modal Styles */
+        .modal { display: none; position: fixed; z-index: 100000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(8px); align-items: center; justify-content: center; }
+
+        /* MAINTENANCE OVERLAY UI SCREEN */
+        #maint-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #000000;
+            z-index: 99999;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
+            justify-content: center;
             padding: 20px;
-            overflow: hidden;
         }
 
-        .card {
-            background: #111;
-            border: 1px solid #1a1a1a;
+        .maint-card {
+            background: #121215;
+            border: 1px solid #222228;
+            border-radius: 28px;
             padding: 40px 30px;
-            border-radius: 30px;
-            max-width: 420px;
+            max-width: 380px;
             width: 100%;
+            text-align: center;
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
         }
 
-        .icon-box {
-            font-size: 45px;
+        .maint-icon {
+            font-size: 42px;
             color: #007AFF;
-            margin-bottom: 20px;
-            animation: pulse 2s infinite ease-in-out;
+            margin-bottom: 24px;
+            display: inline-block;
+            transform: rotate(-10deg);
         }
 
-        h1 {
+        .maint-title {
             font-size: 20px;
-            font-weight: 800;
+            font-weight: 900;
             letter-spacing: 2px;
-            margin-bottom: 10px;
-            color: #fff;
+            color: #ffffff;
+            margin-bottom: 14px;
+            text-transform: uppercase;
         }
 
-        p {
+        .maint-desc {
             font-size: 12px;
-            color: #777;
+            color: #8e8e93;
             line-height: 1.6;
-            margin-bottom: 25px;
+            margin-bottom: 28px;
+            padding: 0 10px;
         }
 
-        .status-badge {
+        .maint-pill {
+            background: rgba(0, 122, 255, 0.1);
+            border: 1px solid rgba(0, 122, 255, 0.3);
+            color: #007AFF;
+            padding: 12px 18px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 1px;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: rgba(0, 122, 255, 0.1);
-            color: #007AFF;
-            border: 1px solid rgba(0, 122, 255, 0.2);
+            text-transform: uppercase;
+        }
+
+        .maint-admin-btn {
+            margin-top: 18px;
+            background: transparent;
+            border: 1px solid #33333d;
+            color: #00ff88;
             padding: 8px 16px;
             border-radius: 20px;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 700;
-            letter-spacing: 1px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+        .maint-admin-btn:hover {
+            border-color: #00ff88;
+            background: rgba(0, 255, 136, 0.05);
         }
 
-        .footer {
-            margin-top: 30px;
-            font-size: 9px;
-            color: #444;
+        .maint-footer {
+            margin-top: 35px;
+            font-size: 10px;
+            color: #55555e;
             letter-spacing: 2px;
             font-weight: 800;
+            text-transform: uppercase;
         }
-
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.1); opacity: 0.7; }
-            100% { transform: scale(1); opacity: 1; }
-        }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="card">
-        <div class="icon-box">
-            <i class="fas fa-tools"></i>
+    <!-- MAINTENANCE MODE OVERLAY SCREEN -->
+    <div id="maint-overlay">
+        <div class="maint-card">
+            <div class="maint-icon">
+                <i class="fas fa-tools"></i>
+            </div>
+            <div class="maint-title">WEB IS UPDATING</div>
+            <div class="maint-desc">
+                We are currently upgrading our systems and removing ad configurations. Please check back shortly!
+            </div>
+            <div class="maint-pill">
+                <i class="fas fa-sync-alt fa-spin"></i> MAINTENANCE IN PROGRESS
+            </div>
+            <div>
+                <!-- Admin login direct button on Maintenance mode -->
+                <button class="maint-admin-btn" onclick="openAdminModal()"><i class="fas fa-key"></i> Admin Access</button>
+            </div>
         </div>
-        <h1>WEB IS UPDATING</h1>
-        <p>We are currently upgrading our systems and removing ad configurations. Please check back shortly!</p>
+        <div class="maint-footer">
+            ©2026 O/L POINTS | BY SENUZ
+        </div>
+    </div>
+
+    <div id="initial-loader">
+        <h2 style="letter-spacing: 4px; font-weight: 300; font-size: 18px;">SENUZ INNOVATION</h2>
+        <div class="progress-line"><div class="progress-line-fill" id="p-fill"></div></div>
+    </div>
+
+    <div id="gateway">
+        <div class="q-box">
+            <h2 style="margin-bottom:8px; font-weight: 800; font-size: 20px;">Identity Verification</h2>
+            <p style="font-size: 10px; color: var(--muted); margin-bottom: 20px; letter-spacing: 1px;">ENTER YOUR DETAILS TO CONTINUE</p>
+            
+            <input type="text" id="user-name-input" placeholder="Enter your name" style="text-align: center;">
+            <div id="display-id" style="font-size: 10px; color: var(--blue); margin-bottom: 15px; font-weight: 800; letter-spacing: 1.5px;">ID: #----</div>
+
+            <div id="active-members" style="margin-bottom: 20px; padding: 12px; border: 1px solid var(--border); border-radius: 14px; background: #000;">
+                <p style="font-size: 8px; color: var(--muted); margin-bottom: 6px; letter-spacing: 1.5px;">RECENT CONTRIBUTORS</p>
+                <div id="member-list" style="font-size: 10px; color: #a1a1aa; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; font-weight: 500;">Connecting...</div>
+            </div>
+
+            <button class="btn btn-white" style="margin-bottom:10px;" onclick="initApp(true)">G.C.E. O/L Mode</button>
+            <button class="btn btn-dark" style="margin-bottom:10px;" onclick="initApp(false)">Grade 6 - 9 Mode</button>
+            <button class="btn btn-dark" style="font-size: 10px; border-color: var(--green); color: var(--green);" onclick="openAdminModal()"><i class="fas fa-lock"></i> Admin Portal Login</button>
+        </div>
+        <div style="margin-top: 20px; font-size: 9px; color: var(--muted); letter-spacing: 2px; font-weight: 700;">©2026 O/L POINTS (V2.6) | BY SENUZ</div>
+    </div>
+
+    <!-- Admin Verification Modal -->
+    <div id="admin-modal" class="modal">
+        <div class="q-box">
+            <h2 style="margin-bottom:8px; font-weight: 800; font-size: 18px; color: var(--green);">Admin Verification</h2>
+            <p style="font-size: 10px; color: var(--muted); margin-bottom: 20px;">Enter secret password to access Admin Controls.</p>
+            <input type="password" id="admin-pass-input" placeholder="Admin PIN/Password" style="text-align: center;">
+            <button class="btn btn-green" onclick="verifyAdmin()">Login as Admin</button>
+            <button class="btn btn-back" onclick="closeAdminModal()">Cancel</button>
+        </div>
+    </div>
+
+    <a href="https://wa.me/94782932976" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+    <header id="main-header">
+        <div style="font-size: 11px; font-weight: 900; color: var(--blue); letter-spacing: 3px;">O/L POINTS SYSTEM</div>
+        <div class="countdown" id="timer">
+            <div class="cd-box"><span class="cd-val" id="mon">0</span><span class="cd-lab">MON</span></div>
+            <div class="cd-box"><span class="cd-val" id="days">0</span><span class="cd-lab">DAY</span></div>
+            <div class="cd-box"><span class="cd-val" id="hrs">0</span><span class="cd-lab">HRS</span></div>
+            <div class="cd-box"><span class="cd-val" id="min">0</span><span class="cd-lab">MIN</span></div>
+            <div class="cd-box"><span class="cd-val" id="sec">0</span><span class="cd-lab">SEC</span></div>
+        </div>
+    </header>
+
+    <div class="container" id="step1">
+        <div class="row">
+            <h3>Academic Performance</h3>
+            <div id="grade-inputs"></div>
+            <p style="font-size: 10px; color: var(--muted); margin-top: 5px; margin-bottom: 18px; line-height: 1.4;">Select your current results for accurate pass probability and study plan design.</p>
+            <button class="btn btn-green" onclick="startLoading()">Analyze & Process</button>
+            <button class="btn btn-back" onclick="location.reload()">Back</button>
+        </div>
+    </div>
+
+    <div class="container" id="loader-screen">
+        <div class="row" style="text-align:center; padding: 60px 20px;">
+            <div style="width: 40px; height: 40px; border: 2px solid var(--border); border-top-color: var(--green); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 20px;"></div>
+            <h2 id="l-pct" style="font-size:32px; font-weight: 800;">0%</h2>
+            <p style="font-size:9px; color:var(--muted); letter-spacing:2px; font-weight:700; margin-top:5px;">ANALYZING DATA</p>
+        </div>
+    </div>
+
+    <div class="container" id="step2">
+        <div class="row" style="text-align:center;">
+            <p style="font-size:9px; color:var(--muted); letter-spacing:2px; font-weight: 800;">SUCCESS PROBABILITY</p>
+            <h1 id="res-pass" style="font-size: 4.5rem; font-weight: 900; color: var(--green); margin: 5px 0 15px 0;">0%</h1>
+            <div style="display:flex; justify-content: space-around; margin-top:20px; border-top: 1px solid var(--border); padding-top: 20px;">
+                <div><p style="font-size:9px; color:var(--muted); font-weight: 700;">9A POTENTIAL</p><h2 id="res-nine" style="color:var(--blue); font-size:22px; margin-top:4px;">0%</h2></div>
+                <div><p style="font-size:9px; color:var(--muted); font-weight: 700;">FAIL RISK</p><h2 id="res-fail" style="color:var(--red); font-size:22px; margin-top:4px;">0%</h2></div>
+            </div>
+            <button class="btn btn-green" style="margin-top:30px;" onclick="showStep(3)">BUILD STUDY PLAN</button>
+            <button class="btn btn-back" onclick="showStep(1)">Back to Edit Grades</button>
+        </div>
+    </div>
+
+    <div class="container" id="step3">
+        <div class="row">
+            <h3>School Days Config</h3>
+            <div style="display:flex; gap:6px; margin-bottom:5px;">
+                <div class="scl-chip active" onclick="toggleScl(this, 'Monday')">MON</div>
+                <div class="scl-chip active" onclick="toggleScl(this, 'Tuesday')">TUE</div>
+                <div class="scl-chip active" onclick="toggleScl(this, 'Wednesday')">WED</div>
+                <div class="scl-chip active" onclick="toggleScl(this, 'Thursday')">THU</div>
+                <div class="scl-chip active" onclick="toggleScl(this, 'Friday')">FRI</div>
+            </div>
+            <p style="font-size: 10px; color: var(--muted); margin-bottom:20px;">Unselected days will be treated as holiday hours.</p>
+            
+            <p style="font-size:10px; color:var(--blue); margin-bottom:6px; font-weight:800; letter-spacing:1px;">SLEEP SCHEDULE</p>
+            <div style="display:flex; gap:10px; margin-bottom:5px;">
+                <input type="time" id="sleep-start" value="00:00">
+                <input type="time" id="sleep-end" value="05:30">
+            </div>
+            <p style="font-size: 10px; color: var(--muted); margin-bottom:20px;">Rest hours are cleared automatically from the timetable.</p>
+            
+            <p style="font-size:10px; color:var(--blue); margin-bottom:6px; font-weight:800; letter-spacing:1px;">EXTRA CLASSES</p>
+            <input type="text" id="cn" placeholder="Class Name (e.g. Maths Revision)">
+            <div class="day-grid" style="margin-bottom: 5px;">
+                <div class="day-chip" onclick="setDay(this, 'Monday')">MON</div>
+                <div class="day-chip" onclick="setDay(this, 'Tuesday')">TUE</div>
+                <div class="day-chip" onclick="setDay(this, 'Wednesday')">WED</div>
+                <div class="day-chip" onclick="setDay(this, 'Thursday')">THU</div>
+                <div class="day-chip" onclick="setDay(this, 'Friday')">FRI</div>
+                <div class="day-chip" onclick="setDay(this, 'Saturday')">SAT</div>
+                <div class="day-chip" onclick="setDay(this, 'Sunday')">SUN</div>
+            </div>
+            <div style="display:flex; gap:10px;"><input type="time" id="ct1"><input type="time" id="ct2"></div>
+            <button class="btn btn-dark" style="margin-top:5px;" onclick="addClass()">Add Class</button>
+            <div id="cls-list" style="margin-top:15px;"></div>
+            <button class="btn btn-green" style="margin-top:20px;" onclick="generateFinalPlan()">Generate Schedule</button>
+            <button class="btn btn-back" onclick="showStep(2)">Back to Results</button>
+        </div>
+    </div>
+
+    <div class="container" id="step4">
+        <div class="row" style="text-align:center;">
+            <h2 style="color:var(--green); font-weight:800; font-size:18px; margin-bottom:15px; letter-spacing: 1px;">SCHEDULE GENERATED</h2>
+            <button class="btn btn-green" onclick="downloadReport()">Download JPG Plan</button>
+            <button class="btn btn-back" onclick="showStep(3)">Back to Settings</button>
+        </div>
+    </div>
+
+    <div class="container" id="feedback-area" style="display: none;">
+        <!-- Admin Info Banner with Maintenance Toggle Control -->
+        <div class="admin-banner" id="admin-banner">
+            <i class="fas fa-user-shield"></i> LOGGED IN AS ADMIN (SENUZ-DEV)
+            <div style="margin-top: 8px; display: flex; gap: 8px; justify-content: center;">
+                <button id="maint-toggle-btn" onclick="toggleMaintenanceMode()" class="btn btn-orange" style="padding: 6px 12px; font-size: 10px; width: auto; text-transform: uppercase;">
+                    <i class="fas fa-power-off"></i> Toggle Maintenance
+                </button>
+                <button onclick="logoutAdmin()" style="background:transparent; border:none; color:var(--red); font-weight:bold; cursor:pointer; font-size: 11px;">[Logout Admin]</button>
+            </div>
+        </div>
+
+        <div class="row">
+            <h3>Community Portal</h3>
+            <textarea id="fb-input" placeholder="Type your comment..." style="height: 80px;"></textarea>
+            <button class="btn btn-white" onclick="submitMsg(null)">Post Message</button>
+            <div id="fb-list" style="margin-top:20px;"></div>
+        </div>
+        <div class="site-footer">©2026 O/L POINTS | SYSTEM BY SENUZ</div>
+    </div>
+
+    <div id="capture-area">
+        <div style="text-align:center; margin-bottom:25px;">
+            <h1 style="color:#fff; font-size:26px; font-weight:900; letter-spacing:2px; text-transform:uppercase;">ACADEMIC TIMETABLE</h1>
+            <p id="cap-header" style="color:var(--muted); letter-spacing:2px; font-size: 10px; margin-top: 5px; font-weight:700;"></p>
+        </div>
+        <div class="stats-grid" id="cap-stats" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; text-align: center;">
+            <div style="background:#121215; padding:18px; border-radius:18px; border:1px solid #222228;"><p style="font-size:9px; color:var(--muted); letter-spacing:1px; font-weight:700;">PROBABILITY</p><h2 id="cap-pass" style="color:var(--green); font-size:28px; margin-top:4px;">0%</h2></div>
+            <div style="background:#121215; padding:18px; border-radius:18px; border:1px solid #222228;"><p style="font-size:9px; color:var(--muted); letter-spacing:1px; font-weight:700;">9A POTENTIAL</p><h2 id="cap-nine" style="color:var(--blue); font-size:28px; margin-top:4px;">0%</h2></div>
+            <div style="background:#121215; padding:18px; border-radius:18px; border:1px solid #222228;"><p style="font-size:9px; color:var(--muted); letter-spacing:1px; font-weight:700;">FAIL RISK</p><h2 id="cap-fail" style="color:var(--red); font-size:28px; margin-top:4px;">0%</h2></div>
+        </div>
+        <div id="final-timetable-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;"></div>
+        <div class="img-copyright">O/L POINTS SYSTEM | DEVELOPED BY SENUZ</div>
+    </div>
+
+    <script>
+        // FIREBASE CONFIGURATIONS
+        const firebaseConfig = {
+            apiKey: "AIzaSyBI9bjoLB0ahvcIu0NMhWDPXo_bnfn-lH0",
+            authDomain: "senuz-chats-ol.firebaseapp.com",
+            databaseURL: "https://senuz-chats-ol-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "senuz-chats-ol",
+            storageBucket: "senuz-chats-ol.firebasestorage.app",
+            messagingSenderId: "556594040303",
+            appId: "1:556594040303:web:7a51bae08d2e85d00cba1a"
+        };
+
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const database = firebase.database();
+
+        let isOL = true; let classes = []; let selectedDay = "";
+        let isMaintenance = false;
+        let schoolDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+        const forbidden = ["හුත්ත", "පොන්න", "කැරියා", "හුකන", "hukana", "hucn", "cry", "cariya", "kariya", "kryya", "kriya", "pkdya", "කැරිම", "ponna", "හුත්", "Crym", "Tahike", "ponnayo", "Hukapan", "Hakanna", "Hutto", "Utto", "Wesige putha", "Huththige putha", "Huththige pakaya","Wesa balla"];
+        const adminForbiddenNames = ["senuz", "admin", "seneth", "seneth sandeepa", "seneth_sandeepa","ස්ෙනූස්", "Hukanna", "seneth-sandeepa", "o/l calculator admin", "developer","Olpoints","Ol points","Ol points owner","O/l points", "O/lpoints", "Ol points admin", "Ponnaya","pakaya","Huththa","Wesige putha","Huththige putha","ᴘᴏᴡᴇʀᴅ ʙʏ┋© ꜱᴇɴUZ ⑉〆","Pinnaya", "Gotukola ponnaya","Kari ponnaya","Crya", "පොන්නයා", "පකයා", "හුත්තා", "හුකන්නා"];
+
+        // ADMIN PASSCODE
+        const ADMIN_PIN = "Senuz-ofc-admin-dev-powered"; 
+
+        let discussions = []; 
+        let userId = localStorage.getItem('senuz_id') || Math.floor(1000 + Math.random() * 9000);
+        localStorage.setItem('senuz_id', userId);
         
-        <div class="status-badge">
-            <i class="fas fa-sync-alt fa-spin"></i>
-            <span>MAINTENANCE IN PROGRESS</span>
-        </div>
-    </div>
+        let currentUser = localStorage.getItem('senuz_current_user') || "";
+        let userRole = localStorage.getItem('senuz_role') || "User"; 
 
-    <div class="footer">
-        ©2026 O/L POINTS | BY SENUZ
-    </div>
+        window.onload = () => {
+            document.getElementById('display-id').innerText = `ID: #${userId}`;
+            
+            // Realtime Firebase Listener for Maintenance Status
+            database.ref('system_status/maintenance').on('value', (snapshot) => {
+                isMaintenance = snapshot.val() || false;
+                applyMaintenanceState();
+            });
 
+            // Realtime Firebase Listener for Discussions
+            database.ref('discussions').on('value', (snapshot) => {
+                const data = snapshot.val();
+                if (data) {
+                    discussions = Array.isArray(data) ? data : Object.values(data);
+                } else {
+                    discussions = [];
+                }
+                renderDiscussions();
+                renderMembers();
+            }, (error) => {
+                console.error("Firebase Read Error: ", error);
+            });
+
+            setTimeout(() => { document.getElementById('p-fill').style.width = '100%'; }, 100);
+            setTimeout(() => {
+                document.getElementById('initial-loader').style.display = 'none';
+                applyMaintenanceState();
+            }, 3000);
+            updateTimer();
+        };
+
+        function applyMaintenanceState() {
+            const maintOverlay = document.getElementById('maint-overlay');
+            const gateway = document.getElementById('gateway');
+            const maintBtn = document.getElementById('maint-toggle-btn');
+            
+            if(maintBtn) {
+                maintBtn.innerHTML = isMaintenance 
+                    ? `<i class="fas fa-power-off"></i> Turn OFF Maintenance` 
+                    : `<i class="fas fa-power-off"></i> Turn ON Maintenance`;
+                maintBtn.style.background = isMaintenance ? "var(--green)" : "#ff9500";
+            }
+
+            // If Maintenance ON and NOT Admin
+            if(isMaintenance && userRole !== "Admin") {
+                maintOverlay.style.display = 'flex';
+                gateway.style.display = 'none';
+            } else {
+                maintOverlay.style.display = 'none';
+                if(!currentUser && document.getElementById('step1').style.display !== 'block') {
+                    gateway.style.display = 'flex';
+                }
+            }
+        }
+
+        function toggleMaintenanceMode() {
+            if(userRole !== "Admin") {
+                alert("Permission Denied! Only Admin can change Maintenance status.");
+                return;
+            }
+            const nextState = !isMaintenance;
+            database.ref('system_status/maintenance').set(nextState).then(() => {
+                alert("Maintenance mode is now " + (nextState ? "ENABLED" : "DISABLED"));
+            }).catch(err => {
+                alert("Error updating status: " + err.message);
+            });
+        }
+
+        function openAdminModal() { document.getElementById('admin-modal').style.display = 'flex'; }
+        function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; }
+
+        function verifyAdmin() {
+            const pass = document.getElementById('admin-pass-input').value;
+            if(pass === ADMIN_PIN) {
+                userRole = "Admin";
+                currentUser = "SENUZ-DEV";
+                localStorage.setItem('senuz_role', 'Admin');
+                localStorage.setItem('senuz_current_user', currentUser);
+                closeAdminModal();
+                alert("Admin Access Granted!");
+                applyMaintenanceState();
+                initApp(true);
+            } else {
+                alert("Incorrect Admin Password!");
+            }
+        }
+
+        function logoutAdmin() {
+            localStorage.removeItem('senuz_role');
+            localStorage.removeItem('senuz_current_user');
+            location.reload();
+        }
+
+        function renderMembers() {
+            const list = document.getElementById('member-list');
+            const users = [...new Set(discussions.map(d => d.user ? d.user.split(' (')[0] : ''))].filter(Boolean);
+            list.innerHTML = users.length > 0 ? users.map(u => `<span>${u}</span>`).join(' • ') : "<span>No active users yet</span>";
+        }
+
+        function initApp(olMode) {
+            if(userRole !== "Admin") {
+                let inputVal = document.getElementById('user-name-input').value.trim();
+                if(!inputVal) { alert("Please enter your name."); return; }
+                if(inputVal.length < 4) { alert("Name must be 4+ characters."); return; }
+                
+                if(adminForbiddenNames.includes(inputVal.toLowerCase())){ alert("Reserved name! You cannot use it."); return; }
+                const regex = /^[a-zA-Z\s]+$/;
+                if(!regex.test(inputVal)) { alert("English letters only."); return; }
+                
+                currentUser = inputVal + " (" + userId + ")";
+                userRole = "User";
+                localStorage.setItem('senuz_current_user', currentUser);
+                localStorage.setItem('senuz_role', 'User');
+            }
+
+            isOL = olMode;
+            document.getElementById('gateway').style.display = 'none';
+            document.getElementById('main-header').style.display = 'block';
+            document.getElementById('step1').style.display = 'block';
+            document.getElementById('feedback-area').style.display = 'block';
+
+            if(userRole === "Admin") {
+                document.getElementById('admin-banner').style.display = 'block';
+            }
+
+            renderGrades();
+        }
+
+        function timeAgo(time) {
+            if (!time) return "Just now";
+            const diff = Math.floor((Date.now() - time) / 1000);
+            if (diff < 60) return "Just now";
+            const mins = Math.floor(diff / 60);
+            if (mins < 60) return mins + "m ago";
+            const hrs = Math.floor(mins / 60);
+            if (hrs < 24) return hrs + "h ago";
+            const days = Math.floor(hrs / 24);
+            if (days < 7) return days + "d ago";
+            return new Date(time).toLocaleDateString();
+        }
+
+        function renderGrades() {
+            const container = document.getElementById('grade-inputs');
+            container.innerHTML = "";
+            const cat1 = ["Geography", "Business Studies", "Civic Education", "Entrepreneurship", "2nd Language (Tamil)", "Pali", "Sanskrit", "French", "German", "Hindi", "Japanese", "Arabic", "Korean", "Chinese", "Russian"];
+            const cat2 = ["Music (Oriental)", "Music (Western)", "Art", "Dancing (Oriental)", "English Literature", "Sinhala Literature", "Tamil Literature", "Drama"];
+            const cat3 = ["ICT", "Agriculture", "Home Economics", "Health & PE", "Communication", "Design Tech"];
+            if(isOL) {
+                ["Religion", "Language", "English", "Mathematics", "Science", "History"].forEach(s => container.innerHTML += gradeRow(s, "grade-val"));
+                container.innerHTML += `<h3 style="margin:20px 0 10px;">Bucket Categories</h3>`;
+                [cat1, cat2, cat3].forEach((cat, i) => container.innerHTML += bucketRow(`Cat ${i+1}`, cat));
+            } else {
+                ["Sinhala", "English", "Maths", "Science", "History", "Geography", "Civic", "Religion", "Tamil", "Health", "P.T.S."].forEach(s => container.innerHTML += gradeRow(s, "grade-val"));
+                container.innerHTML += bucketRow("Aesthetic", ["Art", "Music", "Dancing"]);
+            }
+        }
+
+        function gradeRow(label, cls) {
+            return `<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;"><span style="font-size:12px; font-weight:600; color:#e4e4e7;">${label}</span><select class="${cls}" data-sub="${label}" style="width:80px; margin:0; padding:10px;"><option value="4">A</option><option value="3">B</option><option value="2">C</option><option value="1">S</option><option value="0">W</option></select></div>`;
+        }
+
+        function bucketRow(label, opts) {
+            let optHtml = opts.map(o => `<option>${o}</option>`).join('');
+            return `<div style="display:flex; gap:8px; margin-bottom:10px;"><select class="bucket-name" style="flex:1; margin:0; padding:10px;">${optHtml}</select><select class="grade-val-b" style="width:80px; margin:0; padding:10px;"><option value="4">A</option><option value="3">B</option><option value="2">C</option><option value="1">S</option><option value="0">W</option></select></div>`;
+        }
+
+        function showStep(n) {
+            document.querySelectorAll('.container').forEach(c => { if(c.id !== 'feedback-area') c.style.display = 'none'; });
+            document.getElementById('step' + n).style.display = 'block';
+        }
+
+        function startLoading() {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('loader-screen').style.display = 'block';
+            let p = 0;
+            let iv = setInterval(() => {
+                p += 1; document.getElementById('l-pct').innerText = p + "%";
+                if(p >= 100) { clearInterval(iv); document.getElementById('loader-screen').style.display = 'none'; if(isOL) { calculateResults(); } else { showStep(3); } }
+            }, 30); 
+        }
+
+        function calculateResults() {
+            let total = 0; 
+            let wCount = 0;
+            const weight = { "4": 92, "3": 78, "2": 62, "1": 48, "0": 28 };
+            
+            const inputs = document.querySelectorAll('.grade-val, .grade-val-b');
+            inputs.forEach(s => {
+                total += weight[s.value];
+                if(s.value === "0") wCount++;
+            });
+
+            let count = inputs.length;
+            let avg = total / count;
+            
+            let pass = Math.min(avg * 1.05, 99.9);
+            let nine = avg > 70 ? (Math.pow(avg/100, 1.2)*100) : (Math.pow(avg/100, 2.8)*100);
+
+            if(wCount >= 8) { pass *= 0.1; nine = 0.01; }
+            else if(wCount >= 5) { pass *= 0.4; nine = Math.max(0.12, nine * 0.1); }
+            else if(wCount >= 3) { pass *= 0.7; nine = Math.max(0.45, nine * 0.5); }
+
+            pass = pass.toFixed(1);
+            nine = nine.toFixed(2);
+            let passNum = parseFloat(pass);
+
+            ['res-pass', 'cap-pass'].forEach(id => document.getElementById(id).innerText = pass + "%");
+            ['res-nine', 'cap-nine'].forEach(id => document.getElementById(id).innerText = nine + "%");
+            ['res-fail', 'cap-fail'].forEach(id => document.getElementById(id).innerText = (100 - passNum).toFixed(1) + "%");
+            showStep(2);
+        }
+
+        function toggleScl(el, d) { 
+            if(schoolDays.includes(d)) {
+                schoolDays = schoolDays.filter(i => i !== d);
+                el.classList.remove('active');
+            } else {
+                schoolDays.push(d);
+                el.classList.add('active');
+            }
+        }
+        
+        function setDay(el, d) { document.querySelectorAll('.day-chip').forEach(c=>c.classList.remove('selected')); el.classList.add('selected'); selectedDay = d; }
+        function addClass() {
+            const n = document.getElementById('cn').value, t1 = document.getElementById('ct1').value, t2 = document.getElementById('ct2').value;
+            if(n && selectedDay && t1 && t2) { classes.push({id: Date.now(), n, d: selectedDay, t1, t2}); renderClasses(); document.getElementById('cn').value = ""; }
+        }
+        function renderClasses() {
+            const list = document.getElementById('cls-list'); list.innerHTML = "";
+            classes.forEach(c => { list.innerHTML += `<div style="background:#000; padding:10px 14px; border:1px solid var(--border); border-radius:10px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; font-size:11px;"><span><b>${c.n}</b> (${c.d})</span><i class="fas fa-times" style="color:var(--red); cursor:pointer;" onclick="classes=classes.filter(i=>i.id!=${c.id});renderClasses()"></i></div>`; });
+        }
+
+        function formatTime(hr) { let h = hr > 12 ? hr-12 : hr === 0 ? 12 : hr; let ampm = hr >= 12 ? 'PM' : 'AM'; return `${h}:00 ${ampm}`; }
+
+        function generateFinalPlan() {
+            const grid = document.getElementById('final-timetable-grid'); grid.innerHTML = "";
+            document.getElementById('cap-stats').style.display = isOL ? 'grid' : 'none';
+            document.getElementById('cap-header').innerText = isOL ? "G.C.E. O/L ACADEMIC TARGET SCHEDULE" : "GRADE 6-9 PRIORITY TIMETABLE";
+            
+            let weakSubs = []; let normalSubs = [];
+            document.querySelectorAll('.grade-val').forEach(s => { if(parseInt(s.value) <= 2) weakSubs.push(s.dataset.sub); else normalSubs.push(s.dataset.sub); });
+            document.querySelectorAll('.grade-val-b').forEach((s, idx) => { let name = document.querySelectorAll('.bucket-name')[idx].value; if(parseInt(s.value) <= 2) weakSubs.push(name); else normalSubs.push(name); });
+            
+            const sStartParts = document.getElementById('sleep-start').value.split(':');
+            const sEndParts = document.getElementById('sleep-end').value.split(':');
+            const sStartHour = parseInt(sStartParts[0] || 0);
+            const sStartMin = parseInt(sStartParts[1] || 0);
+            const sEndHour = parseInt(sEndParts[0] || 0);
+            const sEndMin = parseInt(sEndParts[1] || 0);
+            const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+            
+            let weakIdx = 0;
+            let normalIdx = 0;
+
+            days.forEach(day => {
+                let html = `<div style="background:#121215; border:1px solid var(--border); border-radius:20px; padding:20px;">
+                    <div style="font-size:13px; font-weight:800; color:var(--blue); border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:12px; letter-spacing:1px; text-transform:uppercase;">${day}</div>`;
+                let occ = {}; 
+                
+                if(schoolDays.includes(day)) {
+                    for(let i=7; i<=13; i++) occ[i] = { type: 'School', label: 'School Session', start: '07:30 AM', end: '01:30 PM' };
+                    occ[6] = { type: 'Buffer' }; 
+                    occ[14] = { type: 'Rest', label: 'Lunch & Break' };
+                }
+
+                classes.filter(c => c.d === day).forEach(c => {
+                    let h1 = parseInt(c.t1.split(':')[0]);
+                    let h2 = parseInt(c.t2.split(':')[0]);
+                    for(let i=h1; i<=h2; i++) occ[i] = { type: 'Class', label: c.n, start: c.t1, end: c.t2 };
+                    if(!occ[h1-1]) occ[h1-1] = { type: 'Buffer' };
+                });
+
+                if(!occ[20]) occ[20] = { type: 'Rest', label: 'Dinner & Break' };
+
+                let lastAssignedSub = "";
+                let lastEventLabel = "";
+                let studySessionCount = 0;
+
+                for(let hr = 0; hr < 24; hr++) {
+                    let slotStart = hr * 60;
+                    let slotEnd = (hr + 1) * 60;
+                    let sleepStart = sStartHour * 60 + sStartMin;
+                    let sleepEnd = sEndHour * 60 + sEndMin;
+                    let isSleeping = false;
+                    if (sleepStart < sleepEnd) {
+                        isSleeping = slotStart < sleepEnd && slotEnd > sleepStart;
+                    } else if (sleepStart > sleepEnd) {
+                        isSleeping = (slotStart < 1440 && slotEnd > sleepStart) || (slotStart < sleepEnd && slotEnd > 0);
+                    }
+                    if(isSleeping) {
+                        studySessionCount = 0;
+                        continue;
+                    }
+
+                    if(occ[hr]) {
+                        studySessionCount = 0;
+                        if(occ[hr].type === 'Rest') {
+                            html += `<div style="display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.03); font-size:11px;">
+                                <span><span class="slot-tag tag-rest">REST</span><span style="color:#ffd11a;">${occ[hr].label}</span></span>
+                                <span style="color:var(--muted); font-size:10px;">${formatTime(hr)}</span>
+                            </div>`;
+                        } else if(occ[hr].type === 'School' && occ[hr].label !== lastEventLabel) {
+                            html += `<div style="display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.03); font-size:11px;">
+                                <span><span class="slot-tag tag-school">SCHOOL</span><span>${occ[hr].label}</span></span>
+                                <span style="color:var(--muted); font-size:10px;">${occ[hr].start} - ${occ[hr].end}</span>
+                            </div>`;
+                            lastEventLabel = occ[hr].label;
+                        } else if(occ[hr].type === 'Class' && occ[hr].label !== lastEventLabel) {
+                            html += `<div style="display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.03); font-size:11px;">
+                                <span><span class="slot-tag tag-class">TUITION</span><span>${occ[hr].label}</span></span>
+                                <span style="color:var(--muted); font-size:10px;">${occ[hr].start} - ${occ[hr].end}</span>
+                            </div>`;
+                            lastEventLabel = occ[hr].label;
+                        }
+                    } else {
+                        lastEventLabel = "";
+                        if(hr >= 4 && hr <= 23) {
+                            if (studySessionCount >= 2) {
+                                html += `<div style="display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.03); font-size:11px;">
+                                    <span><span class="slot-tag tag-rest">BREAK</span><span style="color:#ffd11a;">Hydration & Short Break (15m)</span></span>
+                                    <span style="color:var(--muted); font-size:10px;">${formatTime(hr)}</span>
+                                </div>`;
+                                studySessionCount = 0;
+                                continue;
+                            }
+
+                            let sub = "";
+                            let isWeak = false;
+                            const isPeakFocus = (hr >= 4 && hr < 7) || (hr >= 16 && hr < 19);
+
+                            if (isPeakFocus && weakSubs.length > 0) {
+                                sub = weakSubs[weakIdx % weakSubs.length];
+                                weakIdx++;
+                                isWeak = true;
+                            } else if (normalSubs.length > 0) {
+                                sub = normalSubs[normalIdx % normalSubs.length];
+                                normalIdx++;
+                            } else if (weakSubs.length > 0) {
+                                sub = weakSubs[weakIdx % weakSubs.length];
+                                weakIdx++;
+                                isWeak = true;
+                            } else {
+                                sub = "General Revision";
+                            }
+
+                            if (sub === lastAssignedSub && (weakSubs.length + normalSubs.length) > 1) {
+                                if (isWeak && normalSubs.length > 0) {
+                                    sub = normalSubs[normalIdx % normalSubs.length];
+                                    normalIdx++;
+                                    isWeak = false;
+                                } else if (!isWeak && weakSubs.length > 0) {
+                                    sub = weakSubs[weakIdx % weakSubs.length];
+                                    weakIdx++;
+                                    isWeak = true;
+                                }
+                            }
+
+                            lastAssignedSub = sub;
+                            studySessionCount++;
+                            let tagClass = isWeak ? 'tag-priority' : 'tag-normal';
+                            let tagText = isWeak ? 'HIGH PRIORITY' : 'REVISION';
+                            
+                            html += `<div style="display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.03); font-size:11px;">
+                                <span><span class="slot-tag ${tagClass}">${tagText}</span><span>${sub}</span></span>
+                                <span style="color:var(--muted); font-size:10px;">${formatTime(hr)}</span>
+                            </div>`;
+                        }
+                    }
+                }
+                grid.innerHTML += html + "</div>";
+            });
+            showStep(4);
+        }
+
+        function isClean(text) { let low = text.toLowerCase(); return !forbidden.some(word => low.includes(word)); }
+        
+        function submitMsg(parentId) {
+            const input = parentId ? document.getElementById(`ri-${parentId}`) : document.getElementById('fb-input');
+            let msg = input.value.trim(); if(!msg) return;
+            if(!isClean(msg)) { alert("Inappropriate language detected."); return; }
+            
+            let role = userRole; 
+            let user = currentUser;
+
+            const post = { id: Date.now(), time: Date.now(), user, role, msg, replies: [], isPinned: false };
+            
+            if(!parentId) {
+                discussions.unshift(post);
+            } else {
+                recursivePush(discussions, parentId, post);
+            }
+            saveAndRender(); 
+            input.value = "";
+        }
+        
+        function recursivePush(arr, id, obj) { for(let i of arr) { if(i.id === id) { i.replies = i.replies || []; i.replies.push(obj); return true; } if(i.replies && i.replies.length > 0) if(recursivePush(i.replies, id, obj)) return true; } }
+        
+        function deleteMsg(id, owner) { 
+            const isAdmin = (userRole === "Admin");
+            const isOwner = (currentUser === owner);
+
+            if(isAdmin || isOwner) { 
+                discussions = recursiveDelete(discussions, id); 
+                saveAndRender(); 
+            } else { 
+                alert("Permission denied! Only the author or Admin can delete this message."); 
+            } 
+        }
+
+        function recursiveDelete(arr, id) { return arr.filter(i => i.id !== id).map(i => ({...i, replies: recursiveDelete(i.replies || [], id)})); }
+        
+        function togglePin(id) { 
+            if(userRole === "Admin") { 
+                recursiveAction(discussions, id, 'pin'); 
+                saveAndRender(); 
+            } else {
+                alert("Permission Denied! Only Admin can pin/unpin messages.");
+            }
+        }
+
+        function saveEdit(id, owner) { 
+            const isAdmin = (userRole === "Admin");
+            const isOwner = (currentUser === owner);
+
+            if(!isAdmin && !isOwner) {
+                alert("Permission denied! Only the author or Admin can edit this message.");
+                return;
+            }
+            const val = document.getElementById(`ei-${id}`).value; 
+            if(!isClean(val)) return; 
+            recursiveAction(discussions, id, 'edit', val); 
+            saveAndRender(); 
+        }
+
+        function recursiveAction(arr, id, action, payload) { for(let i of arr) { if(i.id === id) { if(action === 'pin') i.isPinned = !i.isPinned; if(action === 'edit') i.msg = payload; return true; } if(i.replies && i.replies.length > 0) if(recursiveAction(i.replies, id, action, payload)) return true; } }
+        
+        function saveAndRender() { 
+            database.ref('discussions').set(discussions).catch(err => console.error("Firebase Write Error:", err)); 
+        }
+
+        function renderDiscussions() { document.getElementById('fb-list').innerHTML = buildTree(discussions); }
+        
+        function buildTree(arr) {
+            let html = ""; 
+            if(!arr) return html;
+            let sorted = [...arr].sort((a,b) => (b.isPinned?1:0) - (a.isPinned?1:0));
+            sorted.forEach(i => {
+                const isAdmin = (userRole === "Admin");
+                const isOwner = (i.user === currentUser);
+                const canModify = isAdmin || isOwner;
+
+                html += `<div class="fb-card ${i.isPinned?'pinned':''}">
+                    <div style="display:flex; justify-content:space-between;">
+                        <div>
+                            <span class="fb-user ${i.role && i.role.includes('Admin')?'tag-admin':'tag-user'}">${i.user || 'Anonymous'}</span>
+                            <span class="fb-time">${timeAgo(i.time)}</span>
+                        </div>
+                        ${canModify ? `<i class="fas fa-trash" style="font-size:10px; color:var(--muted); cursor:pointer;" onclick="deleteMsg(${i.id}, '${i.user}')"></i>` : ''}
+                    </div>
+                    <div class="fb-msg">${i.msg}</div>
+                    
+                    <span class="action-link" onclick="document.getElementById('rb-${i.id}').style.display='block'">Reply</span>
+                    
+                    ${canModify ? `<span class="action-link" onclick="document.getElementById('eb-${i.id}').style.display='block'">Edit</span>` : ''}
+                    
+                    ${isAdmin ? `<span class="action-link" style="color:var(--green)" onclick="togglePin(${i.id})">${i.isPinned?'Unpin':'Pin'}</span>` : ''}
+                    
+                    <div class="reply-in-area" id="eb-${i.id}">
+                        <input type="text" id="ei-${i.id}" value="${i.msg}">
+                        <button class="btn btn-white" style="padding:8px; font-size:9px;" onclick="saveEdit(${i.id}, '${i.user}')">Save</button>
+                    </div>
+                    
+                    <div class="reply-in-area" id="rb-${i.id}">
+                        <input type="text" id="ri-${i.id}" placeholder="Reply...">
+                        <button class="btn btn-white" style="padding:8px; font-size:9px;" onclick="submitMsg(${i.id})">Send</button>
+                    </div>
+                    
+                    <div class="reply-box">${buildTree(i.replies || [])}</div>
+                </div>`;
+            });
+            return html;
+        }
+
+        function downloadReport() { 
+            const area = document.getElementById('capture-area'); 
+            area.style.top = "0"; 
+            html2canvas(area, { scale: 2 }).then(canvas => { 
+                const link = document.createElement('a'); 
+                link.download = 'Academic_Plan_Senuz.jpg'; 
+                link.href = canvas.toDataURL("image/jpeg", 0.95); 
+                link.click(); 
+                area.style.top = "-9999px"; 
+            }); 
+        }
+
+        function updateTimer() { 
+            const diff = new Date("Dec 8, 2026").getTime() - new Date().getTime(); 
+            document.getElementById("mon").innerText = Math.max(0, Math.floor(diff / 2629746000)); 
+            document.getElementById("days").innerText = Math.max(0, Math.floor((diff % 2629746000) / 86400000)); 
+            document.getElementById("hrs").innerText = Math.max(0, Math.floor((diff % 86400000) / 3600000)); 
+            document.getElementById("min").innerText = Math.max(0, Math.floor((diff % 3600000) / 60000)); 
+            document.getElementById("sec").innerText = Math.max(0, Math.floor((diff % 60000) / 1000)); 
+            setTimeout(updateTimer, 1000); 
+        }
+console.log("Running on the senuz innovation server ⏳🧬");
+    </script>
 </body>
 </html>
