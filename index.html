@@ -30,9 +30,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
-    <!-- ========================================== -->
-    <!-- 🟢 AD NETWORK SCRIPTS (HEAD SECTION)       -->
-    <!-- ========================================== -->
+    <!-- Ad Network Scripts -->
     <script src="https://pl31044121.profitableratecpmnetwork.com/43/ef/21/43ef216dc46c9d03449f0b5d695d2f35.js"></script>
     <script src="https://pl31044120.profitableratecpmnetwork.com/ae/2d/69/ae2d69e34e0284df14570c9a4baf49aa.js"></script>
     <script async="async" data-cfasync="false" src="https://pl31044119.profitableratecpmnetwork.com/c978b275f6b8b654777ab5f1ec809698/invoke.js"></script>
@@ -103,7 +101,6 @@
         #capture-area { background: #000; width: 1000px; padding: 40px 60px; position: fixed; top: -9999px; left: 0; }
         .img-copyright { margin-top: 40px; text-align: center; border-top: 1px solid whitesmoke; padding-top: 20px; color: white; font-size: 14px; letter-spacing: 8px; font-weight: 300; }
         
-        /* Ad Banner Container Formatting */
         .ad-wrapper { width: 100%; display: flex; justify-content: center; align-items: center; margin: 15px 0; overflow: hidden; }
         
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -148,8 +145,6 @@
             <div class="cd-box"><span class="cd-val" id="sec">0</span><span class="cd-lab">SEC</span></div>
         </div>
     </header>
-
-    <!--ADS 🤫🧬-->
 
     <div class="ad-wrapper">
         <div id="container-c978b275f6b8b654777ab5f1ec809698"></div>
@@ -257,7 +252,6 @@
         <div class="img-copyright"><b>O/L POINTS (V2.6) | BY SENUZ 🤍</b></div>
     </div>
 
-    <!-- Application Script -->
     <script>
         // 🛠️ 1. FIREBASE CONFIGURATIONS
         const firebaseConfig = {
@@ -433,6 +427,7 @@
 
         function formatTime(hr) { let h = hr > 12 ? hr-12 : hr === 0 ? 12 : hr; let ampm = hr >= 12 ? 'PM' : 'AM'; return `${h}:00 ${ampm}`; }
 
+        // 🧠 SMART TIMETABLE GENERATION LOGIC WITH BREAKS
         function generateFinalPlan() {
             const grid = document.getElementById('final-timetable-grid'); grid.innerHTML = "";
             document.getElementById('cap-stats').style.display = isOL ? 'grid' : 'none';
@@ -450,24 +445,32 @@
             const sEndMin = parseInt(sEndParts[1] || 0);
             const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
             
+            let weakIdx = 0;
+            let normalIdx = 0;
+
             days.forEach(day => {
                 let html = `<div style="background:#0a0a0a; border:1px solid #111; border-radius:25px; padding:25px;"><div style="font-size:15px; font-weight:900; color:var(--blue); border-bottom:1px solid #111; padding-bottom:10px; margin-bottom:15px;">${day.toUpperCase()}</div>`;
                 let occ = {}; 
-                let lastAssignedSub = "";
                 
                 if(schoolDays.includes(day)) {
                     for(let i=7; i<=13; i++) occ[i] = { type: 'School', label: 'School Hours', start: '07:30 AM', end: '01:30 PM' };
-                    occ[6] = { type: 'Buffer' }; occ[14] = { type: 'Buffer' };
+                    occ[6] = { type: 'Buffer' }; 
+                    occ[14] = { type: 'Rest', label: 'Lunch & Rest' };
                 }
 
                 classes.filter(c => c.d === day).forEach(c => {
                     let h1 = parseInt(c.t1.split(':')[0]);
                     let h2 = parseInt(c.t2.split(':')[0]);
                     for(let i=h1; i<=h2; i++) occ[i] = { type: 'Class', label: c.n, start: c.t1, end: c.t2 };
-                    if(!occ[h1-1]) occ[h1-1] = { type: 'Buffer' }; 
+                    if(!occ[h1-1]) occ[h1-1] = { type: 'Buffer' };
                 });
 
+                if(!occ[20]) occ[20] = { type: 'Rest', label: 'Dinner & Break' };
+
+                let lastAssignedSub = "";
                 let lastEventLabel = "";
+                let studySessionCount = 0;
+
                 for(let hr = 0; hr < 24; hr++) {
                     let slotStart = hr * 60;
                     let slotEnd = (hr + 1) * 60;
@@ -479,26 +482,70 @@
                     } else if (sleepStart > sleepEnd) {
                         isSleeping = (slotStart < 1440 && slotEnd > sleepStart) || (slotStart < sleepEnd && slotEnd > 0);
                     }
-                    if(isSleeping) continue;
+                    if(isSleeping) {
+                        studySessionCount = 0;
+                        continue;
+                    }
 
                     if(occ[hr]) {
-                        if(occ[hr].type !== 'Buffer' && occ[hr].label !== lastEventLabel) {
+                        studySessionCount = 0;
+                        if(occ[hr].type === 'Rest') {
+                            html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #222; font-size:12px;"><span style="color:#e6c200;">☕ ${occ[hr].label}</span><span>${formatTime(hr)}</span></div>`;
+                        } else if(occ[hr].type !== 'Buffer' && occ[hr].label !== lastEventLabel) {
                             html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #111; font-size:12px;"><span style="color:var(--green)">${occ[hr].label}</span><span>${occ[hr].start} - ${occ[hr].end}</span></div>`;
                             lastEventLabel = occ[hr].label;
                         }
                     } else {
                         lastEventLabel = "";
                         if(hr >= 4 && hr <= 23) {
-                            let pool = (weakSubs.length > 0 && Math.random() < 0.7) ? [...weakSubs] : (normalSubs.length > 0 ? [...normalSubs] : ["Study Session"]);
-                            
-                            let availablePool = pool.filter(sub => sub !== lastAssignedSub);
-                            if (availablePool.length === 0) availablePool = pool; 
-                            
-                            let sub = availablePool[Math.floor(Math.random() * availablePool.length)];
+                            // පැය 2ක පාඩම් කාලයකට පසු ස්වයංක්‍රීය Short Rest (15 mins) බ්‍රේක් එකක් එකතු වේ
+                            if (studySessionCount >= 2) {
+                                html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #222; font-size:12px;"><span style="color:#e6c200;">☕ Short Rest & Hydrate (15 min)</span><span>${formatTime(hr)}</span></div>`;
+                                studySessionCount = 0;
+                                continue;
+                            }
+
+                            let sub = "";
+                            let isWeak = false;
+
+                            // Peak Focus Hours (4-7 AM & 4-7 PM) -> Prioritize Weak Subjects
+                            const isPeakFocus = (hr >= 4 && hr < 7) || (hr >= 16 && hr < 19);
+
+                            if (isPeakFocus && weakSubs.length > 0) {
+                                sub = weakSubs[weakIdx % weakSubs.length];
+                                weakIdx++;
+                                isWeak = true;
+                            } else if (normalSubs.length > 0) {
+                                sub = normalSubs[normalIdx % normalSubs.length];
+                                normalIdx++;
+                            } else if (weakSubs.length > 0) {
+                                sub = weakSubs[weakIdx % weakSubs.length];
+                                weakIdx++;
+                                isWeak = true;
+                            } else {
+                                sub = "General Revision";
+                            }
+
+                            // Prevent direct duplicates
+                            if (sub === lastAssignedSub && (weakSubs.length + normalSubs.length) > 1) {
+                                if (isWeak && normalSubs.length > 0) {
+                                    sub = normalSubs[normalIdx % normalSubs.length];
+                                    normalIdx++;
+                                    isWeak = false;
+                                } else if (!isWeak && weakSubs.length > 0) {
+                                    sub = weakSubs[weakIdx % weakSubs.length];
+                                    weakIdx++;
+                                    isWeak = true;
+                                }
+                            }
+
                             lastAssignedSub = sub;
+                            studySessionCount++;
+                            let color = isWeak ? 'var(--red)' : '#fff';
+                            let prefix = isWeak ? '🎯 ' : '📖 ';
                             
-                            let color = weakSubs.includes(sub) ? 'var(--red)' : '#fff';
-                            html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #111; font-size:12px;"><span style="color:${color}">${sub}</span><span>${formatTime(hr)}</span></div>`;
+                            // සෑම පැයකම පාඩම් වාරයක් සඳහාම Pomodoro Style (50m Study + 10m Break) ඇතුළත් කර ඇත
+                            html += `<div style="display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px dashed #111; font-size:12px;"><span style="color:${color}">${prefix}${sub} <small style="color:#777; font-size:10px;">(50m + 10m Break ☕)</small></span><span>${formatTime(hr)}</span></div>`;
                         }
                     }
                 }
