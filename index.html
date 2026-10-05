@@ -284,9 +284,9 @@
 
     <div class="container" id="step1">
         <div class="row">
-            <h3>Academic Performance</h3>
+            <h3>Main subjects</h3>
             <div id="grade-inputs"></div>
-            <p style="font-size: 10px; color: var(--muted); margin-top: 5px; margin-bottom: 18px; line-height: 1.4;">Select your current results for accurate pass probability and study plan design.</p>
+            <p style="font-size: 11px; color: var(--muted); margin-top: 5px; margin-bottom: 18px; line-height: 1.4;">Select your current results for accurate pass probability and study plan design.</p>
             <button class="btn btn-green" onclick="startLoading()">Analyze & Process</button>
             <button class="btn btn-back" onclick="location.reload()">Back</button>
         </div>
@@ -323,16 +323,18 @@
                 <div class="scl-chip active" onclick="toggleScl(this, 'Thursday')">THU</div>
                 <div class="scl-chip active" onclick="toggleScl(this, 'Friday')">FRI</div>
             </div>
-            <p style="font-size: 10px; color: var(--muted); margin-bottom:20px;">Unselected days will be treated as holiday hours.</p>
+            <p style="font-size: 11px; color: var(--muted); margin-bottom:20px;">Unselected days will be treated as holiday hours.</p>
             
             <p style="font-size:10px; color:var(--blue); margin-bottom:6px; font-weight:800; letter-spacing:1px;">SLEEP SCHEDULE</p>
+            <br>
             <div style="display:flex; gap:10px; margin-bottom:5px;">
                 <input type="time" id="sleep-start" value="00:00">
                 <input type="time" id="sleep-end" value="05:30">
             </div>
-            <p style="font-size: 10px; color: var(--muted); margin-bottom:20px;">Rest hours are cleared automatically from the timetable.</p>
+            <p style="font-size: 11px; color: var(--muted); margin-bottom:20px;">Rest hours are cleared automatically from the timetable.</p>
             
             <p style="font-size:10px; color:var(--blue); margin-bottom:6px; font-weight:800; letter-spacing:1px;">EXTRA CLASSES</p>
+            <br>
             <input type="text" id="cn" placeholder="Class Name (e.g. Maths Revision)">
             <div class="day-grid" style="margin-bottom: 5px;">
                 <div class="day-chip" onclick="setDay(this, 'Monday')">MON</div>
