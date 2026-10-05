@@ -16,7 +16,7 @@
     }
     </script>
     
-    <meta name="keywords" content="O/l points, Ol points, Olpoints, O/l points, Ol point, O/l point, O/l maths, O/L calculator, Ol, Ol study, Ol passpaper, Ol Calc, Ol Calculator, Ol study plan, O/L timetable maker, Senuz, Sri Lanka OL, exam target 2026, OL results analyzer, ol points 2026, o/l points 2026, smart study planner sri lanka, gce ol calculator, ol timetable generator, 9a target plan, ol points v2.6, senuz innovation, ol exam countdown 2026">
+    <meta name="keywords" content="O/l points, Ol points, Olpoints, Ol point, O/l point, O/l maths, O/L calculator, Ol, Ol study, Ol passpaper, Ol Calc, Ol Calculator, Ol study plan, O/L timetable maker, Senuz, Sri Lanka OL, exam target 2026, OL results analyzer, ol points 2026, o/l points 2026, smart study planner sri lanka, gce ol calculator, ol timetable generator, 9a target plan, ol points v2.6, senuz innovation, ol exam countdown 2026">
 
     <title>O/L Points 2026</title>
     <link rel="icon" type="image/png" href="https://files.catbox.moe/w1fqny.png">
@@ -92,7 +92,7 @@
         .fb-time { font-size: 8px; color: var(--muted); margin-bottom: 8px; display: block; font-weight: 600; }
         .tag-admin { color: var(--green); }
         .tag-user { color: var(--blue); }
-        .fb-msg { font-size: 13px; color: #d4d4d8; line-height: 1.5; }
+        .fb-msg { font-size: 13px; color: #d4d4d8; line-height: 1.5; word-break: break-word; }
         .reply-box { margin-left: 15px; border-left: 1px solid var(--border); padding-left: 12px; margin-top: 12px; }
         .action-link { font-size: 9px; font-weight: 800; color: var(--muted); cursor: pointer; margin-top: 8px; display: inline-block; text-transform: uppercase; margin-right: 12px; letter-spacing: 0.5px; }
         .reply-in-area { display: none; margin-top: 12px; }
@@ -225,7 +225,6 @@
                 <i class="fas fa-sync-alt fa-spin"></i> MAINTENANCE IN PROGRESS
             </div>
             <div>
-                <!-- Admin login direct button on Maintenance mode -->
                 <button class="maint-admin-btn" onclick="openAdminModal()"><i class="fas fa-key"></i> Admin Access</button>
             </div>
         </div>
@@ -361,7 +360,6 @@
     </div>
 
     <div class="container" id="feedback-area" style="display: none;">
-        <!-- Admin Info Banner with Maintenance Toggle Control -->
         <div class="admin-banner" id="admin-banner">
             <i class="fas fa-user-shield"></i> LOGGED IN AS ADMIN (SENUZ-DEV)
             <div style="margin-top: 8px; display: flex; gap: 8px; justify-content: center;">
@@ -418,11 +416,10 @@
         const forbidden = ["හුත්ත", "පොන්න", "කැරියා", "හුකන", "hukana", "hucn", "cry", "cariya", "kariya", "kryya", "kriya", "pkdya", "කැරිම", "ponna", "හුත්", "Crym", "Tahike", "ponnayo", "Hukapan", "Hakanna", "Hutto", "Utto", "Wesige putha", "Huththige putha", "Huththige pakaya","Wesa balla"];
         const adminForbiddenNames = ["senuz", "admin", "seneth", "seneth sandeepa", "seneth_sandeepa","ස්ෙනූස්", "Hukanna", "seneth-sandeepa", "o/l calculator admin", "developer","Olpoints","Ol points","Ol points owner","O/l points", "O/lpoints", "Ol points admin", "Ponnaya","pakaya","Huththa","Wesige putha","Huththige putha","ᴘᴏᴡᴇʀᴅ ʙʏ┋© ꜱᴇɴUZ ⑉〆","Pinnaya", "Gotukola ponnaya","Kari ponnaya","Crya", "පොන්නයා", "පකයා", "හුත්තා", "හුකන්නා"];
 
-        // ADMIN PASSCODE
         const ADMIN_PIN = "Senuz-ofc-admin-dev-powered"; 
 
         let discussions = []; 
-        let userId = localStorage.getItem('senuz_id') || Math.floor(1000 + Math.random() * 9000);
+        let userId = localStorage.getItem('senuz_id') || String(Math.floor(1000 + Math.random() * 9000));
         localStorage.setItem('senuz_id', userId);
         
         let currentUser = localStorage.getItem('senuz_current_user') || "";
@@ -431,13 +428,15 @@
         window.onload = () => {
             document.getElementById('display-id').innerText = `ID: #${userId}`;
             
-            // Realtime Firebase Listener for Maintenance Status
+            let initialLoadDone = false;
+
             database.ref('system_status/maintenance').on('value', (snapshot) => {
                 isMaintenance = snapshot.val() || false;
-                applyMaintenanceState();
+                if(initialLoadDone) applyMaintenanceState();
+            }, (error) => {
+                console.error("Firebase Read Error: ", error);
             });
 
-            // Realtime Firebase Listener for Discussions
             database.ref('discussions').on('value', (snapshot) => {
                 const data = snapshot.val();
                 if (data) {
@@ -452,16 +451,20 @@
             });
 
             setTimeout(() => { document.getElementById('p-fill').style.width = '100%'; }, 100);
+            
             setTimeout(() => {
                 document.getElementById('initial-loader').style.display = 'none';
+                initialLoadDone = true;
                 applyMaintenanceState();
             }, 3000);
+
             updateTimer();
         };
 
         function applyMaintenanceState() {
             const maintOverlay = document.getElementById('maint-overlay');
             const gateway = document.getElementById('gateway');
+            const step1 = document.getElementById('step1');
             const maintBtn = document.getElementById('maint-toggle-btn');
             
             if(maintBtn) {
@@ -471,13 +474,13 @@
                 maintBtn.style.background = isMaintenance ? "var(--green)" : "#ff9500";
             }
 
-            // If Maintenance ON and NOT Admin
             if(isMaintenance && userRole !== "Admin") {
                 maintOverlay.style.display = 'flex';
                 gateway.style.display = 'none';
+                step1.style.display = 'none';
             } else {
                 maintOverlay.style.display = 'none';
-                if(!currentUser && document.getElementById('step1').style.display !== 'block') {
+                if(step1.style.display !== 'block' && document.getElementById('step2').style.display !== 'block' && document.getElementById('step3').style.display !== 'block' && document.getElementById('step4').style.display !== 'block') {
                     gateway.style.display = 'flex';
                 }
             }
@@ -523,24 +526,27 @@
 
         function renderMembers() {
             const list = document.getElementById('member-list');
-            const users = [...new Set(discussions.map(d => d.user ? d.user.split(' (')[0] : ''))].filter(Boolean);
+            const users = [...new Set(discussions.map(d => d.user ? String(d.user).split(' (')[0] : ''))].filter(Boolean);
             list.innerHTML = users.length > 0 ? users.map(u => `<span>${u}</span>`).join(' • ') : "<span>No active users yet</span>";
         }
 
         function initApp(olMode) {
-            if(userRole !== "Admin") {
-                let inputVal = document.getElementById('user-name-input').value.trim();
-                if(!inputVal) { alert("Please enter your name."); return; }
-                if(inputVal.length < 4) { alert("Name must be 4+ characters."); return; }
+            let inputVal = document.getElementById('user-name-input').value.trim();
+
+            // Admin ලෙස Modal එකෙන් ලොග් වී නොමැති නම් සාමාන්‍ය User ලෙස සලකන්න
+            if (userRole !== "Admin") {
+                if (!inputVal) { alert("Please enter your name."); return; }
+                if (inputVal.length < 4) { alert("Name must be 4+ characters."); return; }
                 
-                if(adminForbiddenNames.includes(inputVal.toLowerCase())){ alert("Reserved name! You cannot use it."); return; }
+                if (adminForbiddenNames.includes(inputVal.toLowerCase())) { alert("Reserved name! You cannot use it."); return; }
                 const regex = /^[a-zA-Z\s]+$/;
-                if(!regex.test(inputVal)) { alert("English letters only."); return; }
+                if (!regex.test(inputVal)) { alert("English letters only."); return; }
                 
                 currentUser = inputVal + " (" + userId + ")";
-                userRole = "User";
+                userRole = "User"; // Gateway හරහා යන විට Role එක User ලෙස සකසයි
+                
                 localStorage.setItem('senuz_current_user', currentUser);
-                localStorage.setItem('senuz_role', 'User');
+                localStorage.setItem('senuz_role', 'User'); // Local storage එක overwrite වේ
             }
 
             isOL = olMode;
@@ -549,8 +555,11 @@
             document.getElementById('step1').style.display = 'block';
             document.getElementById('feedback-area').style.display = 'block';
 
-            if(userRole === "Admin") {
+            // Admin Banner එක පෙන්වන්නේ Admin ලොගින් එකෙන් ආවොත් පමණි
+            if (userRole === "Admin") {
                 document.getElementById('admin-banner').style.display = 'block';
+            } else {
+                document.getElementById('admin-banner').style.display = 'none';
             }
 
             renderGrades();
@@ -806,42 +815,59 @@
         
         function submitMsg(parentId) {
             const input = parentId ? document.getElementById(`ri-${parentId}`) : document.getElementById('fb-input');
-            let msg = input.value.trim(); if(!msg) return;
+            let msg = input.value.trim(); 
+            if(!msg) return;
             if(!isClean(msg)) { alert("Inappropriate language detected."); return; }
             
             let role = userRole; 
             let user = currentUser;
 
-            const post = { id: Date.now(), time: Date.now(), user, role, msg, replies: [], isPinned: false };
+            const post = { id: String(Date.now()), time: Date.now(), user, role, msg, replies: [], isPinned: false };
             
             if(!parentId) {
                 discussions.unshift(post);
             } else {
-                recursivePush(discussions, parentId, post);
+                recursivePush(discussions, String(parentId), post);
             }
             saveAndRender(); 
             input.value = "";
         }
         
-        function recursivePush(arr, id, obj) { for(let i of arr) { if(i.id === id) { i.replies = i.replies || []; i.replies.push(obj); return true; } if(i.replies && i.replies.length > 0) if(recursivePush(i.replies, id, obj)) return true; } }
+        function recursivePush(arr, id, obj) { 
+            for(let i of arr) { 
+                if(String(i.id) === String(id)) { 
+                    i.replies = i.replies || []; 
+                    i.replies.push(obj); 
+                    return true; 
+                } 
+                if(i.replies && i.replies.length > 0) {
+                    if(recursivePush(i.replies, id, obj)) return true;
+                }
+            } 
+        }
         
         function deleteMsg(id, owner) { 
             const isAdmin = (userRole === "Admin");
-            const isOwner = (currentUser === owner);
+            const isOwner = (currentUser.trim().toLowerCase() === String(owner || '').trim().toLowerCase());
 
             if(isAdmin || isOwner) { 
-                discussions = recursiveDelete(discussions, id); 
+                discussions = recursiveDelete(discussions, String(id)); 
                 saveAndRender(); 
             } else { 
                 alert("Permission denied! Only the author or Admin can delete this message."); 
             } 
         }
 
-        function recursiveDelete(arr, id) { return arr.filter(i => i.id !== id).map(i => ({...i, replies: recursiveDelete(i.replies || [], id)})); }
+        function recursiveDelete(arr, id) { 
+            return arr.filter(i => String(i.id) !== String(id)).map(i => ({
+                ...i, 
+                replies: recursiveDelete(i.replies || [], id)
+            })); 
+        }
         
         function togglePin(id) { 
             if(userRole === "Admin") { 
-                recursiveAction(discussions, id, 'pin'); 
+                recursiveAction(discussions, String(id), 'pin'); 
                 saveAndRender(); 
             } else {
                 alert("Permission Denied! Only Admin can pin/unpin messages.");
@@ -850,7 +876,7 @@
 
         function saveEdit(id, owner) { 
             const isAdmin = (userRole === "Admin");
-            const isOwner = (currentUser === owner);
+            const isOwner = (currentUser.trim().toLowerCase() === String(owner || '').trim().toLowerCase());
 
             if(!isAdmin && !isOwner) {
                 alert("Permission denied! Only the author or Admin can edit this message.");
@@ -858,17 +884,37 @@
             }
             const val = document.getElementById(`ei-${id}`).value; 
             if(!isClean(val)) return; 
-            recursiveAction(discussions, id, 'edit', val); 
+            recursiveAction(discussions, String(id), 'edit', val); 
             saveAndRender(); 
         }
 
-        function recursiveAction(arr, id, action, payload) { for(let i of arr) { if(i.id === id) { if(action === 'pin') i.isPinned = !i.isPinned; if(action === 'edit') i.msg = payload; return true; } if(i.replies && i.replies.length > 0) if(recursiveAction(i.replies, id, action, payload)) return true; } }
+        function recursiveAction(arr, id, action, payload) { 
+            for(let i of arr) { 
+                if(String(i.id) === String(id)) { 
+                    if(action === 'pin') i.isPinned = !i.isPinned; 
+                    if(action === 'edit') i.msg = payload; 
+                    return true; 
+                } 
+                if(i.replies && i.replies.length > 0) {
+                    if(recursiveAction(i.replies, id, action, payload)) return true;
+                }
+            } 
+        }
         
         function saveAndRender() { 
-            database.ref('discussions').set(discussions).catch(err => console.error("Firebase Write Error:", err)); 
+            database.ref('discussions').set(discussions)
+                .then(() => {
+                    renderDiscussions();
+                })
+                .catch(err => {
+                    console.error("Firebase Write Error:", err);
+                    alert("Firebase Write Error! Rules (read/write: true) පරීක්ෂා කරන්න.");
+                }); 
         }
 
-        function renderDiscussions() { document.getElementById('fb-list').innerHTML = buildTree(discussions); }
+        function renderDiscussions() { 
+            document.getElementById('fb-list').innerHTML = buildTree(discussions); 
+        }
         
         function buildTree(arr) {
             let html = ""; 
@@ -876,7 +922,7 @@
             let sorted = [...arr].sort((a,b) => (b.isPinned?1:0) - (a.isPinned?1:0));
             sorted.forEach(i => {
                 const isAdmin = (userRole === "Admin");
-                const isOwner = (i.user === currentUser);
+                const isOwner = (currentUser.trim().toLowerCase() === String(i.user || '').trim().toLowerCase());
                 const canModify = isAdmin || isOwner;
 
                 html += `<div class="fb-card ${i.isPinned?'pinned':''}">
@@ -885,7 +931,7 @@
                             <span class="fb-user ${i.role && i.role.includes('Admin')?'tag-admin':'tag-user'}">${i.user || 'Anonymous'}</span>
                             <span class="fb-time">${timeAgo(i.time)}</span>
                         </div>
-                        ${canModify ? `<i class="fas fa-trash" style="font-size:10px; color:var(--muted); cursor:pointer;" onclick="deleteMsg(${i.id}, '${i.user}')"></i>` : ''}
+                        ${canModify ? `<i class="fas fa-trash" style="font-size:10px; color:var(--muted); cursor:pointer;" onclick="deleteMsg('${i.id}', '${i.user}')"></i>` : ''}
                     </div>
                     <div class="fb-msg">${i.msg}</div>
                     
@@ -893,16 +939,16 @@
                     
                     ${canModify ? `<span class="action-link" onclick="document.getElementById('eb-${i.id}').style.display='block'">Edit</span>` : ''}
                     
-                    ${isAdmin ? `<span class="action-link" style="color:var(--green)" onclick="togglePin(${i.id})">${i.isPinned?'Unpin':'Pin'}</span>` : ''}
+                    ${isAdmin ? `<span class="action-link" style="color:var(--green)" onclick="togglePin('${i.id}')">${i.isPinned?'Unpin':'Pin'}</span>` : ''}
                     
                     <div class="reply-in-area" id="eb-${i.id}">
                         <input type="text" id="ei-${i.id}" value="${i.msg}">
-                        <button class="btn btn-white" style="padding:8px; font-size:9px;" onclick="saveEdit(${i.id}, '${i.user}')">Save</button>
+                        <button class="btn btn-white" style="padding:8px; font-size:9px; margin-top:5px;" onclick="saveEdit('${i.id}', '${i.user}')">Save</button>
                     </div>
                     
                     <div class="reply-in-area" id="rb-${i.id}">
                         <input type="text" id="ri-${i.id}" placeholder="Reply...">
-                        <button class="btn btn-white" style="padding:8px; font-size:9px;" onclick="submitMsg(${i.id})">Send</button>
+                        <button class="btn btn-white" style="padding:8px; font-size:9px; margin-top:5px;" onclick="submitMsg('${i.id}')">Send</button>
                     </div>
                     
                     <div class="reply-box">${buildTree(i.replies || [])}</div>
@@ -914,7 +960,7 @@
         function downloadReport() { 
             const area = document.getElementById('capture-area'); 
             area.style.top = "0"; 
-            html2canvas(area, { scale: 2 }).then(canvas => { 
+            html2canvas(area, { scale: 2, backgroundColor: '#09090b' }).then(canvas => { 
                 const link = document.createElement('a'); 
                 link.download = 'Academic_Plan_Senuz.jpg'; 
                 link.href = canvas.toDataURL("image/jpeg", 0.95); 
@@ -932,7 +978,6 @@
             document.getElementById("sec").innerText = Math.max(0, Math.floor((diff % 60000) / 1000)); 
             setTimeout(updateTimer, 1000); 
         }
-console.log("Running on the senuz innovation server ⏳🧬");
     </script>
 </body>
 </html>
