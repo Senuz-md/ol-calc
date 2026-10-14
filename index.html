@@ -22,15 +22,15 @@
     <link rel="icon" type="image/png" href="https://files.catbox.moe/w1fqny.png">
     <meta name="description" content="Sri Lanka's First O/L and Grade 6-9 Smart Engine and Timetable Maker. Calculate your pass probability and target 9A easily. It is 100% Free">
 
-    <!-- External CSS & Libraries -->
+    <!--Css libraries-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- Firebase SDKs (Compat Version) -->
+    <!--firebase database-->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
-    <!-- Popunder & Direct Network Scripts -->
+    <!--Ads-->
     <script src="https://pl31044121.profitableratecpmnetwork.com/43/ef/21/43ef216dc46c9d03449f0b5d695d2f35.js"></script>
     <script src="https://pl31044120.profitableratecpmnetwork.com/ae/2d/69/ae2d69e34e0284df14570c9a4baf49aa.js"></script>
 
@@ -38,14 +38,14 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
         
         :root { 
-            --bg: #09090b; 
-            --card: #121215; 
-            --border: #222228; 
+            --bg: #0b0c10; 
+            --card: #15161e; 
+            --border: #232533; 
             --blue: #007AFF; 
             --green: #00FF88; 
             --red: #ff3b30; 
             --text: #f4f4f5; 
-            --muted: #71717a;
+            --muted: #8e8e93;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
@@ -55,34 +55,59 @@
         .progress-line { width: 180px; height: 1px; background: #222; position: relative; overflow: hidden; margin-top: 20px; }
         .progress-line-fill { position: absolute; left: 0; top: 0; height: 100%; width: 0%; background: var(--blue); transition: width 3s ease; }
 
-        #gateway { display: none; text-align: center; padding: 20px; height: 100vh; width: 100%; flex-direction: column; align-items: center; justify-content: center; position: fixed; top: 0; left: 0; z-index: 5000;}
-        .q-box { background: var(--card); border: 1px solid var(--border); padding: 40px 30px; border-radius: 28px; max-width: 420px; width: 100%; box-shadow: 0 20px 50px rgba(0,0,0,0.6); }
+        #gateway { 
+            display: none; 
+            text-align: center; 
+            padding: 20px; 
+            height: 100vh; 
+            width: 100%; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            z-index: 5000;
+            background: rgba(11, 12, 16, 0.96);
+            backdrop-filter: blur(15px);
+        }
+        .q-box { 
+            background: var(--card); 
+            border: 1px solid var(--border); 
+            padding: 35px 25px; 
+            border-radius: 24px; 
+            max-width: 400px; 
+            width: 100%; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8); 
+            position: relative;
+        }
         
-        header { text-align: center; padding: 20px; border-bottom: 1px solid var(--border); background: rgba(9, 9, 11, 0.8); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; display: none; }
+        header { text-align: center; padding: 20px; border-bottom: 1px solid var(--border); background: rgba(11, 12, 16, 0.85); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; display: none; }
         .container { width: 92%; max-width: 480px; margin: auto; padding-top: 20px; display: none; padding-bottom: 40px; }
         .row { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 25px; margin-bottom: 20px; }
         
         h3 { font-size: 10px; font-weight: 800; color: var(--blue); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 20px; }
-        input, select, textarea { background: #000; color: #fff; border: 1px solid var(--border); padding: 14px; border-radius: 12px; outline: none; width: 100%; margin-bottom: 12px; font-size: 13px; }
+        input, select, textarea { background: #08080a; color: #fff; border: 1px solid var(--border); padding: 14px; border-radius: 12px; outline: none; width: 100%; margin-bottom: 12px; font-size: 13px; }
         
-        .btn { width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s ease; font-size: 13px; letter-spacing: 0.5px; }
+        .btn { width: 100%; padding: 15px; border-radius: 14px; border: none; font-weight: 700; cursor: pointer; text-transform: uppercase; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s ease; font-size: 12px; letter-spacing: 0.5px; }
         .btn-green { background: var(--green); color: #000; }
         .btn-white { background: #fff; color: #000; }
-        .btn-dark { background: #1a1a1e; color: #fff; border: 1px solid #2e2e38; }
+        .btn-blue { background: var(--blue); color: #fff; }
+        .btn-dark { background: #1a1b26; color: #fff; border: 1px solid var(--border); }
         .btn-red { background: var(--red); color: #fff; }
         .btn-orange { background: #ff9500; color: #000; }
         .btn-back { background: transparent; color: var(--muted); font-size: 11px; margin-top: 15px; text-decoration: none; }
 
         .day-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 15px; }
-        .day-chip { background: #000; border: 1px solid var(--border); padding: 10px; border-radius: 10px; color: var(--muted); font-size: 10px; font-weight: 700; text-align: center; cursor: pointer; }
+        .day-chip { background: #08080a; border: 1px solid var(--border); padding: 10px; border-radius: 10px; color: var(--muted); font-size: 10px; font-weight: 700; text-align: center; cursor: pointer; }
         .day-chip.selected { background: var(--blue); color: #fff; border-color: var(--blue); }
-        .scl-chip { background: #000; border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-size: 10px; cursor: pointer; text-align: center; flex: 1; color: var(--muted); font-weight: 700; }
+        .scl-chip { background: #08080a; border: 1px solid var(--border); padding: 10px; border-radius: 10px; font-size: 10px; cursor: pointer; text-align: center; flex: 1; color: var(--muted); font-weight: 700; }
         .scl-chip.active { border-color: var(--green); color: var(--green); background: rgba(0, 255, 136, 0.05); }
 
         .wa-float { position: fixed; width: 55px; height: 55px; bottom: 25px; right: 25px; background: #25D366; color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; z-index: 2000; text-decoration: none; box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
 
-        .countdown { display: flex; justify-content: center; gap: 8px; margin-top: 15px; }
-        .cd-box { background: #000; padding: 8px 12px; border-radius: 12px; min-width: 55px; border: 1px solid var(--border); }
+        .countdown { display: flex; justify-content: center; gap: 8px; margin-top: 10px; }
+        .cd-box { background: #08080a; padding: 8px 12px; border-radius: 12px; min-width: 55px; border: 1px solid var(--border); }
         .cd-val { font-size: 16px; font-weight: 800; color: var(--blue); display: block; }
         .cd-lab { font-size: 7px; color: var(--muted); letter-spacing: 1px; display: block; font-weight: 700; }
 
@@ -101,11 +126,26 @@
 
         .site-footer { padding: 40px 0; width: 100%; text-align: center; color: var(--muted); font-size: 9px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
 
-        /* Capture Area Modern Minimal Styling */
-        #capture-area { background: #09090b; width: 1000px; padding: 40px; position: fixed; top: -9999px; left: 0; color: #fff; }
+        #capture-area { background: #0b0c10; width: 1000px; padding: 40px; position: fixed; top: -9999px; left: 0; color: #fff; }
         .img-copyright { margin-top: 30px; text-align: center; border-top: 1px solid var(--border); padding-top: 20px; color: var(--muted); font-size: 11px; letter-spacing: 3px; font-weight: 700; text-transform: uppercase; }
 
-        /* Clean Schedule Tags */
+        #countdown-4x4-capture {
+            width: 800px;
+            height: 800px;
+            background: #0d0e12;
+            border: 2px solid #007AFF;
+            position: fixed;
+            top: -9999px;
+            left: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            padding: 50px 40px;
+            box-sizing: border-box;
+            color: #ffffff;
+        }
+
         .slot-tag { font-size: 8px; font-weight: 800; padding: 3px 8px; border-radius: 5px; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; margin-right: 8px; }
         .tag-priority { background: rgba(255, 59, 48, 0.12); color: #ff5247; border: 1px solid rgba(255, 59, 48, 0.25); }
         .tag-normal { background: rgba(0, 122, 255, 0.12); color: #3395ff; border: 1px solid rgba(0, 122, 255, 0.25); }
@@ -113,10 +153,8 @@
         .tag-school { background: rgba(0, 255, 136, 0.12); color: #00ff88; border: 1px solid rgba(0, 255, 136, 0.25); }
         .tag-class { background: rgba(175, 82, 222, 0.12); color: #c864ff; border: 1px solid rgba(175, 82, 222, 0.25); }
 
-        /* Modal Styles */
         .modal { display: none; position: fixed; z-index: 100000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); backdrop-filter: blur(8px); align-items: center; justify-content: center; }
 
-        /* MAINTENANCE OVERLAY UI SCREEN */
         #maint-overlay {
             display: none;
             position: fixed;
@@ -140,70 +178,86 @@
             box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
         }
 
-        .maint-icon {
-            font-size: 42px;
-            color: #007AFF;
-            margin-bottom: 24px;
-            display: inline-block;
-            transform: rotate(-10deg);
-        }
-
-        .maint-title {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            color: #ffffff;
-            margin-bottom: 14px;
-            text-transform: uppercase;
-        }
-
-        .maint-desc {
-            font-size: 12px;
-            color: #8e8e93;
-            line-height: 1.6;
-            margin-bottom: 28px;
-            padding: 0 10px;
-        }
-
-        .maint-pill {
-            background: rgba(0, 122, 255, 0.1);
-            border: 1px solid rgba(0, 122, 255, 0.3);
-            color: #007AFF;
-            padding: 12px 18px;
-            border-radius: 50px;
-            font-size: 11px;
-            font-weight: 800;
-            letter-spacing: 1px;
-            display: inline-flex;
+        .maint-icon { font-size: 42px; color: #007AFF; margin-bottom: 24px; display: inline-block; transform: rotate(-10deg); }
+        .maint-title { font-size: 20px; font-weight: 900; letter-spacing: 2px; color: #ffffff; margin-bottom: 14px; text-transform: uppercase; }
+        .maint-desc { font-size: 12px; color: #8e8e93; line-height: 1.6; margin-bottom: 28px; padding: 0 10px; }
+        .maint-pill { background: rgba(0, 122, 255, 0.1); border: 1px solid rgba(0, 122, 255, 0.3); color: #007AFF; padding: 12px 18px; border-radius: 50px; font-size: 11px; font-weight: 800; letter-spacing: 1px; display: inline-flex; align-items: center; gap: 8px; text-transform: uppercase; }
+        .maint-admin-btn { margin-top: 18px; background: transparent; border: 1px solid #33333d; color: #00ff88; padding: 8px 16px; border-radius: 20px; font-size: 10px; font-weight: 700; cursor: pointer; transition: 0.2s ease; }
+        .maint-admin-btn:hover { border-color: #00ff88; background: rgba(0, 255, 136, 0.05); }
+        .maint-footer { margin-top: 35px; font-size: 10px; color: #55555e; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
+        
+        /* HELP MODAL STYLES */
+        .help-btn-floating {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            background: rgba(0, 122, 255, 0.15);
+            border: 1px solid var(--blue);
+            color: var(--blue);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
             align-items: center;
-            gap: 8px;
-            text-transform: uppercase;
+            justify-content: center;
+            font-size: 14px;
+            cursor: pointer;
+            font-weight: bold;
         }
 
-        .maint-admin-btn {
-            margin-top: 18px;
-            background: transparent;
-            border: 1px solid #33333d;
-            color: #00ff88;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 10px;
+        .lang-btn {
+            background: #08080a;
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 12px;
             font-weight: 700;
             cursor: pointer;
             transition: 0.2s ease;
+            flex: 1;
         }
-        .maint-admin-btn:hover {
-            border-color: #00ff88;
-            background: rgba(0, 255, 136, 0.05);
+        .lang-btn.active {
+            border-color: var(--blue);
+            background: rgba(0, 122, 255, 0.15);
+            color: var(--blue);
         }
 
-        .maint-footer {
-            margin-top: 35px;
+        .help-content-box {
+            text-align: left;
+            max-height: 360px;
+            overflow-y: auto;
+            padding-right: 8px;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #d4d4d8;
+        }
+        .help-content-box h4 {
+            color: var(--blue);
+            margin-top: 14px;
+            margin-bottom: 4px;
+            font-size: 13px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 4px;
+        }
+        .help-step-num {
+            background: var(--blue);
+            color: #fff;
+            padding: 2px 6px;
+            border-radius: 6px;
             font-size: 10px;
-            color: #55555e;
-            letter-spacing: 2px;
-            font-weight: 800;
-            text-transform: uppercase;
+            margin-right: 6px;
+            font-weight: bold;
+        }
+
+        /* DESKTOP RESPONSIVE ENHANCEMENTS */
+        @media (min-width: 768px) {
+            .container { max-width: 580px; }
+            .q-box { max-width: 440px; }
+        }
+        @media (min-width: 1024px) {
+            .container { max-width: 650px; }
+            #final-timetable-grid { grid-template-columns: repeat(3, 1fr) !important; }
         }
         
         @keyframes spin { 100% { transform: rotate(360deg); } }
@@ -211,26 +265,15 @@
 </head>
 <body>
 
-    <!-- MAINTENANCE MODE OVERLAY SCREEN -->
     <div id="maint-overlay">
         <div class="maint-card">
-            <div class="maint-icon">
-                <i class="fas fa-tools"></i>
-            </div>
+            <div class="maint-icon"><i class="fas fa-tools"></i></div>
             <div class="maint-title">WEB IS UPDATING</div>
-            <div class="maint-desc">
-                We are currently upgrading our systems and removing ad configurations. Please check back shortly!
-            </div>
-            <div class="maint-pill">
-                <i class="fas fa-sync-alt fa-spin"></i> MAINTENANCE IN PROGRESS
-            </div>
-            <div>
-                <button class="maint-admin-btn" onclick="openAdminModal()"><i class="fas fa-key"></i> Admin Access</button>
-            </div>
+            <div class="maint-desc">We are currently upgrading our systems and removing ad configurations. Please check back shortly!</div>
+            <div class="maint-pill"><i class="fas fa-sync-alt fa-spin"></i> MAINTENANCE IN PROGRESS</div>
+            <div><button class="maint-admin-btn" onclick="openAdminModal()"><i class="fas fa-key"></i> Admin Access</button></div>
         </div>
-        <div class="maint-footer">
-            ©2026 O/L POINTS | BY SENUZ
-        </div>
+        <div class="maint-footer">©2026 O/L POINTS | BY SENUZ</div>
     </div>
 
     <div id="initial-loader">
@@ -240,25 +283,47 @@
 
     <div id="gateway">
         <div class="q-box">
+            <button class="help-btn-floating" onclick="openHelpModal()"><i class="fas fa-question"></i></button>
+
             <h2 style="margin-bottom:8px; font-weight: 800; font-size: 20px;">Identity Verification</h2>
             <p style="font-size: 10px; color: var(--muted); margin-bottom: 20px; letter-spacing: 1px;">ENTER YOUR DETAILS TO CONTINUE</p>
             
-            <input type="text" id="user-name-input" placeholder="Enter your name" style="text-align: center;">
+            <input type="text" id="user-name-input" placeholder="Enter name (4-17 letters)" style="text-align: center;">
             <div id="display-id" style="font-size: 10px; color: var(--blue); margin-bottom: 15px; font-weight: 800; letter-spacing: 1.5px;">ID: #----</div>
 
-            <div id="active-members" style="margin-bottom: 20px; padding: 12px; border: 1px solid var(--border); border-radius: 14px; background: #000;">
+            <div id="active-members" style="margin-bottom: 20px; padding: 12px; border: 1px solid var(--border); border-radius: 14px; background: #08080a;">
                 <p style="font-size: 8px; color: var(--muted); margin-bottom: 6px; letter-spacing: 1.5px;">RECENT CONTRIBUTORS</p>
                 <div id="member-list" style="font-size: 10px; color: #a1a1aa; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; font-weight: 500;">Connecting...</div>
             </div>
 
             <button class="btn btn-white" style="margin-bottom:10px;" onclick="initApp(true)">G.C.E. O/L Mode</button>
             <button class="btn btn-dark" style="margin-bottom:10px;" onclick="initApp(false)">Grade 6 - 9 Mode</button>
+            <button class="btn btn-orange" style="margin-bottom:10px; font-size: 10px;" onclick="openTableLoginModal()"><i class="fas fa-sign-in-alt"></i> Load Saved Table</button>
             <button class="btn btn-dark" style="font-size: 10px; border-color: var(--green); color: var(--green);" onclick="openAdminModal()"><i class="fas fa-lock"></i> Admin Portal Login</button>
         </div>
         <div style="margin-top: 20px; font-size: 9px; color: var(--muted); letter-spacing: 2px; font-weight: 700;">©2026 O/L POINTS (V2.6) | BY SENUZ</div>
     </div>
 
-    <!-- Admin Verification Modal -->
+    <!--Help-->
+    <div id="help-modal" class="modal">
+        <div class="q-box" style="max-width: 440px;">
+            <h2 style="margin-bottom:4px; font-weight: 800; font-size: 18px; color: var(--blue);">System User Manual</h2>
+            <p style="font-size: 10px; color: var(--muted); margin-bottom: 15px;">Select your language / ඔබේ භාෂාව තෝරන්න</p>
+            
+            <div style="display:flex; gap:8px; margin-bottom:15px;">
+                <button class="lang-btn active" id="btn-lang-si" onclick="setHelpLang('si')">සිංහල</button>
+                <button class="lang-btn" id="btn-lang-en" onclick="setHelpLang('en')">English</button>
+                <button class="lang-btn" id="btn-lang-ta" onclick="setHelpLang('ta')">தமிழ்</button>
+            </div>
+
+            <div class="help-content-box" id="help-text-area">
+                </div>
+
+            <button class="btn btn-back" onclick="closeHelpModal()">❌ Close / වසන්න</button>
+        </div>
+    </div>
+
+    <!-- Admin Verification ( Senuz 🔥🌚 )-->
     <div id="admin-modal" class="modal">
         <div class="q-box">
             <h2 style="margin-bottom:8px; font-weight: 800; font-size: 18px; color: var(--green);">Admin Verification</h2>
@@ -269,18 +334,55 @@
         </div>
     </div>
 
+    <!--Table Login-->
+    <div id="table-login-modal" class="modal">
+        <div class="q-box">
+            <h2 style="margin-bottom:8px; font-weight: 800; font-size: 18px; color: var(--blue);">Load Saved Table</h2>
+            <p style="font-size: 10px; color: var(--muted); margin-bottom: 15px;">Enter your Table Link/ID and Password.</p>
+            <input type="text" id="load-table-link" placeholder="Paste Table Link or ID" style="text-align: center;">
+            <input type="password" id="load-table-pass" placeholder="Table Password" style="text-align: center;">
+            <button class="btn btn-green" onclick="loadSavedTable()">Access Table</button>
+            <button class="btn btn-back" onclick="closeTableLoginModal()">Cancel</button>
+        </div>
+    </div>
+
     <a href="https://wa.me/94782932976" class="wa-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
     <header id="main-header">
-        <div style="font-size: 11px; font-weight: 900; color: var(--blue); letter-spacing: 3px;">O/L POINTS SYSTEM</div>
-        <div class="countdown" id="timer">
+        <div style="display:flex; justify-content:space-between; align-items:center; max-width:600px; margin:auto;">
+            <div style="text-align:left;">
+                <div style="font-size: 11px; font-weight: 900; color: var(--blue); letter-spacing: 3px;">O/L POINTS SYSTEM</div>
+                <p style="font-size: 8px; color: var(--muted); font-weight: 800; letter-spacing: 1.5px; margin-top: 2px;">O/L EXAM COUNTDOWN</p>
+            </div>
+            <button onclick="openHelpModal()" style="background:rgba(0, 122, 255, 0.15); border:1px solid var(--blue); color:var(--blue); padding:6px 12px; border-radius:12px; font-size:10px; font-weight:800; cursor:pointer;">
+                <i class="fas fa-question-circle"></i> Help
+            </button>
+        </div>
+
+        <div class="countdown" id="timer" style="margin-top:12px;">
             <div class="cd-box"><span class="cd-val" id="mon">0</span><span class="cd-lab">MON</span></div>
             <div class="cd-box"><span class="cd-val" id="days">0</span><span class="cd-lab">DAY</span></div>
             <div class="cd-box"><span class="cd-val" id="hrs">0</span><span class="cd-lab">HRS</span></div>
             <div class="cd-box"><span class="cd-val" id="min">0</span><span class="cd-lab">MIN</span></div>
             <div class="cd-box"><span class="cd-val" id="sec">0</span><span class="cd-lab">SEC</span></div>
         </div>
+        <button onclick="download4x4CountdownImage()" style="background: white; border: 1px solid var(--blue); color: black; padding: 5px 12px; border-radius: 20px; font-size: 9px; font-weight: 800; margin-top: 10px; cursor: pointer;">
+            <i class="fas fa-download"></i> DOWNLOAD 4X4 COUNTDOWN IMAGE
+        </button>
     </header>
+
+    <!--Table එකේ Shedule Coutdown එක...-->
+    <div class="container" id="live-widget-container" style="padding-top:10px; padding-bottom:0; display:none;">
+        <div id="live-task-banner" style="background: rgba(0, 122, 255, 0.08); border: 1px solid var(--blue); border-radius: 22px; padding: 20px; font-size: 13px; font-weight: 700; color: #fff; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <span id="current-task-text" style="font-size: 14px;"><i class="fas fa-spinner fa-spin"></i> Loading current activity...</span>
+                <span id="task-countdown-text" style="color: var(--green); font-family: monospace; font-size: 16px; font-weight: 900; background: #08080a; padding: 4px 10px; border-radius: 8px; border: 1px solid var(--border);">--:--</span>
+            </div>
+            <div id="next-task-text" style="font-size: 11px; color: #a1a1aa; border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 10px; margin-top: 8px;">
+                <i class="fas fa-arrow-right" style="color: var(--blue);"></i> Next: <b>Loading...</b>
+            </div>
+        </div>
+    </div>
 
     <div class="container" id="step1">
         <div class="row">
@@ -288,7 +390,7 @@
             <div id="grade-inputs"></div>
             <p style="font-size: 11px; color: var(--muted); margin-top: 5px; margin-bottom: 18px; line-height: 1.4;">Select your current results for accurate pass probability and study plan design.</p>
             <button class="btn btn-green" onclick="startLoading()">Analyze & Process</button>
-            <button class="btn btn-back" onclick="location.reload()">Back</button>
+            <button class="btn btn-back" onclick="handleBackToGateway()">Back</button>
         </div>
     </div>
 
@@ -356,7 +458,21 @@
     <div class="container" id="step4">
         <div class="row" style="text-align:center;">
             <h2 style="color:var(--green); font-weight:800; font-size:18px; margin-bottom:15px; letter-spacing: 1px;">SCHEDULE GENERATED</h2>
-            <button class="btn btn-green" onclick="downloadReport()">Download JPG Plan</button>
+            
+            <div style="background:#08080a; border:1px solid var(--border); padding:14px; border-radius:14px; margin-bottom:15px; text-align:left;">
+                <p style="font-size:9px; color:var(--muted); font-weight:800; letter-spacing:1px; margin-bottom:6px;">YOUR UNIQUE TABLE LINK:</p>
+                <input type="text" id="shareable-link-input" readonly style="font-size:11px; margin-bottom:8px; padding:10px; background:#121215;">
+                
+                <p style="font-size:9px; color:var(--muted); font-weight:800; letter-spacing:1px; margin-bottom:6px; margin-top:8px;">AUTO-GENERATED TABLE PASSWORD:</p>
+                <input type="text" id="shareable-pass-input" readonly style="font-size:11px; margin-bottom:8px; padding:10px; background:#121215; color:var(--green); font-weight:bold;">
+                
+                <button class="btn btn-white" style="padding:10px; font-size:11px; margin-bottom:10px;" onclick="copyTableInfo()"><i class="fas fa-copy"></i> Copy Link & Password</button>
+                <p style="font-size:9px; color:var(--red); font-weight:700; line-height:1.4; text-align:center; margin-top:8px;">⚠️ Do not share this link or password with anyone. Keep it private to protect your personal privacy and academic data.</p>
+            </div>
+
+            <button class="btn btn-orange" style="margin-bottom:10px;" onclick="showStep(1)"><i class="fas fa-edit"></i> Edit Grades / Ranks</button>
+            <button class="btn btn-blue" style="margin-bottom:10px;" onclick="download4x4CountdownImage()"><i class="fas fa-image"></i> Download 4x4 Countdown Image</button>
+            <button class="btn btn-green" onclick="downloadReport()">Download HQ Full Plan JPG</button>
             <button class="btn btn-back" onclick="showStep(3)">Back to Settings</button>
         </div>
     </div>
@@ -382,21 +498,75 @@
     </div>
 
     <div id="capture-area">
-        <div style="text-align:center; margin-bottom:25px;">
+        <div style="text-align:center; margin-bottom:20px;">
             <h1 style="color:#fff; font-size:26px; font-weight:900; letter-spacing:2px; text-transform:uppercase;">ACADEMIC TIMETABLE</h1>
             <p id="cap-header" style="color:var(--muted); letter-spacing:2px; font-size: 10px; margin-top: 5px; font-weight:700;"></p>
         </div>
+
+        <div style="background:#15161e; border:1px solid #232533; border-radius:18px; padding:15px; margin-bottom:20px; text-align:center;">
+            <p style="font-size:9px; color:var(--muted); font-weight:800; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">O/L EXAM COUNTDOWN</p>
+            <div class="countdown" style="margin-top:0;">
+                <div class="cd-box"><span class="cd-val" id="cap-mon">0</span><span class="cd-lab">MON</span></div>
+                <div class="cd-box"><span class="cd-val" id="cap-days">0</span><span class="cd-lab">DAY</span></div>
+                <div class="cd-box"><span class="cd-val" id="cap-hrs">0</span><span class="cd-lab">HRS</span></div>
+                <div class="cd-box"><span class="cd-val" id="cap-min">0</span><span class="cd-lab">MIN</span></div>
+                <div class="cd-box"><span class="cd-val" id="cap-sec">0</span><span class="cd-lab">SEC</span></div>
+            </div>
+        </div>
+
         <div class="stats-grid" id="cap-stats" style="display:grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; text-align: center;">
-            <div style="background:#121215; padding:18px; border-radius:18px; border:1px solid #222228;"><p style="font-size:9px; color:var(--muted); letter-spacing:1px; font-weight:700;">PROBABILITY</p><h2 id="cap-pass" style="color:var(--green); font-size:28px; margin-top:4px;">0%</h2></div>
-            <div style="background:#121215; padding:18px; border-radius:18px; border:1px solid #222228;"><p style="font-size:9px; color:var(--muted); letter-spacing:1px; font-weight:700;">9A POTENTIAL</p><h2 id="cap-nine" style="color:var(--blue); font-size:28px; margin-top:4px;">0%</h2></div>
-            <div style="background:#121215; padding:18px; border-radius:18px; border:1px solid #222228;"><p style="font-size:9px; color:var(--muted); letter-spacing:1px; font-weight:700;">FAIL RISK</p><h2 id="cap-fail" style="color:var(--red); font-size:28px; margin-top:4px;">0%</h2></div>
+            <div style="background:#15161e; padding:18px; border-radius:18px; border:1px solid #232533;"><p style="font-size:9px; color:var(--muted); letter-spacing:1px; font-weight:700;">PROBABILITY</p><h2 id="cap-pass" style="color:var(--green); font-size:28px; margin-top:4px;">0%</h2></div>
+            <div style="background:#15161e; padding:18px; border-radius:18px; border:1px solid #232533;"><p style="font-size:9px; color:var(--muted); letter-spacing:1px; font-weight:700;">9A POTENTIAL</p><h2 id="cap-nine" style="color:var(--blue); font-size:28px; margin-top:4px;">0%</h2></div>
+            <div style="background:#15161e; padding:18px; border-radius:18px; border:1px solid #232533;"><p style="font-size:9px; color:var(--muted); letter-spacing:1px; font-weight:700;">FAIL RISK</p><h2 id="cap-fail" style="color:var(--red); font-size:28px; margin-top:4px;">0%</h2></div>
         </div>
         <div id="final-timetable-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px;"></div>
         <div class="img-copyright">O/L POINTS SYSTEM | DEVELOPED BY SENUZ</div>
     </div>
 
+    <!--Img capture-->
+    <div id="countdown-4x4-capture">
+        <div style="text-align: center; margin-top: 5px;">
+            <div style="font-size: 28px; font-weight: 900; color: #007AFF; letter-spacing: 4px; text-transform: uppercase;">O/L POINTS 2026</div>
+            <div style="font-size: 12px; color: #a1a1aa; letter-spacing: 2px; font-weight: 700; margin-top: 4px; text-transform: uppercase;">SMART ACADEMIC TARGET ENGINE</div>
+        </div>
+
+        <div style="background: #15161e; border: 1px solid #232533; border-radius: 24px; padding: 40px 25px; width: 100%; text-align: center;">
+            <div style="font-size: 15px; color: #007AFF; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px;">G.C.E. O/L EXAM COUNTDOWN</div>
+            
+            <div style="display: flex; justify-content: center; gap: 12px;">
+                <div style="background: #0b0c10; border: 1px solid #232533; border-radius: 16px; padding: 18px 12px; min-width: 105px;">
+                    <span id="img4x4-mon" style="font-size: 36px; font-weight: 900; color: #ffffff; display: block;">0</span>
+                    <span style="font-size: 10px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">MONTHS</span>
+                </div>
+                <div style="background: #0b0c10; border: 1px solid #232533; border-radius: 16px; padding: 18px 12px; min-width: 105px;">
+                    <span id="img4x4-days" style="font-size: 36px; font-weight: 900; color: #ffffff; display: block;">0</span>
+                    <span style="font-size: 10px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">DAYS</span>
+                </div>
+                <div style="background: #0b0c10; border: 1px solid #232533; border-radius: 16px; padding: 18px 12px; min-width: 105px;">
+                    <span id="img4x4-hrs" style="font-size: 36px; font-weight: 900; color: #ffffff; display: block;">0</span>
+                    <span style="font-size: 10px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">HOURS</span>
+                </div>
+                <div style="background: #0b0c10; border: 1px solid #232533; border-radius: 16px; padding: 18px 12px; min-width: 105px;">
+                    <span id="img4x4-min" style="font-size: 36px; font-weight: 900; color: #ffffff; display: block;">0</span>
+                    <span style="font-size: 10px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">MINUTES</span>
+                </div>
+            </div>
+
+            <div style="font-size: 24px; font-weight: 900; color: #ffffff; letter-spacing: 3px; margin-top: 30px; text-transform: uppercase;">
+                "YOU CAN DO IT!"
+            </div>
+            <div style="font-size: 11px; color: #007AFF; letter-spacing: 1.5px; margin-top: 6px; font-weight: 700;">
+                FOCUS • DISCIPLINE • SUCCESS
+            </div>
+        </div>
+
+        <div style="text-align: center; border-top: 1px solid #232533; padding-top: 15px; width: 100%;">
+            <div style="font-size: 12px; font-weight: 800; color: #ffffff; letter-spacing: 2px; text-transform: uppercase;">©2026 O/L POINTS SYSTEM</div>
+            <div style="font-size: 10px; color: #007AFF; font-weight: 700; letter-spacing: 1.5px; margin-top: 3px;">POWERED BY SENUZ INNOVATION</div>
+        </div>
+    </div>
+
     <script>
-        // FIREBASE CONFIGURATIONS
         const firebaseConfig = {
             apiKey: "AIzaSyBI9bjoLB0ahvcIu0NMhWDPXo_bnfn-lH0",
             authDomain: "senuz-chats-ol.firebaseapp.com",
@@ -427,9 +597,15 @@
         let currentUser = localStorage.getItem('senuz_current_user') || "";
         let userRole = localStorage.getItem('senuz_role') || "User"; 
 
+        let currentTableId = new URLSearchParams(window.location.search).get('table') || "";
+        let currentTablePassword = "";
+        let globalSchedulePlan = {};
+        let isTableLoggedIn = false;
+
         window.onload = () => {
             document.getElementById('display-id').innerText = `ID: #${userId}`;
-            
+            document.getElementById('user-name-input').value = "";
+
             let initialLoadDone = false;
 
             database.ref('system_status/maintenance').on('value', (snapshot) => {
@@ -452,16 +628,155 @@
                 console.error("Firebase Read Error: ", error);
             });
 
+            if(currentTableId) {
+                database.ref('tables/' + currentTableId).once('value').then(snapshot => {
+                    const tableData = snapshot.val();
+                    if(tableData) {
+                        let enteredPass = prompt("Enter the Auto-Generated Password for this Table:");
+                        if(enteredPass !== tableData.tablePassword) {
+                            alert("Incorrect Password! Access Denied.");
+                            window.location.href = window.location.pathname;
+                            return;
+                        }
+
+                        isTableLoggedIn = true;
+                        currentTablePassword = tableData.tablePassword;
+                        isOL = tableData.isOL;
+                        classes = tableData.classes || [];
+                        schoolDays = tableData.schoolDays || schoolDays;
+                        if(tableData.sleepStart) document.getElementById('sleep-start').value = tableData.sleepStart;
+                        if(tableData.sleepEnd) document.getElementById('sleep-end').value = tableData.sleepEnd;
+                        currentUser = tableData.user || "Shared User";
+                        userRole = tableData.role || "User";
+                        
+                        renderGrades();
+                        
+                        if(tableData.savedGrades) {
+                            setTimeout(() => {
+                                const gradeSelects = document.querySelectorAll('.grade-val');
+                                gradeSelects.forEach(sel => {
+                                    if(tableData.savedGrades[sel.dataset.sub]) {
+                                        sel.value = tableData.savedGrades[sel.dataset.sub];
+                                    }
+                                });
+                            }, 50);
+                        }
+
+                        renderClasses();
+                        
+                        document.getElementById('gateway').style.display = 'none';
+                        document.getElementById('main-header').style.display = 'block';
+                        document.getElementById('live-widget-container').style.display = 'block';
+                        document.getElementById('feedback-area').style.display = 'block';
+
+                        generateFinalPlan();
+                    } else {
+                        alert("Table not found!");
+                        window.location.href = window.location.pathname;
+                    }
+                });
+            }
+
             setTimeout(() => { document.getElementById('p-fill').style.width = '100%'; }, 100);
             
             setTimeout(() => {
                 document.getElementById('initial-loader').style.display = 'none';
                 initialLoadDone = true;
-                applyMaintenanceState();
+                if(!currentTableId) {
+                    applyMaintenanceState();
+                }
             }, 3000);
 
             updateTimer();
+            startLiveTaskTracker();
+            setHelpLang('si');
         };
+
+        function openHelpModal() {
+            document.getElementById('help-modal').style.display = 'flex';
+        }
+
+        function closeHelpModal() {
+            document.getElementById('help-modal').style.display = 'none';
+        }
+
+        function setHelpLang(lang) {
+            document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('btn-lang-' + lang).classList.add('active');
+
+            const helpBox = document.getElementById('help-text-area');
+
+            if(lang === 'si') {
+                helpBox.innerHTML = `
+                    <h4><span class="help-step-num">Step 1</span> පද්ධතියට ලොග් වීම</h4>
+                    <p>මුලින්ම Gateway එකෙහි ඇති Box එකේ ඔබේ <b>ඉංග්‍රීසි නම (අකුරු 4 ත් 17 ත් අතර)</b> නිවැරදිව ඇතුළත් කරන්න. ඉන්පසු <b>G.C.E. O/L Mode</b> (සාමාන්‍ය පෙළ සඳහා) හෝ <b>Grade 6-9 Mode</b> (6-9 ශ්‍රේණි සඳහා) ක්ලික් කරන්න.</p>
+                    
+                    <h4><span class="help-step-num">Step 2</span> ලකුණු / සාමාර්ථ ඇතුළත් කිරීම</h4>
+                    <p>ප්‍රධාන විෂයන් සහ බාස්කට් (Bucket) විෂයන් සඳහා ඔබේ දැනට පවතින සාමාර්ථ (<b>A, B, C, S, W</b>) තෝරන්න. ඉන්පසු <b>Analyze & Process</b> බටන් එක ක්ලික් කරන්න.</p>
+
+                    <h4><span class="help-step-num">Step 3</span> විභාග ප්‍රතිඵල විශ්ලේෂණය</h4>
+                    <p>මෙහිදී පද්ධතිය විසින් ඔබේ විභාගය සමත් වීමේ ප්‍රතිශතය (<b>Pass Probability</b>), 9A ලබාගැනීමේ සම්භාවිතාව (<b>9A Potential</b>) සහ අසමත් වීමේ අවදානම (<b>Fail Risk</b>) නිවැරදිව ගණනය කර පෙන්වයි.</p>
+
+                    <h4><span class="help-step-num">Step 4</span> කාලසටහන සෑදීම (Timetable Config)</h4>
+                    <p>ඔබ පාසල් යන දවස්, රෑට නිදාගන්නා සහ උදේ නැගිටින වේලාවන් (Sleep Schedule) සහ උපකාරක පන්ති (Extra Classes) එකතු කරන්න. <b>Generate Schedule</b> ක්ලික් කළ විට ඔබට ගැලපෙනම කාලසටහන සෑදේ.</p>
+
+                    <h4><span class="help-step-num">Step 5</span> Table Link එක සහ Password එක</h4>
+                    <p>කාලසටහන සැකසූ පසු ඔබට ස්වයංක්‍රීය <b>Unique Link එකක් සහ Password එකක්</b> ලැබේ. එය Copy කර තබාගන්න. ඊළඟ වතාවේ කෙළින්ම ලොග් වීමට Gateway එකේ ඇති <b>Load Saved Table</b> මගින් එම Link/Password යොදා පිවිසිය හැක.</p>
+
+                    <h4><span class="help-step-num">Step 6</span> Live Task Widget එක</h4>
+                    <p>ඔබ Saved Table එකකින් ලොග් වූ විට, <b>දැනට කළ යුතු වැඩේ සහ ඊළඟ පැයේ ඇති වැඩේ Live Countdown එකක්</b> සමඟ Header එකට යටින් පෙන්වනු ලබයි.</p>
+
+                    <h4><span class="help-step-num">Step 7</span> 4x4 Countdown Image එක</h4>
+                    <p>Header එකේ ඇති <b>Download 4x4 Countdown Image</b> බටන් එකෙන් විභාගයට ඉතිරි මාස, දින, පැය සහ මිනිත්තු සටහන් වූ Clean & Soft Blue Minimalist Image එක HD බාගත හැක.</p>
+                `;
+            } else if(lang === 'en') {
+                helpBox.innerHTML = `
+                    <h4><span class="help-step-num">Step 1</span> System Verification</h4>
+                    <p>Enter your <b>English Name (4 to 17 letters)</b> in the gateway text field. Then choose either <b>G.C.E. O/L Mode</b> or <b>Grade 6-9 Mode</b>.</p>
+                    
+                    <h4><span class="help-step-num">Step 2</span> Grade Input</h4>
+                    <p>Select your current grades (<b>A, B, C, S, W</b>) for all main and bucket subjects. Once selected, click <b>Analyze & Process</b>.</p>
+
+                    <h4><span class="help-step-num">Step 3</span> Analytical Breakdown</h4>
+                    <p>The AI engine will calculate your exact <b>Pass Probability</b>, <b>9A Potential</b>, and <b>Fail Risk</b> using mapped cut-off weights.</p>
+
+                    <h4><span class="help-step-num">Step 4</span> Timetable Configuration</h4>
+                    <p>Configure your school attendance days, sleep/wake hours, and extra tuition classes. Click <b>Generate Schedule</b> to create a personalized timetable.</p>
+
+                    <h4><span class="help-step-num">Step 5</span> Saved Table Access</h4>
+                    <p>An automated <b>Unique Table Link and Password</b> will be created for you. Copy and save them. You can load your saved table directly from the Gateway using <b>Load Saved Table</b>.</p>
+
+                    <h4><span class="help-step-num">Step 6</span> Live Activity Widget</h4>
+                    <p>When logged into a saved table, a <b>Live Task Widget</b> will track your hourly study plan with real-time countdowns for current and upcoming activities.</p>
+
+                    <h4><span class="help-step-num">Step 7</span> 4x4 Countdown Image</h4>
+                    <p>Click <b>Download 4x4 Countdown Image</b> in the header to download a high-definition clean, soft blue & black O/L target image.</p>
+                `;
+            } else if(lang === 'ta') {
+                helpBox.innerHTML = `
+                    <h4><span class="help-step-num">Step 1</span> கணினி நுழைவு</h4>
+                    <p>நுழைவுப் பெட்டியில் உங்கள் <b>ஆங்கில பெயரை (4 முதல் 17 எழுத்துக்கள்)</b> உள்ளிடவும். பின்னர் <b>G.C.E. O/L Mode</b> அல்லது <b>Grade 6-9 Mode</b> என்பதைத் தேர்ந்தெடுக்கவும்.</p>
+                    
+                    <h4><span class="help-step-num">Step 2</span> தரங்களை உள்ளிடுதல்</h4>
+                    <p>அனைத்துப் பாடங்களுக்கும் உங்கள் தற்போதைய தரங்களை (<b>A, B, C, S, W</b>) தேர்ந்தெடுத்து <b>Analyze & Process</b> என்பதை அழுத்தவும்.</p>
+
+                    <h4><span class="help-step-num">Step 3</span> ஆய்வு முடிவுகள்</h4>
+                    <p>உங்கள் தேர்ச்சி சதவீதம் (<b>Pass Probability</b>), 9A அடையும் வாய்ப்பு (<b>9A Potential</b>) மற்றும் தோல்வி அபாயம் ஆகியவற்றை கணினி துல்லியமாகக் காட்டும்.</p>
+
+                    <h4><span class="help-step-num">Step 4</span> நேர அட்டவணை அமைப்பு</h4>
+                    <p>பள்ளி நாட்கள், தூங்கும் நேரம் மற்றும் பயிற்சி வகுப்புகளை அமைத்து <b>Generate Schedule</b> என்பதைக் கிளிக் செய்யவும்.</p>
+
+                    <h4><span class="help-step-num">Step 5</span> அட்டவணையைச் சேமித்தல்</h4>
+                    <p>உங்கள் அட்டவணைக்கு ஒரு <b>தனித்துவமான இணைப்பு மற்றும் கடவுச்சொல்</b> உருவாக்கப்படும். <b>Load Saved Table</b> மூலம் எப்போது வேண்டுமானாலும் அணுகலாம்.</p>
+
+                    <h4><span class="help-step-num">Step 6</span> நேரடி பணி விட்ஜெட்</h4>
+                    <p>சேமிக்கப்பட்ட அட்டவணையில் நுழையும் போது, உங்கள் <b>தற்போதைய மற்றும் அடுத்த மணிநேரப் பணிகளை நேரடி கவுண்டவுன் மூலம் காட்டும்.</b></p>
+
+                    <h4><span class="help-step-num">Step 7</span> 4x4 Countdown படம்</h4>
+                    <p><b>Download 4x4 Countdown Image</b> என்பதைக் கிளிக் செய்து O/L தேர்வுக்கான கவுண்டவுன் படத்தை பதிவிறக்கம் செய்யலாம்.</p>
+                `;
+            }
+        }
 
         function applyMaintenanceState() {
             const maintOverlay = document.getElementById('maint-overlay');
@@ -482,7 +797,7 @@
                 step1.style.display = 'none';
             } else {
                 maintOverlay.style.display = 'none';
-                if(step1.style.display !== 'block' && document.getElementById('step2').style.display !== 'block' && document.getElementById('step3').style.display !== 'block' && document.getElementById('step4').style.display !== 'block') {
+                if(!currentTableId && step1.style.display !== 'block' && document.getElementById('step2').style.display !== 'block' && document.getElementById('step3').style.display !== 'block' && document.getElementById('step4').style.display !== 'block') {
                     gateway.style.display = 'flex';
                 }
             }
@@ -503,6 +818,33 @@
 
         function openAdminModal() { document.getElementById('admin-modal').style.display = 'flex'; }
         function closeAdminModal() { document.getElementById('admin-modal').style.display = 'none'; }
+
+        function openTableLoginModal() { document.getElementById('table-login-modal').style.display = 'flex'; }
+        function closeTableLoginModal() { document.getElementById('table-login-modal').style.display = 'none'; }
+
+        function loadSavedTable() {
+            let val = document.getElementById('load-table-link').value.trim();
+            let pass = document.getElementById('load-table-pass').value.trim();
+            if(!val || !pass) { alert("Please enter both Table Link/ID and Password!"); return; }
+            
+            let tblId = val;
+            if(val.includes('?table=')) {
+                tblId = val.split('?table=')[1].split('&')[0];
+            }
+
+            database.ref('tables/' + tblId).once('value').then(snapshot => {
+                const tableData = snapshot.val();
+                if(tableData) {
+                    if(pass !== tableData.tablePassword) {
+                        alert("Incorrect Table Password!");
+                        return;
+                    }
+                    window.location.href = window.location.pathname + "?table=" + tblId;
+                } else {
+                    alert("Table not found!");
+                }
+            });
+        }
 
         function verifyAdmin() {
             const pass = document.getElementById('admin-pass-input').value;
@@ -535,29 +877,34 @@
         function initApp(olMode) {
             let inputVal = document.getElementById('user-name-input').value.trim();
 
-            // Admin ලෙස Modal එකෙන් ලොග් වී නොමැති නම් සාමාන්‍ය User ලෙස සලකන්න
             if (userRole !== "Admin") {
                 if (!inputVal) { alert("Please enter your name."); return; }
-                if (inputVal.length < 4) { alert("Name must be 4+ characters."); return; }
+                if (inputVal.length < 4 || inputVal.length > 17) { alert("Name must be between 4 and 17 characters long."); return; }
                 
                 if (adminForbiddenNames.includes(inputVal.toLowerCase())) { alert("Reserved name! You cannot use it."); return; }
                 const regex = /^[a-zA-Z\s]+$/;
                 if (!regex.test(inputVal)) { alert("English letters only."); return; }
                 
                 currentUser = inputVal + " (" + userId + ")";
-                userRole = "User"; // Gateway හරහා යන විට Role එක User ලෙස සකසයි
+                userRole = "User";
                 
                 localStorage.setItem('senuz_current_user', currentUser);
-                localStorage.setItem('senuz_role', 'User'); // Local storage එක overwrite වේ
+                localStorage.setItem('senuz_role', 'User');
             }
 
             isOL = olMode;
             document.getElementById('gateway').style.display = 'none';
             document.getElementById('main-header').style.display = 'block';
+            
+            if (isTableLoggedIn) {
+                document.getElementById('live-widget-container').style.display = 'block';
+            } else {
+                document.getElementById('live-widget-container').style.display = 'none';
+            }
+
             document.getElementById('step1').style.display = 'block';
             document.getElementById('feedback-area').style.display = 'block';
 
-            // Admin Banner එක පෙන්වන්නේ Admin ලොගින් එකෙන් ආවොත් පමණි
             if (userRole === "Admin") {
                 document.getElementById('admin-banner').style.display = 'block';
             } else {
@@ -565,6 +912,14 @@
             }
 
             renderGrades();
+        }
+
+        function handleBackToGateway() {
+            isTableLoggedIn = false;
+            document.getElementById('live-widget-container').style.display = 'none';
+            document.getElementById('main-header').style.display = 'none';
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('gateway').style.display = 'flex';
         }
 
         function timeAgo(time) {
@@ -606,7 +961,7 @@
         }
 
         function showStep(n) {
-            document.querySelectorAll('.container').forEach(c => { if(c.id !== 'feedback-area') c.style.display = 'none'; });
+            document.querySelectorAll('.container').forEach(c => { if(c.id !== 'feedback-area' && c.id !== 'live-widget-container') c.style.display = 'none'; });
             document.getElementById('step' + n).style.display = 'block';
         }
 
@@ -623,7 +978,7 @@
         function calculateResults() {
             let total = 0; 
             let wCount = 0;
-            const weight = { "4": 92, "3": 78, "2": 62, "1": 48, "0": 28 };
+            const weight = { "4": 75, "3": 65, "2": 55, "1": 35, "0": 0 };
             
             const inputs = document.querySelectorAll('.grade-val, .grade-val-b');
             inputs.forEach(s => {
@@ -668,7 +1023,7 @@
         }
         function renderClasses() {
             const list = document.getElementById('cls-list'); list.innerHTML = "";
-            classes.forEach(c => { list.innerHTML += `<div style="background:#000; padding:10px 14px; border:1px solid var(--border); border-radius:10px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; font-size:11px;"><span><b>${c.n}</b> (${c.d})</span><i class="fas fa-times" style="color:var(--red); cursor:pointer;" onclick="classes=classes.filter(i=>i.id!=${c.id});renderClasses()"></i></div>`; });
+            classes.forEach(c => { list.innerHTML += `<div style="background:#08080a; padding:10px 14px; border:1px solid var(--border); border-radius:10px; margin-bottom:6px; display:flex; justify-content:space-between; align-items:center; font-size:11px;"><span><b>${c.n}</b> (${c.d})</span><i class="fas fa-times" style="color:var(--red); cursor:pointer;" onclick="classes=classes.filter(i=>i.id!=${c.id});renderClasses()"></i></div>`; });
         }
 
         function formatTime(hr) { let h = hr > 12 ? hr-12 : hr === 0 ? 12 : hr; let ampm = hr >= 12 ? 'PM' : 'AM'; return `${h}:00 ${ampm}`; }
@@ -679,11 +1034,23 @@
             document.getElementById('cap-header').innerText = isOL ? "G.C.E. O/L ACADEMIC TARGET SCHEDULE" : "GRADE 6-9 PRIORITY TIMETABLE";
             
             let weakSubs = []; let normalSubs = [];
-            document.querySelectorAll('.grade-val').forEach(s => { if(parseInt(s.value) <= 2) weakSubs.push(s.dataset.sub); else normalSubs.push(s.dataset.sub); });
-            document.querySelectorAll('.grade-val-b').forEach((s, idx) => { let name = document.querySelectorAll('.bucket-name')[idx].value; if(parseInt(s.value) <= 2) weakSubs.push(name); else normalSubs.push(name); });
+            let savedGradesObj = {};
+            document.querySelectorAll('.grade-val').forEach(s => { 
+                savedGradesObj[s.dataset.sub] = s.value;
+                if(parseInt(s.value) <= 2) weakSubs.push(s.dataset.sub); 
+                else normalSubs.push(s.dataset.sub); 
+            });
+            document.querySelectorAll('.grade-val-b').forEach((s, idx) => { 
+                let name = document.querySelectorAll('.bucket-name')[idx].value; 
+                savedGradesObj[name] = s.value;
+                if(parseInt(s.value) <= 2) weakSubs.push(name); 
+                else normalSubs.push(name); 
+            });
             
-            const sStartParts = document.getElementById('sleep-start').value.split(':');
-            const sEndParts = document.getElementById('sleep-end').value.split(':');
+            const sleepStartVal = document.getElementById('sleep-start').value;
+            const sleepEndVal = document.getElementById('sleep-end').value;
+            const sStartParts = sleepStartVal.split(':');
+            const sEndParts = sleepEndVal.split(':');
             const sStartHour = parseInt(sStartParts[0] || 0);
             const sStartMin = parseInt(sStartParts[1] || 0);
             const sEndHour = parseInt(sEndParts[0] || 0);
@@ -693,25 +1060,38 @@
             let weakIdx = 0;
             let normalIdx = 0;
 
+            globalSchedulePlan = {};
+
             days.forEach(day => {
-                let html = `<div style="background:#121215; border:1px solid var(--border); border-radius:20px; padding:20px;">
+                globalSchedulePlan[day] = {};
+                let html = `<div style="background:#15161e; border:1px solid var(--border); border-radius:20px; padding:20px;">
                     <div style="font-size:13px; font-weight:800; color:var(--blue); border-bottom:1px solid var(--border); padding-bottom:10px; margin-bottom:12px; letter-spacing:1px; text-transform:uppercase;">${day}</div>`;
                 let occ = {}; 
                 
                 if(schoolDays.includes(day)) {
-                    for(let i=7; i<=13; i++) occ[i] = { type: 'School', label: 'School Session', start: '07:30 AM', end: '01:30 PM' };
+                    for(let i=7; i<=13; i++) {
+                        occ[i] = { type: 'School', label: 'School Session', start: '07:30 AM', end: '01:30 PM' };
+                        globalSchedulePlan[day][i] = 'School Session';
+                    }
                     occ[6] = { type: 'Buffer' }; 
                     occ[14] = { type: 'Rest', label: 'Lunch & Break' };
+                    globalSchedulePlan[day][14] = 'Lunch & Break';
                 }
 
                 classes.filter(c => c.d === day).forEach(c => {
                     let h1 = parseInt(c.t1.split(':')[0]);
                     let h2 = parseInt(c.t2.split(':')[0]);
-                    for(let i=h1; i<=h2; i++) occ[i] = { type: 'Class', label: c.n, start: c.t1, end: c.t2 };
+                    for(let i=h1; i<=h2; i++) {
+                        occ[i] = { type: 'Class', label: c.n, start: c.t1, end: c.t2 };
+                        globalSchedulePlan[day][i] = c.n;
+                    }
                     if(!occ[h1-1]) occ[h1-1] = { type: 'Buffer' };
                 });
 
-                if(!occ[20]) occ[20] = { type: 'Rest', label: 'Dinner & Break' };
+                if(!occ[20]) {
+                    occ[20] = { type: 'Rest', label: 'Dinner & Break' };
+                    globalSchedulePlan[day][20] = 'Dinner & Break';
+                }
 
                 let lastAssignedSub = "";
                 let lastEventLabel = "";
@@ -730,6 +1110,7 @@
                     }
                     if(isSleeping) {
                         studySessionCount = 0;
+                        globalSchedulePlan[day][hr] = 'Sleep & Rest';
                         continue;
                     }
 
@@ -761,6 +1142,7 @@
                                     <span><span class="slot-tag tag-rest">BREAK</span><span style="color:#ffd11a;">Hydration & Short Break (15m)</span></span>
                                     <span style="color:var(--muted); font-size:10px;">${formatTime(hr)}</span>
                                 </div>`;
+                                globalSchedulePlan[day][hr] = 'Short Break';
                                 studySessionCount = 0;
                                 continue;
                             }
@@ -797,6 +1179,7 @@
                             }
 
                             lastAssignedSub = sub;
+                            globalSchedulePlan[day][hr] = sub;
                             studySessionCount++;
                             let tagClass = isWeak ? 'tag-priority' : 'tag-normal';
                             let tagText = isWeak ? 'HIGH PRIORITY' : 'REVISION';
@@ -810,7 +1193,74 @@
                 }
                 grid.innerHTML += html + "</div>";
             });
+
+            if(!currentTableId) {
+                currentTableId = "tbl_" + Math.random().toString(36).substring(2, 9);
+                currentTablePassword = "snz_" + Math.random().toString(36).substring(2, 8);
+            }
+            const tablePayload = {
+                isOL,
+                schoolDays,
+                sleepStart: sleepStartVal,
+                sleepEnd: sleepEndVal,
+                classes,
+                savedGrades: savedGradesObj,
+                user: currentUser,
+                role: userRole,
+                tablePassword: currentTablePassword
+            };
+            database.ref('tables/' + currentTableId).set(tablePayload);
+
+            const generatedUrl = window.location.origin + window.location.pathname + "?table=" + currentTableId;
+            document.getElementById('shareable-link-input').value = generatedUrl;
+            document.getElementById('shareable-pass-input').value = currentTablePassword;
+
             showStep(4);
+        }
+
+        function copyTableInfo() {
+            const linkText = document.getElementById('shareable-link-input').value;
+            const passText = document.getElementById('shareable-pass-input').value;
+            const combined = `Table Link: ${linkText}\nPassword: ${passText}`;
+            navigator.clipboard.writeText(combined);
+            alert("Table Link and Password copied successfully!");
+        }
+
+        function startLiveTaskTracker() {
+            setInterval(() => {
+                const now = new Date();
+                const daysMap = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+                const currentDay = daysMap[now.getDay()];
+                const currentHour = now.getHours();
+                const nextHour = (currentHour + 1) % 24;
+                const nextDay = nextHour === 0 ? daysMap[(now.getDay() + 1) % 7] : currentDay;
+
+                const currentMin = now.getMinutes();
+                const currentSec = now.getSeconds();
+
+                const taskTextEl = document.getElementById('current-task-text');
+                const nextTaskTextEl = document.getElementById('next-task-text');
+                const countdownTextEl = document.getElementById('task-countdown-text');
+
+                if(globalSchedulePlan && globalSchedulePlan[currentDay] && globalSchedulePlan[currentDay][currentHour]) {
+                    const taskName = globalSchedulePlan[currentDay][currentHour];
+                    taskTextEl.innerHTML = `<i class="fas fa-bolt" style="color:var(--green)"></i> Current: <b>${taskName}</b>`;
+                } else {
+                    taskTextEl.innerHTML = `<i class="fas fa-coffee" style="color:#ffd11a"></i> Current: <b>Free Time / Rest</b>`;
+                }
+
+                if(globalSchedulePlan && globalSchedulePlan[nextDay] && globalSchedulePlan[nextDay][nextHour]) {
+                    const nextTaskName = globalSchedulePlan[nextDay][nextHour];
+                    nextTaskTextEl.innerHTML = `<i class="fas fa-arrow-right" style="color: var(--blue);"></i> Next (${formatTime(nextHour)}): <b>${nextTaskName}</b>`;
+                } else {
+                    nextTaskTextEl.innerHTML = `<i class="fas fa-arrow-right" style="color: var(--blue);"></i> Next (${formatTime(nextHour)}): <b>Free Time / Rest</b>`;
+                }
+
+                const remainingMins = 59 - currentMin;
+                const remainingSecs = 59 - currentSec;
+                countdownTextEl.innerText = `${String(remainingMins).padStart(2, '0')}:${String(remainingSecs).padStart(2, '0')}`;
+
+            }, 1000);
         }
 
         function isClean(text) { let low = text.toLowerCase(); return !forbidden.some(word => low.includes(word)); }
@@ -962,22 +1412,52 @@
         function downloadReport() { 
             const area = document.getElementById('capture-area'); 
             area.style.top = "0"; 
-            html2canvas(area, { scale: 2, backgroundColor: '#09090b' }).then(canvas => { 
+            html2canvas(area, { scale: 3, backgroundColor: '#0b0c10', useCORS: true }).then(canvas => { 
                 const link = document.createElement('a'); 
-                link.download = 'Academic_Plan_Senuz.jpg'; 
-                link.href = canvas.toDataURL("image/jpeg", 0.95); 
+                link.download = 'Academic_Plan_Senuz_HQ.jpg'; 
+                link.href = canvas.toDataURL("image/jpeg", 1.0); 
                 link.click(); 
                 area.style.top = "-9999px"; 
             }); 
         }
 
+        function download4x4CountdownImage() {
+            const area = document.getElementById('countdown-4x4-capture');
+            area.style.top = "0";
+            html2canvas(area, { scale: 3, backgroundColor: '#0d0e12', useCORS: true }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'OL_Countdown_4x4_Senuz.jpg';
+                link.href = canvas.toDataURL("image/jpeg", 1.0);
+                link.click();
+                area.style.top = "-9999px";
+            });
+        }
+
         function updateTimer() { 
             const diff = new Date("Dec 8, 2026").getTime() - new Date().getTime(); 
-            document.getElementById("mon").innerText = Math.max(0, Math.floor(diff / 2629746000)); 
-            document.getElementById("days").innerText = Math.max(0, Math.floor((diff % 2629746000) / 86400000)); 
-            document.getElementById("hrs").innerText = Math.max(0, Math.floor((diff % 86400000) / 3600000)); 
-            document.getElementById("min").innerText = Math.max(0, Math.floor((diff % 3600000) / 60000)); 
-            document.getElementById("sec").innerText = Math.max(0, Math.floor((diff % 60000) / 1000)); 
+            const m = Math.max(0, Math.floor(diff / 2629746000));
+            const d = Math.max(0, Math.floor((diff % 2629746000) / 86400000));
+            const h = Math.max(0, Math.floor((diff % 86400000) / 3600000));
+            const min = Math.max(0, Math.floor((diff % 3600000) / 60000));
+            const s = Math.max(0, Math.floor((diff % 60000) / 1000));
+
+            document.getElementById("mon").innerText = m; 
+            document.getElementById("days").innerText = d; 
+            document.getElementById("hrs").innerText = h; 
+            document.getElementById("min").innerText = min; 
+            document.getElementById("sec").innerText = s; 
+
+            document.getElementById("cap-mon").innerText = m; 
+            document.getElementById("cap-days").innerText = d; 
+            document.getElementById("cap-hrs").innerText = h; 
+            document.getElementById("cap-min").innerText = min; 
+            document.getElementById("cap-sec").innerText = s; 
+
+            document.getElementById("img4x4-mon").innerText = m; 
+            document.getElementById("img4x4-days").innerText = d; 
+            document.getElementById("img4x4-hrs").innerText = h; 
+            document.getElementById("img4x4-min").innerText = min; 
+
             setTimeout(updateTimer, 1000); 
         }
         console.log("Running on the 𝑺𝒆𝒏𝒖𝒛 𝒊𝒏𝒏𝒐𝒗𝒂𝒕𝒊𝒐𝒏 🧬❤️‍🩹")
