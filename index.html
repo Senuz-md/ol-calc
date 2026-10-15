@@ -231,6 +231,8 @@
             font-size: 12px;
             line-height: 1.6;
             color: #d4d4d8;
+            word-break: break-word;
+            overflow-wrap: break-word;
         }
         .help-content-box h4 {
             color: var(--blue);
@@ -301,7 +303,7 @@
             <button class="btn btn-orange" style="margin-bottom:10px; font-size: 10px;" onclick="openTableLoginModal()"><i class="fas fa-sign-in-alt"></i> Load Saved Table</button>
             <button class="btn btn-dark" style="font-size: 10px; border-color: var(--green); color: var(--green);" onclick="openAdminModal()"><i class="fas fa-lock"></i> Admin Portal Login</button>
         </div>
-        <div style="margin-top: 20px; font-size: 9px; color: var(--muted); letter-spacing: 2px; font-weight: 700;">©2026 O/L POINTS (V2.6) | BY SENUZ</div>
+        <div style="margin-top: 20px; font-size: 9px; color: var(--muted); letter-spacing: 2px; font-weight: 700;">©2026 O/L POINTS (V3.4) | BY SENUZ</div>
     </div>
 
     <!--Help-->
@@ -316,14 +318,13 @@
                 <button class="lang-btn" id="btn-lang-ta" onclick="setHelpLang('ta')">தமிழ்</button>
             </div>
 
-            <div class="help-content-box" id="help-text-area">
-                </div>
+            <div class="help-content-box" id="help-text-area"></div>
 
             <button class="btn btn-back" onclick="closeHelpModal()">❌ Close / වසන්න</button>
         </div>
     </div>
 
-    <!-- Admin Verification ( Senuz 🔥🌚 )-->
+    <!-- Admin Verification -->
     <div id="admin-modal" class="modal">
         <div class="q-box">
             <h2 style="margin-bottom:8px; font-weight: 800; font-size: 18px; color: var(--green);">Admin Verification</h2>
@@ -371,7 +372,7 @@
         </button>
     </header>
 
-    <!--Table එකේ Shedule Coutdown එක...-->
+    <!--Table Schedule Countdown Widget-->
     <div class="container" id="live-widget-container" style="padding-top:10px; padding-bottom:0; display:none;">
         <div id="live-task-banner" style="background: rgba(0, 122, 255, 0.08); border: 1px solid var(--blue); border-radius: 22px; padding: 20px; font-size: 13px; font-weight: 700; color: #fff; text-align: left;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
@@ -467,7 +468,7 @@
                 <input type="text" id="shareable-pass-input" readonly style="font-size:11px; margin-bottom:8px; padding:10px; background:#121215; color:var(--green); font-weight:bold;">
                 
                 <button class="btn btn-white" style="padding:10px; font-size:11px; margin-bottom:10px;" onclick="copyTableInfo()"><i class="fas fa-copy"></i> Copy Link & Password</button>
-                <p style="font-size:9px; color:var(--red); font-weight:700; line-height:1.4; text-align:center; margin-top:8px;">⚠️ Do not share this link or password with anyone. Keep it private to protect your personal privacy and academic data.</p>
+                <p style="font-size:9px; color:var(--red); font-weight:700; line-height:1.4; text-align:center; margin-top:8px;">⚠️ Do not share this link or password with anyone. Keep it private to protect your personal privacy data.</p>
             </div>
 
             <button class="btn btn-orange" style="margin-bottom:10px;" onclick="showStep(1)"><i class="fas fa-edit"></i> Edit Grades / Ranks</button>
@@ -489,9 +490,9 @@
         </div>
 
         <div class="row">
-            <h3>Community Portal</h3>
+            <h3>Community feedback</h3>
             <textarea id="fb-input" placeholder="Type your comment..." style="height: 80px;"></textarea>
-            <button class="btn btn-white" onclick="submitMsg(null)">Post Message</button>
+            <button class="btn btn-white" onclick="submitMsg(null)">Send Message</button>
             <div id="fb-list" style="margin-top:20px;"></div>
         </div>
         <div class="site-footer">©2026 O/L POINTS | SYSTEM BY SENUZ</div>
@@ -526,43 +527,43 @@
     <!--Img capture-->
     <div id="countdown-4x4-capture">
         <div style="text-align: center; margin-top: 5px;">
-            <div style="font-size: 28px; font-weight: 900; color: #007AFF; letter-spacing: 4px; text-transform: uppercase;">O/L POINTS 2026</div>
-            <div style="font-size: 12px; color: #a1a1aa; letter-spacing: 2px; font-weight: 700; margin-top: 4px; text-transform: uppercase;">SMART ACADEMIC TARGET ENGINE</div>
+            <div style="font-size: 35px; font-weight: 900; color: #007AFF; letter-spacing: 4px; text-transform: uppercase;">O/L POINTS 2026</div>
+            <div style="font-size: 14px; color: #a1a1aa; letter-spacing: 2px; font-weight: 700; margin-top: 4px; text-transform: uppercase;">SRI LANKAN'S NO.1 STUDY TABLE GENERATOR V3.4</div>
         </div>
 
         <div style="background: #15161e; border: 1px solid #232533; border-radius: 24px; padding: 40px 25px; width: 100%; text-align: center;">
-            <div style="font-size: 15px; color: #007AFF; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px;">G.C.E. O/L EXAM COUNTDOWN</div>
+            <div style="font-size: 20px; color: #007AFF; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px;">G.C.E. O/L EXAM COUNTDOWN</div>
             
             <div style="display: flex; justify-content: center; gap: 12px;">
                 <div style="background: #0b0c10; border: 1px solid #232533; border-radius: 16px; padding: 18px 12px; min-width: 105px;">
                     <span id="img4x4-mon" style="font-size: 36px; font-weight: 900; color: #ffffff; display: block;">0</span>
-                    <span style="font-size: 10px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">MONTHS</span>
+                    <span style="font-size: 13px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">MONTHS</span>
                 </div>
                 <div style="background: #0b0c10; border: 1px solid #232533; border-radius: 16px; padding: 18px 12px; min-width: 105px;">
                     <span id="img4x4-days" style="font-size: 36px; font-weight: 900; color: #ffffff; display: block;">0</span>
-                    <span style="font-size: 10px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">DAYS</span>
+                    <span style="font-size: 13px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">DAYS</span>
                 </div>
                 <div style="background: #0b0c10; border: 1px solid #232533; border-radius: 16px; padding: 18px 12px; min-width: 105px;">
                     <span id="img4x4-hrs" style="font-size: 36px; font-weight: 900; color: #ffffff; display: block;">0</span>
-                    <span style="font-size: 10px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">HOURS</span>
+                    <span style="font-size: 13px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">HOURS</span>
                 </div>
                 <div style="background: #0b0c10; border: 1px solid #232533; border-radius: 16px; padding: 18px 12px; min-width: 105px;">
                     <span id="img4x4-min" style="font-size: 36px; font-weight: 900; color: #ffffff; display: block;">0</span>
-                    <span style="font-size: 10px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">MINUTES</span>
+                    <span style="font-size: 13px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">MINUTES</span>
                 </div>
             </div>
 
             <div style="font-size: 24px; font-weight: 900; color: #ffffff; letter-spacing: 3px; margin-top: 30px; text-transform: uppercase;">
                 "YOU CAN DO IT!"
             </div>
-            <div style="font-size: 11px; color: #007AFF; letter-spacing: 1.5px; margin-top: 6px; font-weight: 700;">
+            <div style="font-size: 15px; color: #007AFF; letter-spacing: 1.5px; margin-top: 6px; font-weight: 700;">
                 FOCUS • DISCIPLINE • SUCCESS
             </div>
         </div>
 
         <div style="text-align: center; border-top: 1px solid #232533; padding-top: 15px; width: 100%;">
-            <div style="font-size: 12px; font-weight: 800; color: #ffffff; letter-spacing: 2px; text-transform: uppercase;">©2026 O/L POINTS SYSTEM</div>
-            <div style="font-size: 10px; color: #007AFF; font-weight: 700; letter-spacing: 1.5px; margin-top: 3px;">POWERED BY SENUZ INNOVATION</div>
+            <div style="font-size: 14px; font-weight: 800; color: #ffffff; letter-spacing: 2px; text-transform: uppercase;">©2026 O/L POINTS SYSTEM</div>
+            <div style="font-size: 13px; color: #007AFF; font-weight: 700; letter-spacing: 3px; margin-top: 3px;">POWERED BY SENUZ INNOVATION</div>
         </div>
     </div>
 
@@ -585,8 +586,8 @@
         let isOL = true; let classes = []; let selectedDay = "";
         let isMaintenance = false;
         let schoolDays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
-        const forbidden = ["හුත්ත", "පොන්න", "කැරියා", "හුකන", "hukana", "hucn", "cry", "cariya", "kariya", "kryya", "kriya", "pkdya", "කැරිම", "ponna", "හුත්", "Crym", "Tahike", "ponnayo", "Hukapan", "Hakanna", "Hutto", "Utto", "Wesige putha", "Huththige putha", "Huththige pakaya","Wesa balla"];
-        const adminForbiddenNames = ["senuz", "admin", "seneth", "seneth sandeepa", "seneth_sandeepa","ස්ෙනූස්", "Hukanna", "seneth-sandeepa", "o/l calculator admin", "developer","Olpoints","Ol points","Ol points owner","O/l points", "O/lpoints", "Ol points admin", "Ponnaya","pakaya","Huththa","Wesige putha","Huththige putha","ᴘᴏᴡᴇʀᴅ ʙʏ┋© ꜱᴇɴUZ ⑉〆","Pinnaya", "Gotukola ponnaya","Kari ponnaya","Crya", "පොන්නයා", "පකයා", "හුත්තා", "හුකන්නා"];
+        const forbidden = ["hukana", "hucn", "cry", "cariya", "kariya", "kryya", "kriya", "pkdya", "ponna", "Crym", "Tahike", "ponnayo", "Hukapan", "Hakanna", "Hutto", "Utto", "Wesige putha", "Huththige putha", "Huththige pakaya","Wesa balla"];
+        const adminForbiddenNames = ["senuz", "admin", "seneth", "seneth sandeepa","olpoints admin", "web admin", "developer", "senethsandeepa", "Hukanna", "seneth-sandeepa", "o/l calculator admin", "developer","Olpoints","Ol points","Ol points owner","O/l points", "O/lpoints", "Ol points admin", "Ponnaya","pakaya","Huthaᴇʀᴅ ʙʏ┋© ꜱᴇɴUZ ⑉〆","Pinnaya", "Gotukola ponnaya","Kari ponnaya","Crya"];
 
         const ADMIN_PIN = "Senuz-ofc-admin-dev-powered"; 
 
@@ -978,7 +979,7 @@
         function calculateResults() {
             let total = 0; 
             let wCount = 0;
-            const weight = { "4": 75, "3": 65, "2": 55, "1": 35, "0": 0 };
+            const weight = { "4": 75, "3": 60, "2": 45, "1": 30, "0": 0 };
             
             const inputs = document.querySelectorAll('.grade-val, .grade-val-b');
             inputs.forEach(s => {
@@ -987,14 +988,24 @@
             });
 
             let count = inputs.length;
-            let avg = total / count;
+            let maxPossible = count * 75;
+            let scorePercent = (total / maxPossible) * 100;
             
-            let pass = Math.min(avg * 1.05, 99.9);
-            let nine = avg > 70 ? (Math.pow(avg/100, 1.2)*100) : (Math.pow(avg/100, 2.8)*100);
+            // Pass probability remains strong and high (capped at 98.9%)
+            let pass = Math.min(scorePercent * 0.99, 98.9);
+            if(scorePercent >= 90) pass = 98.9;
+            
+            // 9A potential is strict and capped strictly at 79.5% for all A's
+            let nine = Math.pow(scorePercent / 100, 3.2) * 79.5;
+            if(scorePercent >= 95) nine = 79.5;
 
-            if(wCount >= 8) { pass *= 0.1; nine = 0.01; }
-            else if(wCount >= 5) { pass *= 0.4; nine = Math.max(0.12, nine * 0.1); }
-            else if(wCount >= 3) { pass *= 0.7; nine = Math.max(0.45, nine * 0.5); }
+            if(wCount >= 3) { 
+                pass = Math.max(15, pass * 0.4); 
+                nine = 0.01; 
+            } else if(wCount >= 1) { 
+                pass = Math.min(pass, 85); 
+                nine = Math.min(nine, 28.0); 
+            }
 
             pass = pass.toFixed(1);
             nine = nine.toFixed(2);
@@ -1360,7 +1371,7 @@
                 })
                 .catch(err => {
                     console.error("Firebase Write Error:", err);
-                    alert("Firebase Write Error! Rules (read/write: true) පරීක්ෂා කරන්න.");
+                    alert("Firebase Write Error! (read/write)");
                 }); 
         }
 
@@ -1463,4 +1474,8 @@
         console.log("Running on the 𝑺𝒆𝒏𝒖𝒛 𝒊𝒏𝒏𝒐𝒗𝒂𝒕𝒊𝒐𝒏 🧬❤️‍🩹")
     </script>
 </body>
+
+<!--🚀Copyrights needed ©2026 Last Updated V3.4-->
+<!--𝐏ᴏᴡᴇʀᴇᴅ ʙʏ┋© ꜱᴇɴᴜᴢ ⑉〆-->
+
 </html>
