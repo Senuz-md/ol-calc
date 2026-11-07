@@ -369,7 +369,6 @@
         </div>
 
         <div class="countdown" id="timer" style="margin-top:12px;">
-            <div class="cd-box"><span class="cd-val" id="mon">0</span><span class="cd-lab">MON</span></div>
             <div class="cd-box"><span class="cd-val" id="days">0</span><span class="cd-lab">DAY</span></div>
             <div class="cd-box"><span class="cd-val" id="hrs">0</span><span class="cd-lab">HRS</span></div>
             <div class="cd-box"><span class="cd-val" id="min">0</span><span class="cd-lab">MIN</span></div>
@@ -515,7 +514,6 @@
         <div style="background:#15161e; border:1px solid #232533; border-radius:18px; padding:15px; margin-bottom:20px; text-align:center;">
             <p style="font-size:9px; color:var(--muted); font-weight:800; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px;">O/L EXAM COUNTDOWN</p>
             <div class="countdown" style="margin-top:0;">
-                <div class="cd-box"><span class="cd-val" id="cap-mon">0</span><span class="cd-lab">MON</span></div>
                 <div class="cd-box"><span class="cd-val" id="cap-days">0</span><span class="cd-lab">DAY</span></div>
                 <div class="cd-box"><span class="cd-val" id="cap-hrs">0</span><span class="cd-lab">HRS</span></div>
                 <div class="cd-box"><span class="cd-val" id="cap-min">0</span><span class="cd-lab">MIN</span></div>
@@ -543,10 +541,6 @@
             <div style="font-size: 20px; color: #007AFF; font-weight: 800; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 20px;">G.C.E. O/L EXAM COUNTDOWN</div>
             
             <div style="display: flex; justify-content: center; gap: 12px;">
-                <div style="background: #0b0c10; border: 1px solid #232533; border-radius: 16px; padding: 18px 12px; min-width: 105px;">
-                    <span id="img4x4-mon" style="font-size: 36px; font-weight: 900; color: #ffffff; display: block;">0</span>
-                    <span style="font-size: 13px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">MONTHS</span>
-                </div>
                 <div style="background: #0b0c10; border: 1px solid #232533; border-radius: 16px; padding: 18px 12px; min-width: 105px;">
                     <span id="img4x4-days" style="font-size: 36px; font-weight: 900; color: #ffffff; display: block;">0</span>
                     <span style="font-size: 13px; color: #007AFF; font-weight: 800; letter-spacing: 1.5px; margin-top: 4px; display: block;">DAYS</span>
@@ -736,7 +730,7 @@
                     <p>ඔබ Saved Table එකකින් ලොග් වූ විට, <b>දැනට කළ යුතු වැඩේ සහ ඊළඟ පැයේ ඇති වැඩේ Live Countdown එකක්</b> සමඟ Header එකට යටින් පෙන්වනු ලබයි.</p>
 
                     <h4><span class="help-step-num">Step 7</span> 4x4 Countdown Image එක</h4>
-                    <p>Header එකේ ඇති <b>Download 4x4 Countdown Image</b> බටන් එකෙන් විභාගයට ඉතිරි මාස, දින, පැය සහ මිනිත්තු සටහන් වූ Clean & Soft Blue Minimalist Image එක HD බාගත හැක.</p>
+                    <p>Header එකේ ඇති <b>Download 4x4 Countdown Image</b> බටන් එකෙන් විභාගයට ඉතිරි දින, පැය, මිනිත්තු සහ තත්පර සටහන් වූ Clean & Soft Blue Minimalist Image එක HD බාගත හැක.</p>
                 `;
             } else if(lang === 'en') {
                 helpBox.innerHTML = `
@@ -1453,28 +1447,28 @@
         }
 
         function updateTimer() { 
-            const diff = new Date("Dec 8, 2026").getTime() - new Date().getTime(); 
-            const m = Math.max(0, Math.floor(diff / 2629746000));
-            const d = Math.max(0, Math.floor((diff % 2629746000) / 86400000));
-            const h = Math.max(0, Math.floor((diff % 86400000) / 3600000));
-            const min = Math.max(0, Math.floor((diff % 3600000) / 60000));
-            const s = Math.max(0, Math.floor((diff % 60000) / 1000));
+            // Target date: 2026-12-08T08:30:00 with Sri Lanka Time (GMT+5:30)
+            const targetDate = new Date("2026-12-08T08:30:00+05:30").getTime();
+            const now = new Date().getTime();
+            const diff = Math.max(0, targetDate - now); 
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hrs = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const min = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const sec = Math.floor((diff % (1000 * 60)) / 1000);
 
-            document.getElementById("mon").innerText = m; 
-            document.getElementById("days").innerText = d; 
-            document.getElementById("hrs").innerText = h; 
+            document.getElementById("days").innerText = days; 
+            document.getElementById("hrs").innerText = hrs; 
             document.getElementById("min").innerText = min; 
-            document.getElementById("sec").innerText = s; 
+            document.getElementById("sec").innerText = sec; 
 
-            document.getElementById("cap-mon").innerText = m; 
-            document.getElementById("cap-days").innerText = d; 
-            document.getElementById("cap-hrs").innerText = h; 
+            document.getElementById("cap-days").innerText = days; 
+            document.getElementById("cap-hrs").innerText = hrs; 
             document.getElementById("cap-min").innerText = min; 
-            document.getElementById("cap-sec").innerText = s; 
+            document.getElementById("cap-sec").innerText = sec; 
 
-            document.getElementById("img4x4-mon").innerText = m; 
-            document.getElementById("img4x4-days").innerText = d; 
-            document.getElementById("img4x4-hrs").innerText = h; 
+            document.getElementById("img4x4-days").innerText = days; 
+            document.getElementById("img4x4-hrs").innerText = hrs; 
             document.getElementById("img4x4-min").innerText = min; 
 
             setTimeout(updateTimer, 1000); 
